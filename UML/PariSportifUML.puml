@@ -26,8 +26,10 @@ package "BDD" <<DataBase>>{
 
 
 namespace Class{
-    class User{
-    }
+        class User{
+        }
+        class Pari{
+        }
 }
 @enduml
 
