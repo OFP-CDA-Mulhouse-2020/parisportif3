@@ -1,0 +1,33 @@
+@startuml
+
+package "BDD" <<DataBase>>{
+
+    class User{
+    }
+    class Pari{
+    }
+    class Sport{
+    }
+    class Porte_Feuille{
+    }
+    class Epreuve{
+    }
+    class Type_sport{
+    }
+    class Evenement{
+    }
+    class Historique_PorteFeuille{
+    }
+    class Historique_Pari{
+    }
+    class Epreuve_Event{
+    }
+}
+
+
+namespace Class{
+    class User{
+    }
+}
+@enduml
+
