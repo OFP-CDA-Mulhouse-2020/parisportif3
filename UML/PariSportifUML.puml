@@ -1,49 +1,123 @@
 @startuml
 
-package "BDD" <<DataBase>> {
+' Human management
 
-    class Utilisateur {
-        - int ID
-        - nom
-        - prénom
-        - pseudo
-        - mail
-        - mdp
+
+package entity{
+
+    abstract class Person {
+        -id: int
+        -lastName: string
+        -firstName: string
     }
-    class Pari {
-        - ID
-        - montant
-        - statut
-        - évènement_ID
-        - user_ID
+
+    class User {
+        -birtDate: Date
+        -loginName: string
+        -password: string
+        -verified: bool
+        -activated: bool
+
+        -timezone: DateTimeZone
+        -wallet: Wallet
+        -bet : Bet []
+
+        +betOnSportEvent(float amount, SportEvent sportEvent): bool
+        +addBetResultToBalance(float amount, SportEvent sportEvent): void
+        +can
     }
-    class Sport {
-        - ID
-        - nom
-        - type_sport_ID
+
+    class Athlete {
+        -
     }
-    class Porte_Feuille{
+
+
+    ' Money management
+    class Wallet {
+        -id: int
+        -balance: float
+
+        +removeFromBalance(float amount): bool
+        +addToBalance(float amount): void
     }
-    class Epreuve{
+
+    class Transaction {
+        -id: int
+        -date: Date
+        -wallet: Wallet
+        -betAmount: float
+        -sportEvent: SportEvent
     }
-    class Type_sport{
+
+    class Bet {
+        -id: int
+        -amount: int
+        -sportEvent: SportEvent
+        -status: int
+        -date: DateTime
+
+        +addBet(int amount, SportEvent SportEvent): bool
+        +deleteBet(int id): bool
+        +modifyBet(int id, int amount, SportEvent SportEvent): bool
     }
-    class Évènement{
+
+    class EncounterEvent{
+        id: int
+        resultJson: Json
+        SportType:  SportStype
+        SportEvent: SportEvent
     }
-    class Historique_PorteFeuille{
+
+
+    ' Sport management
+    class SportEvent {
+        -id: int
+        -lieu: string
+        -date: Date
+        -timezone: DateTimeZone
     }
-    class Historique_Pari{
+
+    class SportTeam {
+        -id: int
+        -teamName: string
     }
-    class Epreuve_Event{
+
+    class SportType {
+        -id: int
+        -nameType: string
+        -nbrAthleteActive: int
+        -nbrAthleteInactive: int
+
+        +addNewSportType(string nameType, int nbrAthleteActive, int nbrAthleteInactive): bool
+        +deleteSportType(SportType sportType): void
     }
 }
 
+' ========================================================================='
 
-namespace Class{
-        class Utilisateur{
-        }
-        class Pari{
-        }
+' Inherit of
+User <|-- Person
+Athlete <|-- Person
+
+' Relation
+User -r- Bet
+User -- Wallet
+
+Athlete -- SportEvent
+SportTeam -- Athlete
+
+
+SportEvent -- Transaction
+SportEvent -- SportTeam
+SportEvent -- SportType
+
+newpage
+
+package Model{
 }
+package View{
+}
+package Controller{
+}
+
 @enduml
-
