@@ -1,12 +1,26 @@
 @startuml
 
-package "BDD" <<DataBase>>{
+package "BDD" <<DataBase>> {
 
-    class User{
+    class Utilisateur {
+        - int ID
+        - nom
+        - prénom
+        - pseudo
+        - mail
+        - mdp
     }
-    class Pari{
+    class Pari {
+        - ID
+        - montant
+        - statut
+        - évènement_ID
+        - user_ID
     }
-    class Sport{
+    class Sport {
+        - ID
+        - nom
+        - type_sport_ID
     }
     class Porte_Feuille{
     }
@@ -14,7 +28,7 @@ package "BDD" <<DataBase>>{
     }
     class Type_sport{
     }
-    class Evenement{
+    class Évènement{
     }
     class Historique_PorteFeuille{
     }
@@ -26,7 +40,7 @@ package "BDD" <<DataBase>>{
 
 
 namespace Class{
-        class User{
+        class Utilisateur{
         }
         class Pari{
         }
