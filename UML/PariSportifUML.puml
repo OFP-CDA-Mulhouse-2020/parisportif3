@@ -18,12 +18,9 @@ skinparam linetype ortho
         -activated: bool
 
         -timezone: DateTimeZone
-        -wallet: Wallet
-        -bet : Bet []
 
         +betOnSportEvent(float amount, SportEvent sportEvent): bool
         +addBetResultToBalance(float amount, SportEvent sportEvent): void
-        +can
     }
 
     class Athlete {
@@ -43,6 +40,7 @@ skinparam linetype ortho
 
         +removeFromBalance(float amount): bool
         +addToBalance(float amount): void
+        +addGainFromBet(float amount) : void
     }
 
     'History'
@@ -60,6 +58,7 @@ skinparam linetype ortho
         -sportEvent: SportEvent
         -status: int
         -date: DateTime
+        -cote: int
 
 '        +addBet(int amount, SportEvent SportEvent): bool
 '        +deleteBet(int id): bool
@@ -68,7 +67,7 @@ skinparam linetype ortho
 
     class EncounterEvent{
         id: int
-        resultJson: Json
+       'resultJson: Json
         SportType:  SportStype
         SportEvent: SportEvent
     }
@@ -90,10 +89,13 @@ skinparam linetype ortho
         -id: int
         -nameType: string
         -nbrAthleteActive: int
-        -nbrAthleteInactive: int
 
         +addNewSportType(string nameType, int nbrAthleteActive, int nbrAthleteInactive): bool
         +deleteSportType(SportType sportType): void
+    }
+
+    class Cart{
+    bet : Bet []
     }
 
 ' ========================================================================='
@@ -104,7 +106,8 @@ Athlete <|-u- Person
 
 ' Relation
 'User "0,n" o-- "1,1" Bet
-User "1,1" *-- "1,1" Wallet
+User "1" *-- "1" Wallet
+User "1" -r- "1" Cart
 
 Wallet "0,n" --* "1,1" Bet
 Wallet "0,n" --* "1,1" Receipt
@@ -119,6 +122,7 @@ SportEvent "1,1" *-- "0,n" SportType
 
 Transaction "1,1" *--- "0,n" Bet
 'Transaction -l- Wallet
+
 
 
 @enduml
