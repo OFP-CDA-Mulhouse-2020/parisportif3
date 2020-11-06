@@ -103,22 +103,22 @@ User <|-- Person
 Athlete <|-u- Person
 
 ' Relation
-User -- Bet
-User -- Wallet
+'User "0,n" o-- "1,1" Bet
+User "1,1" *-- "1,1" Wallet
 
-Wallet - Bet
-Wallet -- Receipt
+Wallet "0,n" --* "1,1" Bet
+Wallet "0,n" --* "1,1" Receipt
 
-Athlete -- SportTeam
+Athlete "1,n" --* "1,n" SportTeam
 
-EncounterEvent -- Bet
-EncounterEvent -- SportEvent
+EncounterEvent "0,n" -d-* "1,1" Bet
+EncounterEvent "1,n" --* "0,n" SportEvent
 
-SportEvent -- SportTeam
-SportEvent -- SportType
+SportEvent "1,n" --o "1,n" SportTeam
+SportEvent "1,1" *-- "0,n" SportType
 
-Transaction -l- Bet
-Transaction -l- Wallet
+Transaction "1,1" *--- "0,n" Bet
+'Transaction -l- Wallet
 
 
 @enduml
