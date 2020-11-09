@@ -16,15 +16,14 @@ skinparam linetype ortho
         -password: string
         -verified: bool
         -activated: bool
-
         -timezone: DateTimeZone
 
-        +betOnSportEvent(float amount, SportEvent sportEvent): bool
-        +addBetResultToBalance(float amount, SportEvent sportEvent): void
+        +validateCart(Cart cart): bool
+
     }
 
     class Athlete {
-    
+
     }
 
     class Receipt{
@@ -37,10 +36,9 @@ skinparam linetype ortho
     class Wallet {
         -id: int
         -balance: float
-
+        --
         +removeFromBalance(float amount): bool
         +addToBalance(float amount): void
-        +addGainFromBet(float amount) : void
     }
 
     'History'
@@ -49,33 +47,53 @@ skinparam linetype ortho
         -date: Date
         -wallet: Wallet
         -betAmount: float
-        -sportEvent: SportEvent
+        -betTemplateChoice : BetTemplateChoice
+
+        +getList()
     }
 
     class Bet {
         -id: int
-        -amount: int
-        -sportEvent: SportEvent
+        -amount: float
         -status: int
         -date: DateTime
-        -cote: int
+        -cote: float
 
-'        +addBet(int amount, SportEvent SportEvent): bool
-'        +deleteBet(int id): bool
-'        +modifyBet(int id, int amount, SportEvent SportEvent): bool
+        +modifyAmount()
+    }
+
+    class BetTemplate{
+        -id: int
+        -sportType: SportType
+        -description: array []
+
+        '?
+        +addToBetList(string newBetPossibility): void
+        +deleteToBetList(int ID) : void
+        +editToBetList(int ID, string modifiedBetPossibility): void
+    }
+
+    class BetTemplateChoice{
+        -id: int
+        -updatedDescription : string []
+
+        +addNewChoice(BetTemplate betTemplate, SportEvent sportEvent): void
     }
 
     class EncounterEvent{
         id: int
-       'resultJson: Json
-        SportType:  SportStype
+        SportType:  SportType
         SportEvent: SportEvent
+
+        +verifyBet(): void
+        +addEncounterEvent(BetTemplateChoice betTemplateChoice[int choice])
     }
 
     ' Sport management
     class SportEvent {
         -id: int
         -lieu: string
+        -competition: string
         -date: Date
         -timezone: DateTimeZone
     }
@@ -83,46 +101,69 @@ skinparam linetype ortho
     class SportTeam {
         -id: int
         -teamName: string
+
+        +defineActive(Athlete athlete):void
+        +defineSubstitute(Athlete athlete):void
+        +editName(int ID, string newTeamName): void
     }
 
     class SportType {
         -id: int
         -nameType: string
         -nbrAthleteActive: int
-
-        +addNewSportType(string nameType, int nbrAthleteActive, int nbrAthleteInactive): bool
-        +deleteSportType(SportType sportType): void
     }
 
     class Cart{
-    bet : Bet []
+        bet : Bet []
     }
+
+    class BetChoices{
+        id: int
+        choice: int []
+
+        +selectBet(BetTemplateChoice betTemplateChoice[int choice]):void
+        +deleteBet(BetTemplateChoice betTemplateChoice[int choice]):void
+    }
+
+    class CartItem{
+        - betChoices : BetChoices
+        - bet : Bet
+    }
+
+
+
 
 ' ========================================================================='
 
 ' Inherit of
-User <|-- Person
-Athlete <|-u- Person
+User <|-u- Person :is
+Athlete <|-- Person :is
 
 ' Relation
-'User "0,n" o-- "1,1" Bet
-User "1" *-- "1" Wallet
-User "1" -r- "1" Cart
+User "1" *-u- "1" Wallet :manage
+User "1" *-- "1" Cart :operate
+'User "0,n" *-- "1" BetTemplateChoice :bid
 
-Wallet "0,n" --* "1,1" Bet
-Wallet "0,n" --* "1,1" Receipt
+Wallet "0,n" -d-* "1" Receipt :print
 
-Athlete "1,n" --* "1,n" SportTeam
+'Cart "0,n" --o "1" Bet :insert
+Cart "0,n" *-r- "1" Transaction :generate
 
-EncounterEvent "0,n" -d-* "1,1" Bet
-EncounterEvent "1,n" --* "0,n" SportEvent
+Athlete "1,n" --* "1,n" SportTeam :employ
 
-SportEvent "1,n" --o "1,n" SportTeam
-SportEvent "1,1" *-- "0,n" SportType
+EncounterEvent "1,n" --* "0,n" SportEvent :occur
+SportType "1" -- "1" BetTemplate :list
 
-Transaction "1,1" *--- "0,n" Bet
-'Transaction -l- Wallet
+SportEvent "2,n" --o "1,n" SportTeam : participate
+SportEvent "1" *-- "0,n" SportType : define
 
+BetTemplate "0,n"  -- "1" BetTemplateChoice : choose
+'Bet "1" -r-* "0,n" BetTemplateChoice : create
+
+Bet "1" --* "1" CartItem : insert
+
+CartItem "1" --o "0,n" Cart : add
+CartItem "1" *-- "1" BetChoices : insert
 
 
 @enduml
