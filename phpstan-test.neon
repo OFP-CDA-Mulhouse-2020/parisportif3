@@ -1,0 +1,12 @@
+parameters:
+    level: 8
+    paths:
+        - tests
+
+    symfony: #https://github.com/phpstan/phpstan-symfony
+        container_xml_path: var/cache/test/App_KernelTestDebugContainer.xml
+        console_application_loader: tests/console-application.php
+
+    doctrine: #https://github.com/phpstan/phpstan-doctrine
+        #repositoryClass: MyApp\Doctrine\BetterEntityRepository
+        objectManagerLoader: tests/object-manager.php

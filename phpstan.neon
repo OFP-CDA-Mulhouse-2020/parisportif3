@@ -1,0 +1,16 @@
+### Doc used :
+#https://github.com/phpstan/phpstan-symfony
+#https://github.com/phpstan/phpstan-doctrine
+#https://github.com/phpstan/phpstan-phpunit
+
+parameters:
+    level: 8
+    paths:
+        - src
+    symfony:
+        container_xml_path: var/cache/dev/App_KernelDevDebugContainer.xml
+        console_application_loader: tests/console-application.php
+
+    doctrine:
+        #repositoryClass: MyApp\Doctrine\BetterEntityRepository
+        objectManagerLoader: tests/object-manager.php

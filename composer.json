@@ -40,8 +40,9 @@
         "twig/twig": "^2.12|^3.0"
     },
     "require-dev": {
-        "roave/security-advisories": "dev-master",
+        "phpstan/extension-installer": "^1.0",
         "phpstan/phpstan": "^0.12.55",
+        "roave/security-advisories": "dev-master",
         "spatie/phpunit-watcher": "^1.23",
         "squizlabs/php_codesniffer": "^3.5",
         "symfony/browser-kit": "^5.1",
@@ -89,6 +90,21 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
+        ],
+        "phpstan": [
+            "@php bin/console cache:warmup --env=dev",
+            "@php bin/console cache:warmup --env=test",
+            "@phpstan-dev",
+            "@phpstan-test"
+        ],
+        "phpstan-dev": "phpstan analyse -c phpstan.neon --no-progress",
+        "phpstan-test": "phpstan analyse -c phpstan-test.neon --no-progress",
+        "tests": "phpunit",
+        "security": "composer update --dry-run roave/security-advisories",
+        "ci": [
+            "@phpstan",
+            "@testsw",
+            "@security"
         ]
     },
     "conflict": {
