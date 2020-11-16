@@ -2,11 +2,12 @@
 
 <!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="bin/.phpunit/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="phpunit.xsd"
          backupGlobals="false"
          colors="true"
          bootstrap="tests/bootstrap.php"
 >
+
     <php>
         <ini name="error_reporting" value="-1" />
         <server name="APP_ENV" value="test" force="true" />
