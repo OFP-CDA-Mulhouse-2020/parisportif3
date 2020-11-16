@@ -1,4 +1,5 @@
 ### Doc used :
+#https://blog.martinhujer.cz/how-to-configure-phpstan-for-symfony-applications/
 #https://github.com/phpstan/phpstan-symfony
 #https://github.com/phpstan/phpstan-doctrine
 #https://github.com/phpstan/phpstan-phpunit
