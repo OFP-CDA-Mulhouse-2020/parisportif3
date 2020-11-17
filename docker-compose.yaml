@@ -13,3 +13,21 @@ services:
       - "80:80"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  php-apache:
+    image: "php:7.4-apache"
+    container_name: "phpapache"
+    restart: "no"
+    environment:
+      PHP_EXTENSION_XDEBUG: 1
+      PHP_INI_XDEBUG__REMOTE_PORT: 9000
+      PHP_IDE_CONFIG: "serverName=localhost"
+      XDEBUG_CONFIG: "remote_port= 9000 remote_autostart=1"
+    #    env_file:
+    #      - ./Docker_config/apache/php_ini_conf.env
+    labels:
+      - "traefik.http.routers.php.rule=Host(`php.docker.syrgoma.com`)"
+      - "traefik.http.routers.my-entrypoint-two.entrypoints=web"
+    volumes:
+      - "symfony/:/var/www/html"
+
