@@ -49,6 +49,13 @@ services:
       MYSQL_USER: pari_user
       MYSQL_PASSWORD: pari_pass
 
+  phpmyadmin:
+    image: "phpmyadmin"
+    environment:
+      PMA_HOST: "db"
+    labels:
+      - "traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.docker.syrgoma.com`)"
+
   whoami:
     image: "traefik/whoami"
     container_name: "simple-service"
