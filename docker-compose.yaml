@@ -37,3 +37,10 @@ services:
       working_dir: /app
       volumes:
         - "./:/app"
+
+    db:
+      image: mysql
+      volumes:
+      restart: always
+      environment:
+        MYSQL_ROOT_PASSWORD: "root"
