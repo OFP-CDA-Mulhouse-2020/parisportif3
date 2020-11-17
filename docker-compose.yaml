@@ -15,8 +15,12 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   php-apache:
-    image: "php:7.4-apache"
-    container_name: "phpapache"
+    build:
+      context: .
+      dockerfile: Dockerfile-php7.4-apache
+    image: acs-cda2020-3/php-apache # nomme l'image build plus haut au lieu de télécharger !
+#    image: "php-pari:7.4.12-apache"
+#    container_name: "phpapache"
     restart: "no"
     environment:
       PHP_EXTENSION_XDEBUG: 1
