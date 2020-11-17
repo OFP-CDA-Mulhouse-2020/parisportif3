@@ -31,3 +31,9 @@ services:
     volumes:
       - "symfony/:/var/www/html"
 
+    composer:
+      image: composer
+      command: install
+      working_dir: /app
+      volumes:
+        - "./:/app"
