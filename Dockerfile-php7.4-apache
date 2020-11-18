@@ -11,5 +11,9 @@ RUN sed -ri -e \
 RUN docker-php-ext-install opcache > /dev/null
 COPY docker-config/php/conf.d/opcache.ini ${PHP_INI_DIR}/conf.d/opcache.ini
 
+RUN pecl install xdebug > /dev/null && \
+    docker-php-ext-enable xdebug
+COPY docker-config/php/conf.d/xdebug.ini ${PHP_INI_DIR}/conf.d/xdebug.ini
+
 EXPOSE 80
 
