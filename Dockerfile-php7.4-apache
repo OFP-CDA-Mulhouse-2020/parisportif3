@@ -15,5 +15,8 @@ RUN pecl install xdebug > /dev/null && \
     docker-php-ext-enable xdebug
 COPY docker-config/php/conf.d/xdebug.ini ${PHP_INI_DIR}/conf.d/xdebug.ini
 
+RUN cp "${PHP_INI_DIR}/php.ini-development" "${PHP_INI_DIR}/php.ini"
+#TODO change default config of php.ini
+
 EXPOSE 80
 
