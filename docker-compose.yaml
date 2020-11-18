@@ -23,10 +23,12 @@ services:
     image: "acs-cda2020-3/php-apache" # nomme l'image build plus haut au lieu de la télécharger !
     restart: "always"
     environment:
-      PHP_EXTENSION_XDEBUG: "1"
-      PHP_INI_XDEBUG__REMOTE_PORT: "9000"
-      PHP_IDE_CONFIG: "serverName=localhost"
-      XDEBUG_CONFIG: "remote_port=9000 remote_autostart=1"
+      # OpCache
+      PHP_OPCACHE_VALIDATE_TIMESTAMPS: "1"
+      PHP_OPCACHE_MAX_ACCELERATED_FILES: "10000"
+      PHP_OPCACHE_MEMORY_CONSUMPTION: "192"
+      PHP_OPCACHE_MAX_WASTED_PERCENTAGE: "10"
+      # Autre
       #env_file:
         #- ./Docker_config/apache/php_ini_conf.env
     labels:
