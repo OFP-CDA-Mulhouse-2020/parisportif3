@@ -40,7 +40,7 @@ services:
         #- ./Docker_config/apache/php_ini_conf.env
     labels:
       - "traefik.http.routers.php.rule=Host(`php.docker.syrgoma.com`)"
-      - "traefik.http.routers.my-entrypoint-two.entrypoints=web"
+      - "traefik.http.routers.php.entrypoints=web"
     volumes:
       - "./symfony:/var/www/html"
 
@@ -72,7 +72,7 @@ services:
       PMA_HOST: "db"
     labels:
       - "traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.docker.syrgoma.com`)"
-      - "traefik.http.routers.my-entrypoint-three.entrypoints=web"
+      - "traefik.http.routers.phpmyadmin.entrypoints=web"
 
   #TODO Supprimer quand n'est plus nécessaire
   whoami:
@@ -80,14 +80,14 @@ services:
     image: "traefik/whoami"
     labels:
       - "traefik.http.routers.whoami.rule=Host(`whoami.docker.syrgoma.com`)"
-      - "traefik.http.routers.my-entrypoint-one.entrypoints=web"
+      - "traefik.http.routers.whoami.entrypoints=web"
 
   mailhog:
     image: mailhog/mailhog
     ports:
       - 1025:1025 # smtp server
-#      - 8025:8025 # web ui
+      - 8025:8025 # web ui
     labels:
       - "traefik.http.routers.mailhog.rule=Host(`mh.docker.syrgoma.com`)"
-      - "traefik.http.routers.my-entrypoint-three.entrypoints=web"
-      - "traefik.http.routers.mailhog-port.loadbalancer.server.port=8025"
+      - "traefik.http.routers.mailhog.entrypoints=web"
+      - "traefik.http.routers.mailhog.loadbalancer.server.port=8025"
