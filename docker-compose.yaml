@@ -2,8 +2,9 @@ version: '3'
 
 services:
   traefik:
+    #container_name: "traefik"
     image: "traefik"
-    #    container_name: "traefik"
+    restart: "always"
     command:
       - "--api.insecure=true"
       - "--providers.docker"
@@ -15,20 +16,19 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
   php-apache:
+    #container_name: "phpapache"
     build:
       context: .
-      dockerfile: Dockerfile-php7.4-apache
-    image: acs-cda2020-3/php-apache # nomme l'image build plus haut au lieu de télécharger !
-#    image: "php-pari:7.4.12-apache"
-#    container_name: "phpapache"
-    restart: "no"
+      dockerfile: "Dockerfile-php7.4-apache"
+    image: "acs-cda2020-3/php-apache" # nomme l'image build plus haut au lieu de la télécharger !
+    restart: "always"
     environment:
-      PHP_EXTENSION_XDEBUG: 1
-      PHP_INI_XDEBUG__REMOTE_PORT: 9000
+      PHP_EXTENSION_XDEBUG: "1"
+      PHP_INI_XDEBUG__REMOTE_PORT: "9000"
       PHP_IDE_CONFIG: "serverName=localhost"
-      XDEBUG_CONFIG: "remote_port= 9000 remote_autostart=1"
-    #    env_file:
-    #      - ./Docker_config/apache/php_ini_conf.env
+      XDEBUG_CONFIG: "remote_port=9000 remote_autostart=1"
+      #env_file:
+        #- ./Docker_config/apache/php_ini_conf.env
     labels:
       - "traefik.http.routers.php.rule=Host(`php.docker.syrgoma.com`)"
       - "traefik.http.routers.my-entrypoint-two.entrypoints=web"
@@ -36,33 +36,39 @@ services:
       - "./symfony:/var/www/html"
 
   composer:
-    image: composer
-    command: install
-    working_dir: /app
+    #container_name: "composer"
+    image: "composer"
+    restart: "no"
+    working_dir: "/app"
+    command: "install"
     volumes:
       - "./symfony:/app"
 
   db:
-    image: mysql
-    volumes:
-      - "./mysql-data:/var/lib/mysql"
-    restart: always
+    #container_name: "db"
+    image: "mysql"
+    restart: "always"
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-      MYSQL_DATABASE: pari_sportif_db
-      MYSQL_USER: pari_user
-      MYSQL_PASSWORD: pari_pass
+      MYSQL_DATABASE: "pari_sportif_db"
+      MYSQL_USER: "pari_user"
+      MYSQL_PASSWORD: "pari_pass"
+    volumes:
+      - "./mysql-data:/var/lib/mysql"
 
   phpmyadmin:
+    #container_name: "phmyadmin"
     image: "phpmyadmin"
     environment:
       PMA_HOST: "db"
     labels:
       - "traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.docker.syrgoma.com`)"
+      - "traefik.http.routers.my-entrypoint-three.entrypoints=web"
 
+  #TODO Supprimer quand n'est plus nécessaire
   whoami:
-    image: "traefik/whoami"
     container_name: "simple-service"
+    image: "traefik/whoami"
     labels:
       - "traefik.http.routers.whoami.rule=Host(`whoami.docker.syrgoma.com`)"
       - "traefik.http.routers.my-entrypoint-one.entrypoints=web"
