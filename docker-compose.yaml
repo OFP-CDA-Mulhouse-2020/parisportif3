@@ -81,3 +81,13 @@ services:
     labels:
       - "traefik.http.routers.whoami.rule=Host(`whoami.docker.syrgoma.com`)"
       - "traefik.http.routers.my-entrypoint-one.entrypoints=web"
+
+  mailhog:
+    image: mailhog/mailhog
+    ports:
+      - 1025:1025 # smtp server
+#      - 8025:8025 # web ui
+    labels:
+      - "traefik.http.routers.mailhog.rule=Host(`mh.docker.syrgoma.com`)"
+      - "traefik.http.routers.my-entrypoint-three.entrypoints=web"
+      - "traefik.http.routers.mailhog-port.loadbalancer.server.port=8025"
