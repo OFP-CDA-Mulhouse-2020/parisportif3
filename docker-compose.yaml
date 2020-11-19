@@ -23,6 +23,9 @@ services:
       dockerfile: "Dockerfile-php7.4-apache"
     image: "paris-php-apache:latest" # nomme l'image build plus haut au lieu de la télécharger !
     restart: "always"
+    depends_on:
+      - "traefik"
+      - "composer"
     environment:
       # Apache
       APACHE_DOCUMENT_ROOT: "/var/www/html/public"
