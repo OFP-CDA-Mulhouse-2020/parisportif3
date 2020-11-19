@@ -1,12 +1,21 @@
 FROM php:7.4-apache
 
-ENV APACHE_DOCUMENT_ROOT /var/www/html/public
-RUN sed -ri -e \
-        's!/var/www/html!${APACHE_DOCUMENT_ROOT}!g' \
-        ${APACHE_CONFDIR}/sites-available/*.conf && \
+# Config d'Apache2
+ENV APACHE_DOCUMENT_ROOT /var/www/html/
+
+COPY docker-config/apache2/conf-available/AllowOverrideDocumentRoot.conf \
+    ${APACHE_CONFDIR}/conf-available/AllowOverrideDocumentRoot.conf
+
+RUN set -eux; \
+    \
     sed -ri -e \
-        's!/var/www/!${APACHE_DOCUMENT_ROOT}!g' \
-        ${APACHE_CONFDIR}/apache2.conf /etc/apache2/conf-available/*.conf
+        's!DocumentRoot /var/www/.*$!DocumentRoot ${APACHE_DOCUMENT_ROOT}!gm' \
+        ${APACHE_CONFDIR}/conf-available/*.conf \
+        ${APACHE_CONFDIR}/apache2.conf \
+        ${APACHE_CONFDIR}/sites-available/*.conf; \
+    \
+    a2enconf -q AllowOverrideDocumentRoot; \
+    a2enmod -q rewrite;
 
 RUN docker-php-ext-install opcache > /dev/null
 COPY docker-config/php/conf.d/opcache.ini ${PHP_INI_DIR}/conf.d/opcache.ini
