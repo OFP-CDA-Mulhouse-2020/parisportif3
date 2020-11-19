@@ -20,7 +20,7 @@ services:
     build:
       context: .
       dockerfile: "Dockerfile-php7.4-apache"
-    image: "acs-cda2020-3/php-apache" # nomme l'image build plus haut au lieu de la télécharger !
+    image: "paris-php-apache:latest" # nomme l'image build plus haut au lieu de la télécharger !
     restart: "always"
     environment:
       # OpCache
@@ -85,6 +85,8 @@ services:
   mailhog:
     image: "mailhog/mailhog"
     restart: "always"
+    depends_on:
+      - "traefik"
     ports:
       - "1025:1025"
     labels:
