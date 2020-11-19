@@ -39,7 +39,7 @@ services:
       #env_file:
         #- ./Docker_config/apache/php_ini_conf.env
     labels:
-      - "traefik.http.routers.php.rule=Host(`php.docker.localhost`)"
+      - "traefik.http.routers.php.rule=Host(`php.docker.syrgoma.com`)"
       - "traefik.http.routers.php.entrypoints=web"
     volumes:
       - "./symfony:/var/www/html"
