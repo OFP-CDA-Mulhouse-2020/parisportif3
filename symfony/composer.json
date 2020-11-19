@@ -90,14 +90,19 @@
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
         "post-install-cmd": [
-            "@auto-scripts"
+            "@auto-scripts",
+            "@warmup"
         ],
         "post-update-cmd": [
-            "@auto-scripts"
+            "@auto-scripts",
+            "@warmup"
+        ],
+        "warmup": [
+            "@php bin/console cache:warmup --env=dev",
+            "@php bin/console cache:warmup --env=test"
         ],
         "phpstan": [
-            "@php bin/console cache:warmup --env=dev",
-            "@php bin/console cache:warmup --env=test",
+            "@warmup",
             "@phpstan-dev",
             "@phpstan-test"
         ],
