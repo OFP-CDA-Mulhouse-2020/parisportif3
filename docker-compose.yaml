@@ -19,7 +19,7 @@ services:
   php-apache:
     #container_name: "phpapache"
     build:
-      context: .
+      context: "./Dockerfile/"
       dockerfile: "Dockerfile-php7.4-apache"
     image: "paris-php-apache:latest" # nomme l'image build plus haut au lieu de la télécharger !
     restart: "always"
