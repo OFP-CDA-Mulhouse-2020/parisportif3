@@ -66,11 +66,12 @@ services:
     restart: "always"
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
-      MYSQL_DATABASE: "pari_sportif_db"
+      MYSQL_DATABASE: "pari_sportif_db_dev"
       MYSQL_USER: "pari_user"
       MYSQL_PASSWORD: "pari_pass"
     volumes:
       - "./mysql-data:/var/lib/mysql"
+      - "./Dockerfile/docker-config/mysql/scripts.d:/docker-entrypoint-initdb.d"
 
   phpmyadmin:
     #container_name: "phmyadmin"
