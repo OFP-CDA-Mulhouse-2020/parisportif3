@@ -45,6 +45,6 @@ jobs:
 #        uses: chindit/actions-phpunit-symfony@1.0.0
 
       - name: PHPUnit tests
-          uses: php-actions/phpunit@v1
-          with:
-            configuration: ./symfony/phpunit.xml
+        uses: php-actions/phpunit@v1
+        with:
+          configuration: ./symfony/phpunit.xml
