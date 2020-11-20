@@ -11,8 +11,9 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
-    env:
-      working-directory: ./symfony
+    defaults:
+      run:
+        working-directory: ./symfony
 
     steps:
 
@@ -20,7 +21,7 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Validate composer.json and composer.lock
-        working-directory: ${{env.working-directory}}
+#        working-directory: ${{env.working-directory}}
         run: composer validate
 
       - name: Cache Composer packages
@@ -34,7 +35,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
-        working-directory: ${{env.working-directory}}
+#        working-directory: ${{env.working-directory}}
         run: composer install --prefer-dist --no-progress --no-suggest
 
 
