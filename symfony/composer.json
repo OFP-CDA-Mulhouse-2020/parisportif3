@@ -1,4 +1,6 @@
 {
+    "name": "groupe3/pari-sportif",
+    "description":"creation application de pari sportif" ,
     "type": "project",
     "license": "proprietary",
     "require": {
