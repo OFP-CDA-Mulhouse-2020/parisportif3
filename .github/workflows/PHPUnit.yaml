@@ -47,4 +47,4 @@ jobs:
       - name: PHPUnit tests
         uses: php-actions/phpunit@v1
         with:
-          configuration: ./symfony/phpunit.xml
+          configuration: ./phpunit.xml
