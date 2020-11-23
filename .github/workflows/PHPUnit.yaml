@@ -45,7 +45,7 @@ jobs:
 #        uses: chindit/actions-phpunit-symfony@1.0.0
 
       - name: TestMesKouïe
-        - run: ls -a vendor/
+        run: ls -a vendor/
 
       - name: PHPUnit tests
         uses: php-actions/phpunit@v1
