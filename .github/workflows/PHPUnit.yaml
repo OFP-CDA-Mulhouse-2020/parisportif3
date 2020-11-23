@@ -34,7 +34,7 @@ jobs:
             ${{ runner.os }}-php-
 
       - name: Install dependencies
-        if: steps.composer-cache.outputs.cache-hit != 'true'
+#        if: steps.composer-cache.outputs.cache-hit != 'true'
         working-directory: ${{env.working-directory}}
         run: composer install --prefer-dist --no-progress --no-suggest
 
@@ -44,10 +44,10 @@ jobs:
 #        # uses: chindit/actions-phpunit-symfony@c02bff1f84d757d030c15e2985be601cdba3039e
 #        uses: chindit/actions-phpunit-symfony@1.0.0
 
-      - name: TestMesKouïe
+      - name: TestDirectories
         run: ls
 
-      - name: TestMesKouïe the comeback
+      - name: TestDirectories2
         run: ls ..
 
 
