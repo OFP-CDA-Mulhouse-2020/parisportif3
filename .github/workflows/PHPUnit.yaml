@@ -21,7 +21,6 @@ jobs:
       - uses: actions/checkout@v2
 
       - name: Validate composer.json and composer.lock
-#        working-directory: ${{env.working-directory}}
         run: composer validate
 
       - name: Cache Composer packages
@@ -34,22 +33,7 @@ jobs:
             ${{ runner.os }}-php-
 
       - name: Install dependencies
-        if: steps.composer-cache.outputs.cache-hit != 'true'
-#        working-directory: ${{env.working-directory}}
         run: composer install --prefer-dist --no-progress
-
-
-#      - name: PHPUnit for Symfony
-#        # You may pin to the exact commit or the version.
-#        # uses: chindit/actions-phpunit-symfony@c02bff1f84d757d030c15e2985be601cdba3039e
-#        uses: chindit/actions-phpunit-symfony@1.0.0
-
-      - name: TestDirectories
-        run: ls
-
-      - name: TestDirectories2
-        run: ls ..
-
 
       - name: PHPUnit tests
         uses: php-actions/phpunit@v8
