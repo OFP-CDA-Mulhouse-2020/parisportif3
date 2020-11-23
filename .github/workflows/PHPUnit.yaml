@@ -35,7 +35,7 @@ jobs:
 
       - name: Install dependencies
         if: steps.composer-cache.outputs.cache-hit != 'true'
-#        working-directory: ${{env.working-directory}}
+        working-directory: ${{env.working-directory}}
         run: composer install --prefer-dist --no-progress --no-suggest
 
 
@@ -46,6 +46,10 @@ jobs:
 
       - name: TestMesKouïe
         run: ls
+
+      - name: TestMesKouïe the comeback
+        run: ls ..
+
 
       - name: PHPUnit tests
         uses: php-actions/phpunit@v1
