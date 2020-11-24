@@ -11,3 +11,11 @@ This is banned in this project...
 EOF
   exit 1
 fi
+
+# Changer de dossier ou quitter le script avec une erreur
+cd "${PWD}/symfony/" || exit 1
+composer static-dev
+composer static-test
+composer unit-test
+composer standard-test-fix
+composer standard-test
