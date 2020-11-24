@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env sh
 
 ### Bloquage des noms de fichiers non ascii
 
