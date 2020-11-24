@@ -93,11 +93,13 @@
         },
         "post-install-cmd": [
             "@auto-scripts",
-            "@warmup"
+            "@warmup",
+            "@setup-hooks"
         ],
         "post-update-cmd": [
             "@auto-scripts",
-            "@warmup"
+            "@warmup",
+            "@setup-hooks"
         ],
         "warmup": [
             "@php bin/console cache:warmup --env=dev",
@@ -116,6 +118,10 @@
         "watch": [
             "Composer\\Config::disableProcessTimeout",
             "phpunit-watcher watch < /dev/tty"
+        ],
+        "setup-hooks": [
+            "chmod 744 ${PWD}/../setup-hooks/setup-hooks.sh",
+            "${PWD}/../setup-hooks/setup-hooks.sh"
         ]
     },
     "conflict": {
