@@ -114,7 +114,7 @@ skinparam linetype ortho
     }
 
     class Cart{
-        bet : Bet []
+        cartItem : CartItem []
     }
 
     class BetChoices{
