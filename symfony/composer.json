@@ -114,6 +114,7 @@
         "static-test": "phpstan analyse -c phpstan-test.neon --no-progress",
         "unit-test": "phpunit",
         "standard-test": "phpcs",
+        "standard-test-fix": "phpcbf",
         "security": "composer update --dry-run roave/security-advisories",
         "watch": [
             "Composer\\Config::disableProcessTimeout",
