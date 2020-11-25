@@ -47,12 +47,7 @@ class User implements UserInterface
     private $activated;
 
     /**
-     * @ORM\Column(type="datetime_immutable_utc")
-     */
-    private $datetimeUtc;
-
-    /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="datetimetz")
      */
     private $timezone;
 
@@ -153,25 +148,15 @@ class User implements UserInterface
         return $this;
     }
 
-
-    public function setLocalDateTime(DateTimeImmutable $dateTime): void
+    public function getTimezone(): ?\DateTimeInterface
     {
-        $dateTimeUtc = $dateTime->setTimezone(new DateTimeZone('UTC'));
-
-        $this->datetimeUtc = $dateTimeUtc;
-        $this->timezone = $dateTime->getTimezone()->getName();
+        return $this->timezone;
     }
 
-    public function getLocalDateTime(): DateTimeImmutable
+    public function setTimezone(\DateTimeInterface $timezone): self
     {
-        $timestampUtc = $this->datetimeUtc->getTimestamp();
+        $this->timezone = $timezone;
 
-        return DateTimeImmutable::create('@' . $timestampUtc, new DateTimeZone($this->timezone));
+        return $this;
     }
-
-    public function getDateTimeUtc(): DateTimeImmutable
-    {
-        return $this->datetimeUtc;
-    }
-
 }

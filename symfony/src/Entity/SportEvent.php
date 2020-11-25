@@ -3,8 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\SportEventRepository;
-use DateTimeImmutable;
-use DateTimeZone;
+use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -30,30 +29,22 @@ class SportEvent
      * @ORM\Column(type="string", length=255)
      */
     private $competition;
-
-    /**
-     * @ORM\Column(type="datetime_immutable_utc")
-     */
-    private $datetimeUtc;
-
-    /**
-     * @ORM\Column(type="string")
-     */
-    private $timezone;
-
     /**
      * @ORM\OneToMany(targetEntity=SportType::class, mappedBy="sportEvent")
      */
     private $sportType;
-
     /**
      * @ORM\OneToMany(targetEntity=EncounterEvent::class, mappedBy="sportEvent", orphanRemoval=true)
      */
     private $encounterEvent;
+    /**
+     * @ORM\Column(type="datetimetz")
+     */
+    private $timezone;
 
     public function __construct()
     {
-        $this->sportType = new ArrayCollection();
+        $this->sportType      = new ArrayCollection();
         $this->encounterEvent = new ArrayCollection();
     }
 
@@ -84,26 +75,6 @@ class SportEvent
         $this->competition = $competition;
 
         return $this;
-    }
-
-    public function setLocalDateTime(DateTimeImmutable $dateTime): void
-    {
-        $dateTimeUtc = $dateTime->setTimezone(new DateTimeZone('UTC'));
-
-        $this->datetimeUtc = $dateTimeUtc;
-        $this->timezone = $dateTime->getTimezone()->getName();
-    }
-
-    public function getLocalDateTime(): DateTimeImmutable
-    {
-        $timestampUtc = $this->datetimeUtc->getTimestamp();
-
-        return DateTimeImmutable::create('@' . $timestampUtc, new DateTimeZone($this->timezone));
-    }
-
-    public function getDateTimeUtc(): DateTimeImmutable
-    {
-        return $this->datetimeUtc;
     }
 
     /**
@@ -156,6 +127,18 @@ class SportEvent
         if ($this->encounterEvent->removeElement($encounterEvent) && $encounterEvent->getSportEvent() === $this) {
             $encounterEvent->setSportEvent(null);
         }
+
+        return $this;
+    }
+
+    public function getTimezone(): ?DateTimeInterface
+    {
+        return $this->timezone;
+    }
+
+    public function setTimezone(DateTimeInterface $timezone): self
+    {
+        $this->timezone = $timezone;
 
         return $this;
     }
