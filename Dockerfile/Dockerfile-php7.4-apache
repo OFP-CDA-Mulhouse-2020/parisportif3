@@ -27,7 +27,7 @@ COPY docker-config/php/conf.d/xdebug.ini \
 
 RUN set -eux; \
     \
-    docker-php-ext-install opcache > /dev/null; \
+    docker-php-ext-install opcache pdo_mysql > /dev/null; \
     \
     pecl install xdebug > /dev/null; \
     docker-php-ext-enable xdebug; \
