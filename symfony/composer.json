@@ -121,8 +121,8 @@
             "phpunit-watcher watch < /dev/tty"
         ],
         "setup-hooks": [
-            "chmod 744 ${PWD}/../setup-hooks/setup-hooks.sh",
-            "${PWD}/../setup-hooks/setup-hooks.sh"
+            "chmod 744 ../setup-hooks/setup-hooks.sh",
+            "sh ../setup-hooks/setup-hooks.sh"
         ]
     },
     "conflict": {
