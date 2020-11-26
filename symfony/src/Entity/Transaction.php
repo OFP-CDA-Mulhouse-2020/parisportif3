@@ -108,12 +108,13 @@ class Transaction
     public function removeBetTemplateChoice(BetTemplateChoice $betTemplateChoice): self
     {
         // set the owning side to null (unless already changed)
-        if ($this->betTemplateChoice->removeElement($betTemplateChoice) && $betTemplateChoice->getTransaction(
-            ) === $this) {
+        if (
+            $this->betTemplateChoice->removeElement($betTemplateChoice) && $betTemplateChoice->getTransaction(
+            ) === $this
+        ) {
             $betTemplateChoice->setTransaction(null);
         }
 
         return $this;
     }
-
 }

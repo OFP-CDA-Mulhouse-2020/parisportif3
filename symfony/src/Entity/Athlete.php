@@ -55,5 +55,4 @@ class Athlete
 
         return $this;
     }
-
 }

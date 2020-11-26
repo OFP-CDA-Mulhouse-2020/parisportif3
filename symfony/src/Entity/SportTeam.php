@@ -104,5 +104,4 @@ class SportTeam
 
         return $this;
     }
-
 }

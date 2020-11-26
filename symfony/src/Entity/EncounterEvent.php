@@ -57,5 +57,4 @@ class EncounterEvent
 
         return $this;
     }
-
 }
