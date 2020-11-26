@@ -3,16 +3,18 @@ version: '3'
 services:
 
   traefik:
-    #container_name: "traefik"
+  #container_name: "traefik"
     image: "traefik"
     restart: "always"
     command:
       - "--api.insecure=true"
       - "--providers.docker"
       - "--entrypoints.web.address=:80"
+      - "--entrypoints.mysql.address=:3306"
     ports:
       - "8080:8080"
       - "80:80"
+      - "3306:3306"
     volumes:
       - "/var/run/docker.sock:/var/run/docker.sock:ro"
 
@@ -62,7 +64,7 @@ services:
 
   db:
     #container_name: "db"
-    image: "mysql"
+    image: "mysql:5.7"
     restart: "always"
     environment:
       MYSQL_RANDOM_ROOT_PASSWORD: "yes"
@@ -72,6 +74,13 @@ services:
     volumes:
       - "./mysql-data:/var/lib/mysql"
       - "./Dockerfile/docker-config/mysql/scripts.d:/docker-entrypoint-initdb.d"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.tcp.routers.mysql.tls=false"
+      - "traefik.tcp.routers.mysql.rule=HostSNI(`*`)"
+      - "traefik.tcp.routers.mysql.entrypoints=mysql"
+      - "traefik.tcp.routers.mysql.service=mysql-service"
+      - "traefik.tcp.services.mysql-service.loadbalancer.server.port=3306"
 
   phpmyadmin:
     #container_name: "phmyadmin"
