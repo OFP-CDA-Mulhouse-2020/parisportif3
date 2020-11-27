@@ -58,7 +58,6 @@ services:
     image: "composer"
     restart: "no"
     working_dir: "/app"
-    command: "install"
     volumes:
       - "./symfony:/app"
 
