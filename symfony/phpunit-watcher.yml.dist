@@ -9,6 +9,6 @@ notifications:
   failingTests: false
 
 phpunit:
-  binaryPath: vendor/bin/phpunit
+  binaryPath: bin/phpunit
   arguments: '--stop-on-failure'
   timeout: 180

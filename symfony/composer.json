@@ -117,6 +117,7 @@
         "standard-test-fix": "phpcbf",
         "security": "composer update --dry-run roave/security-advisories",
         "watch": [
+            "chmod 744 bin/phpunit",
             "Composer\\Config::disableProcessTimeout",
             "phpunit-watcher watch < /dev/tty"
         ],
