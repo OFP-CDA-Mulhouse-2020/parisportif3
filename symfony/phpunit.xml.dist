@@ -1,0 +1,9 @@
+<phpunit bootstrap="vendor/autoload.php">
+    <testsuites>
+        <testsuite name="PariSportifTest">
+            <directory phpVersion="7.4.12">
+                ./tests
+            </directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

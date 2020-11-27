@@ -1,4 +1,3 @@
-/vendor/
-/node_modules/
-/assets/css/
-/.idea/
+.idea/
+prepros.config
+mysql-data/

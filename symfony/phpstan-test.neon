@@ -1,0 +1,14 @@
+## See doc in phpstan.neon
+
+parameters:
+    level: 8
+    paths:
+        - tests
+
+    symfony:
+        container_xml_path: var/cache/test/App_KernelTestDebugContainer.xml
+        console_application_loader: tests/console-application.php
+
+    doctrine:
+        #repositoryClass: MyApp\Doctrine\BetterEntityRepository
+        objectManagerLoader: tests/object-manager.php
