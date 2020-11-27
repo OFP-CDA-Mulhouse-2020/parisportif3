@@ -2,26 +2,35 @@
 
 namespace App\Repository;
 
-use App\Entity\User;
+use App\Entity\User2345453456456;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+
+
+
+
+
+
+
+
+
 use function get_class;
 
 /**
- * @method User|null find($id, $lockMode = null, $lockVersion = null)
- * @method User|null findOneBy(array $criteria, array $orderBy = null)
- * @method User[]    findAll()
- * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method User2345453456456|null find($id, $lockMode = null, $lockVersion = null)
+ * @method User2345453456456|null findOneBy(array $criteria, array $orderBy = null)
+ * @method User2345453456456[]    findAll()
+ * @method User2345453456456[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, User::class);
+        parent::__construct($registry, User2345453456456::class);
     }
 
     /**
@@ -29,7 +38,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      */
     public function upgradePassword(UserInterface $user, string $newEncodedPassword): void
     {
-        if (!$user instanceof User) {
+        if (!$user instanceof User2345453456456) {
             throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', get_class($user)));
         }
 
@@ -39,7 +48,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     }
 
     // /**
-    //  * @return User[] Returns an array of User objects
+    //  * @return User2345453456456[] Returns an array of User2345453456456 objects
     //  */
     /*
     public function findByExampleField($value)
@@ -56,7 +65,7 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
     */
 
     /*
-    public function findOneBySomeField($value): ?User
+    public function findOneBySomeField($value): ?User2345453456456
     {
         return $this->createQueryBuilder('u')
             ->andWhere('u.exampleField = :val')
