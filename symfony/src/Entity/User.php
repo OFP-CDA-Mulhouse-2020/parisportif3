@@ -3,7 +3,9 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use DateTime;
 use DateTimeInterface;
+use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 
@@ -17,126 +19,56 @@ class User implements UserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private $id;
-
+    private int $id;
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      */
-    private $username;
-
+    private string $username;
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
-
+    private array $roles = [];
     /**
-     * @var string The hashed password
+     * @var string|null The hashed password
      * @ORM\Column(type="string")
      */
-    private $password;
-
+    private string $password;
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="datetime")
      */
-    private $verified;
-
+    private DateTimeInterface $createdAt;
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="date")
      */
-    private $activated;
-
+    private DateTimeInterface $birthDate;
     /**
      * @ORM\Column(type="datetimetz")
      */
-    private $timezone;
+    private DateTimeZone $timeZone;
 
-    /**
-     * @ORM\Column(type="date")
-     */
-    private $creationDate;
+    public function __construct()
+    {
+        $this->createdAt = new DateTime();
+    }
 
-    /**
-     * @ORM\Column(type="date")
-     */
-    private $birthDate;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $firstName;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $lastName;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $mail;
-
-    /**
-     * @ORM\Column(type="date")
-     */
-    private $activatedSince;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $suspended;
-
-    /**
-     * @ORM\Column(type="date",  nullable=true)
-     */
-    private $suspendedSince;
-
-    /**
-     * @ORM\Column(type="boolean")
-     */
-    private $deleted;
-
-    /**
-     * @ORM\Column(type="date", nullable=true)
-     */
-    private $deletedSince;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Wallet::class, cascade={"persist", "remove"})
-     */
-    private $wallet;
-
-    /**
-     * @ORM\OneToOne(targetEntity=Cart::class, cascade={"persist", "remove"})
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private $cart;
-
-    public function getId(): ?int
+    final public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUsername(): string
+    final public function getUsername(): string
     {
-        return (string)$this->username;
+        return $this->username;
     }
 
-    public function setUsername(string $username): self
+    final public function setUsername(string $username): self
     {
         $this->username = $username;
 
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
+    final public function getRoles(): array
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
@@ -145,222 +77,65 @@ class User implements UserInterface
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): self
+    final public function setRoles(array $roles): self
     {
         $this->roles = $roles;
 
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function getPassword(): string
+    final public function getPassword(): string
     {
-        return (string)$this->password;
+        return $this->password;
     }
 
-    public function setPassword(string $password): self
+    final public function setPassword(string $password): self
     {
         $this->password = $password;
 
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function getSalt()
+    final public function getSalt(): void
     {
         // not needed when using the "bcrypt" algorithm in security.yaml
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials()
+    final public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
 
-    public function getVerified(): ?bool
+    final public function createdAt(): ?DateTimeInterface
     {
-        return $this->verified;
+        return $this->createdAt;
     }
 
-    public function setVerified(bool $verified): self
-    {
-        $this->verified = $verified;
-
-        return $this;
-    }
-
-    public function getActivated(): ?bool
-    {
-        return $this->activated;
-    }
-
-    public function setActivated(bool $activated): self
-    {
-        $this->activated = $activated;
-
-        return $this;
-    }
-
-    public function getTimezone(): ?DateTimeInterface
-    {
-        return $this->timezone;
-    }
-
-    public function setTimezone(DateTimeInterface $timezone): self
-    {
-        $this->timezone = $timezone;
-
-        return $this;
-    }
-
-    public function getCreationDate(): ?DateTimeInterface
-    {
-        return $this->creationDate;
-    }
-
-    public function setCreationDate(DateTimeInterface $creationDate): self
-    {
-        $this->creationDate = $creationDate;
-
-        return $this;
-    }
-
-    public function getBirthDate(): ?DateTimeInterface
-    {
-        return $this->birthDate;
-    }
-
-    public function setBirthDate(DateTimeInterface $birthDate): self
+    final public function setBirthDate(DateTimeInterface $birthDate): self
     {
         $this->birthDate = $birthDate;
 
         return $this;
     }
 
-    public function getFirstName(): ?string
+    final public function isUserOldEnough(): bool
     {
-        return $this->firstName;
+        $now = new DateTime();
+        $now
+            ->setTimezone(new DateTimeZone("Europe/Paris"))
+            ->setTime(0, 0);
+
+        return $now->diff($this->getBirthDate()) >= "18";
     }
 
-    public function setFirstName(string $firstName): self
+    private function getBirthDate(): ?DateTimeInterface
     {
-        $this->firstName = $firstName;
-
-        return $this;
+        return $this->birthDate;
     }
 
-    public function getLastName(): ?string
+    final public function getTimeZone(): ?DateTimeZone
     {
-        return $this->lastName;
-    }
-
-    public function setLastName(string $lastName): self
-    {
-        $this->lastName = $lastName;
-
-        return $this;
-    }
-
-    public function getMail(): ?string
-    {
-        return $this->mail;
-    }
-
-    public function setMail(string $mail): self
-    {
-        $this->mail = $mail;
-
-        return $this;
-    }
-
-    public function getActivatedSince(): ?DateTimeInterface
-    {
-        return $this->activatedSince;
-    }
-
-    public function setActivatedSince(DateTimeInterface $activatedSince): self
-    {
-        $this->activatedSince = $activatedSince;
-
-        return $this;
-    }
-
-    public function getSuspended(): ?bool
-    {
-        return $this->suspended;
-    }
-
-    public function setSuspended(bool $suspended): self
-    {
-        $this->suspended = $suspended;
-
-        return $this;
-    }
-
-    public function getSuspendedSince(): ?DateTimeInterface
-    {
-        return $this->suspendedSince;
-    }
-
-    public function setSuspendedSince(DateTimeInterface $suspendedSince): self
-    {
-        $this->suspendedSince = $suspendedSince;
-
-        return $this;
-    }
-
-    public function getDeleted(): ?bool
-    {
-        return $this->deleted;
-    }
-
-    public function setDeleted(bool $deleted): self
-    {
-        $this->deleted = $deleted;
-
-        return $this;
-    }
-
-    public function getDeletedSince(): ?DateTimeInterface
-    {
-        return $this->deletedSince;
-    }
-
-    public function setDeletedSince(?DateTimeInterface $deletedSince): self
-    {
-        $this->deletedSince = $deletedSince;
-
-        return $this;
-    }
-
-    public function getWallet(): ?Wallet
-    {
-        return $this->wallet;
-    }
-
-    public function setWallet(?Wallet $wallet): self
-    {
-        $this->wallet = $wallet;
-
-        return $this;
-    }
-
-    public function getCart(): ?Cart
-    {
-        return $this->cart;
-    }
-
-    public function setCart(Cart $cart): self
-    {
-        $this->cart = $cart;
-
-        return $this;
+        return $this->timeZone;
     }
 }
