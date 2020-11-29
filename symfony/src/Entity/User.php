@@ -7,6 +7,7 @@ use DateTime;
 use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
+use InvalidArgumentException;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -29,7 +30,7 @@ class User implements UserInterface
      */
     private array $roles = [];
     /**
-     * @var string|null The hashed password
+     * @var string The hashed password
      * @ORM\Column(type="string")
      */
     private string $password;
@@ -45,13 +46,31 @@ class User implements UserInterface
      * @ORM\Column(type="datetimetz")
      */
     private DateTimeZone $timeZone;
+    /**
+     * @ORM\Column(type="bool")
+     */
+    private bool $active = false;
+    /**
+     * @ORM\Column(type="date")
+     */
+    private DateTimeInterface $activatedAt;
+
+    /**
+     * @ORM\Column(type="bool")
+     */
+    private bool $deleted = false;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private DateTimeInterface $deletedAt;
 
     public function __construct()
     {
         $this->createdAt = new DateTime();
     }
 
-    final public function getId(): ?int
+    final public function getId(): int
     {
         return $this->id;
     }
@@ -84,18 +103,6 @@ class User implements UserInterface
         return $this;
     }
 
-    final public function getPassword(): string
-    {
-        return $this->password;
-    }
-
-    final public function setPassword(string $password): self
-    {
-        $this->password = $password;
-
-        return $this;
-    }
-
     final public function getSalt(): void
     {
         // not needed when using the "bcrypt" algorithm in security.yaml
@@ -107,7 +114,7 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    final public function createdAt(): ?DateTimeInterface
+    final public function createdAt(): DateTimeInterface
     {
         return $this->createdAt;
     }
@@ -129,13 +136,94 @@ class User implements UserInterface
         return $now->diff($this->getBirthDate()) >= "18";
     }
 
-    private function getBirthDate(): ?DateTimeInterface
+    private function getBirthDate(): DateTimeInterface
     {
         return $this->birthDate;
     }
 
-    final public function getTimeZone(): ?DateTimeZone
+    final public function getTimeZone(): DateTimeZone
     {
         return $this->timeZone;
+    }
+
+    final public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    final public function setPassword(string $password): self
+    {
+        try {
+            if ($this->isPasswordStrongEnough($password)) {
+                $this->password = $password;
+            }
+        } catch (InvalidArgumentException $e) {
+            echo $e->getMessage();
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return array|bool[]
+     */
+    final public function isActive(): array
+    {
+        if ($this->active) {
+            return array(
+                'state' => $this->active,
+                'date' => $this->activatedAt
+            );
+        } else {
+            return array(
+                'state' => $this->active
+            );
+        }
+    }
+
+    final public function setActive(): void
+    {
+        $this->active = true;
+        $this->activatedAt = new DateTime();
+    }
+
+    /**
+     * @return array|bool[]
+     */
+    final public function isDeleted(): array
+    {
+        if ($this->deleted) {
+            return array(
+                'state' => $this->deleted,
+                'date' => $this->deletedAt
+            );
+        } else {
+            return array(
+                'state' => $this->deleted
+            );
+        }
+    }
+
+    final public function delete(): void
+    {
+        $this->deleted = true;
+        $this->deletedAt = new DateTime();
+    }
+
+    /**
+     * @param $password
+     * @return bool
+     */
+    final public static function isPasswordStrongEnough(string $password): bool
+    {
+        if (!preg_match('/\d+/', $password)) {
+            throw new InvalidArgumentException("\nIl manque au moins un chiffre.");
+        } elseif (!preg_match('/[a-zA-Z]+/', $password)) {
+            throw new InvalidArgumentException("\nIl manque au moins une lettre.");
+        } elseif (strlen($password) < 8 || strlen($password) > 32) {
+            throw new InvalidArgumentException("\nLa longueur du mot de passe est invalide");
+        } else {
+            return true;
+        }
     }
 }
