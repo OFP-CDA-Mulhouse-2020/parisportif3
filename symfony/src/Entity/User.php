@@ -164,21 +164,14 @@ class User implements UserInterface
         return $this;
     }
 
-    /**
-     * @return array|bool[]
-     */
-    final public function isActive(): array
+    final public function isActive(): bool
     {
-        if ($this->active) {
-            return array(
-                'state' => $this->active,
-                'date' => $this->activatedAt
-            );
-        } else {
-            return array(
-                'state' => $this->active
-            );
-        }
+        return $this->active;
+    }
+
+    final public function activatedAt(): DateTimeInterface
+    {
+        return $this->activatedAt;
     }
 
     final public function setActive(): void
@@ -187,21 +180,14 @@ class User implements UserInterface
         $this->activatedAt = new DateTime();
     }
 
-    /**
-     * @return array|bool[]
-     */
-    final public function isDeleted(): array
+    final public function isDeleted(): bool
     {
-        if ($this->deleted) {
-            return array(
-                'state' => $this->deleted,
-                'date' => $this->deletedAt
-            );
-        } else {
-            return array(
-                'state' => $this->deleted
-            );
-        }
+        return $this->deleted;
+    }
+
+    final public function deletedAt(): DateTimeInterface
+    {
+        return $this->deletedAt;
     }
 
     final public function delete(): void

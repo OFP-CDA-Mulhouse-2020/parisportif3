@@ -50,40 +50,42 @@ class UserTest extends TestCase
     {
         $user = new User();
         $user->setActive();
-        $array = $user->isActive();
-        self::assertTrue($array['state']);
+        self::assertTrue($user->isActive());
     }
 
     final public function testUserIsInactive(): void
     {
         $user = new User();
-        $array = $user->isActive();
-        self::assertFalse($array['state']);
+        self::assertFalse($user->isActive());
     }
 
     final public function testUserActivatedAt(): void
     {
         $user = new User();
-        sleep(2);
+        sleep(1);
         $user->setActive();
-        $array = $user->isActive();
-        self::assertGreaterThan($user->createdAt(), $array['date']);
+        self::assertGreaterThan($user->createdAt(), $user->activatedAt());
     }
 
     final public function testUserIsDeleted(): void
     {
         $user = new User();
-        $array = $user->isDeleted();
-        self::assertFalse($array['state']);
+        $user->delete();
+        self::assertTrue($user->isDeleted());
+    }
+
+    final public function testUserIsNotDeleted(): void
+    {
+        $user = new User();
+        self::assertFalse($user->isDeleted());
     }
 
     final public function testUserDeletedAt(): void
     {
         $user = new User();
-        sleep(2);
+        sleep(1);
         $user->delete();
-        $array = $user->isDeleted();
-        self::assertGreaterThan($user->createdAt(), $array['date']);
+        self::assertGreaterThan($user->createdAt(), $user->deletedAt());
     }
 
     public function provider()
