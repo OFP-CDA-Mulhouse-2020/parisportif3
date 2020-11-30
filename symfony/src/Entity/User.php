@@ -151,6 +151,11 @@ class User implements UserInterface
         return $this->timeZone;
     }
 
+    final public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
     final public function setLastName(string $lastName): self
     {
         if (!preg_match("/^[A-Za-zÄ-ÿ_.-]+$/u", $lastName)) {
@@ -160,9 +165,9 @@ class User implements UserInterface
         return $this;
     }
 
-    final public function getLastName(): ?string
+    final public function getFirstName(): ?string
     {
-        return $this->lastName;
+        return $this->firstName;
     }
 
     final public function setFirstName(string $firstName): self
@@ -173,11 +178,4 @@ class User implements UserInterface
         $this->firstName = $firstName;
         return $this;
     }
-
-    final public function getFirstName(): ?string
-    {
-        return $this->firstName;
-    }
-
-
 }
