@@ -25,8 +25,6 @@
 
 ## Méthode de travail
 
-TDD :
-
     - Respecter les normes PSR-4 et PSR-12
     - Tests unitaires : PHPUnit
     - Tests fonctionnels : Codeception
@@ -91,7 +89,7 @@ Du 03/11/2020 au 12/11/2020
 ![Image of UML representation](https://i.postimg.cc/33fN5LQb/Diagram-UML.png)
 
 
-## Étape 2 - Création des entités et tests
+## Étape 2 - Création de l'entité User et tests
 
 ### Initialisation du projet
 
@@ -112,3 +110,17 @@ Dockerisation :
     composer
     phpmyadmin
     mailhog
+    
+## Étape 3 - Ajout du login / signup
+
+Détails :
+
+    - Utilisation des composants :
+        - Form
+        - Validator
+        
+    - Méthodologie TDD :
+        - Test
+        - Echec
+        - Code
+        - Repeat
