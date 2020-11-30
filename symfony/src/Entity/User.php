@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Exception\InvalidFirstNameException;
+use App\Exception\InvalidLastNameException;
 use App\Repository\UserRepository;
 use DateTime;
 use DateTimeInterface;
@@ -45,6 +47,16 @@ class User implements UserInterface
      * @ORM\Column(type="datetimetz")
      */
     private DateTimeZone $timeZone;
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private string $lastName;
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private string $firstName;
 
     public function __construct()
     {
@@ -138,4 +150,34 @@ class User implements UserInterface
     {
         return $this->timeZone;
     }
+
+    final public function setLastName(string $lastName): self
+    {
+        if (!preg_match("/^[A-Za-zÄ-ÿ_.-]+$/u", $lastName)) {
+            throw new InvalidLastNameException("Your lastname is invalid.");
+        }
+        $this->lastName = $lastName;
+        return $this;
+    }
+
+    final public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    final public function setFirstName(string $firstName): self
+    {
+        if (!preg_match("/^[A-Za-zÄ-ÿ_.-]+$/u", $firstName)) {
+            throw new InvalidFirstNameException("Your firstname is invalid.");
+        }
+        $this->firstName = $firstName;
+        return $this;
+    }
+
+    final public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+
 }
