@@ -51,7 +51,7 @@ services:
       - "traefik.http.routers.php.rule=Host(`php.docker.localhost`)"
       - "traefik.http.routers.php.entrypoints=web"
     volumes:
-      - "./symfony:/var/www/html:cached"
+      - "./symfony:/var/www/html"
 
   composer:
     #container_name: "composer"
