@@ -10,5 +10,5 @@ notifications:
 
 phpunit:
   binaryPath: bin/phpunit
-  arguments: '--stop-on-failure'
+  arguments: '--stop-on-failure --testdox'
   timeout: 180
