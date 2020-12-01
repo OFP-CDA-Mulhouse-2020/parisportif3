@@ -3,6 +3,7 @@
 namespace App\Tests\Entity;
 
 use App\Entity\User;
+use App\Exception\InvalidEmailException;
 use DateTime;
 use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
@@ -16,6 +17,25 @@ class UserTest extends TestCase
         self::assertInstanceOf(User::class, $user);
         self::assertInstanceOf(DateTimeInterface::class, $user->createdAt());
         self::assertLessThanOrEqual(new DateTime(), $user->createdAt());
+    }
+
+    final public function testValidEmail(): void
+    {
+        $user = new User();
+        $email = "mail-address@mail.com";
+
+        $user->setEmail($email);
+
+        self::assertSame($email, $user->getEmail());
+    }
+
+    final public function testInvalidValidEmail(): void
+    {
+        $user = new User();
+        $email = "mîiladøïress@ma@il.com";
+
+        $this->expectException(InvalidEmailException::class);
+        $user->setEmail($email);
     }
 
     final public function testUserBirthDate(): void

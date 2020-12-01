@@ -2,12 +2,16 @@
 
 namespace App\Entity;
 
+use App\Exception\InvalidEmailException;
 use App\Repository\UserRepository;
 use DateTime;
 use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\Validation;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -34,9 +38,9 @@ class User implements UserInterface
      */
     private string $password;
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="string", length=255)
      */
-    private DateTimeInterface $createdAt;
+    private string $email;
     /**
      * @ORM\Column(type="date")
      */
@@ -45,6 +49,10 @@ class User implements UserInterface
      * @ORM\Column(type="datetimetz")
      */
     private DateTimeZone $timeZone;
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private DateTimeInterface $createdAt;
 
     public function __construct()
     {
@@ -107,9 +115,31 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    final public function createdAt(): ?DateTimeInterface
+    final public function getEmail(): ?string
     {
-        return $this->createdAt;
+        return $this->email;
+    }
+
+    final public function setEmail(string $email): self
+    {
+        $validator = Validation::createValidator();
+        $emailConstraint = new Email(
+            [
+                "mode" => Email::VALIDATION_MODE_STRICT
+            ]
+        );
+
+        $errors = $validator->validate($email, $emailConstraint);
+
+        if (count($errors) !== 0) {
+            /** @var ConstraintViolation[] $errors */
+            $errorMessage = $errors[0]->getMessage();
+            throw new InvalidEmailException($errorMessage);
+        }
+
+        $this->email = $email;
+
+        return $this;
     }
 
     final public function setBirthDate(DateTimeInterface $birthDate): self
@@ -137,5 +167,10 @@ class User implements UserInterface
     final public function getTimeZone(): ?DateTimeZone
     {
         return $this->timeZone;
+    }
+
+    final public function createdAt(): ?DateTimeInterface
+    {
+        return $this->createdAt;
     }
 }
