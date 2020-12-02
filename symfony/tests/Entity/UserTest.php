@@ -37,10 +37,9 @@ class UserTest extends TestCase
         }
     }
 
-    /**
-     * @dataProvider provider
-     */
-    final public function testPassWordIsInvalid($a): void
+
+     /** @dataProvider passProvider */
+    final public function testPassWordIsInvalid(string $a): void
     {
         self::expectException(InvalidArgumentException::class);
         User::isPasswordStrongEnough($a);
@@ -88,14 +87,15 @@ class UserTest extends TestCase
         self::assertGreaterThan($user->createdAt(), $user->deletedAt());
     }
 
-    public function provider()
+    /** @return  array<int, array<int, string>> */
+    public function passProvider(): array
     {
-        return array(
+        return [
             ['1A'],
             ['serkobtjqe^ritjqàtjkq)$oh5nzterkn$aqzerkt^=$penprtkngq^^$erkytnq$êr'],
             ['1232315468785465432134564'],
             ['qsdfqsdfqsdfzeraz'],
             ['          ']
-        );
+        ];
     }
 }
