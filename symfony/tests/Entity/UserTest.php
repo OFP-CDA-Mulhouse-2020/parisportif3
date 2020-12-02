@@ -4,7 +4,7 @@ namespace App\Tests\Entity;
 
 use App\Entity\User;
 use App\Exception\InvalidEmailException;
-use DateInterval;
+use App\Exception\InvalidTimeZone;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 
@@ -44,5 +44,24 @@ class UserTest extends TestCase
         $user->setBirthDate(new DateTime("2000-06-12"));
 
         self::assertTrue($user->isUserOldEnough());
+    }
+
+    final public function testValidTimeZone(): void
+    {
+        $user = new User();
+        $timezone = 'Europe/Paris';
+
+        $user->setTimeZone($timezone);
+
+        self::assertSame($timezone, $user->getTimeZone());
+    }
+
+    final public function testInvalidTimeZone(): void
+    {
+        $user = new User();
+        $timezone = 'Random/Truc';
+
+        self::expectException(InvalidTimeZone::class);
+        $user->setTimeZone($timezone);
     }
 }

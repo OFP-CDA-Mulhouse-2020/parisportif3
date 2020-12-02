@@ -169,7 +169,22 @@ class User implements UserInterface
         return $this->timeZone;
     }
 
-    final public function createdAt(): ?DateTimeInterface
+    final public function setTimeZone(string $timeZone): self
+    {
+        if (!$this->isValidTimeZone($timeZone)) {
+            throw new InvalidTimeZone("Invalid Timezone");
+        }
+        $this->timeZone = $timeZone;
+
+        return $this;
+    }
+
+    private function isValidTimeZone(string $timeZone): bool
+    {
+        return in_array($timeZone, DateTimeZone::listIdentifiers(), true);
+    }
+
+    final public function createdAt(): DateTimeInterface
     {
         return $this->createdAt;
     }
