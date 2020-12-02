@@ -68,8 +68,14 @@ class UserTest extends TestCase
     {
         $user = new User();
         sleep(1);
-        $user->suspended();
+        $user->suspend();
         $this->assertGreaterThan($user->createdAt(), $user->suspendedAt());
+    }
+
+    final public function testUserIsNotSuspended(): void
+    {
+        $user = new User();
+        $this->assertFalse($user->isSuspended());
     }
 
     final public function testDateCreatedAt(): void
