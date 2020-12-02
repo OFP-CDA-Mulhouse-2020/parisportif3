@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Exception\InvalidFirstNameException;
+use App\Exception\InvalidLastNameException;
 use App\Repository\UserRepository;
 use DateTime;
 use DateTimeInterface;
@@ -64,6 +66,26 @@ class User implements UserInterface
      * @ORM\Column(type="date")
      */
     private DateTimeInterface $deletedAt;
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private string $lastName;
+
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     */
+    private string $firstName;
+
+    /**
+     * @ORM\Column(type="date")
+     */
+    private DateTimeInterface $suspendedAt;
+
+    /**
+     * @ORM\Column(type="bool")
+     */
+    private bool $suspended = false;
 
     public function __construct()
     {
@@ -146,6 +168,52 @@ class User implements UserInterface
         return $this->timeZone;
     }
 
+    final public function getLastName(): string
+    {
+        return $this->lastName;
+    }
+
+    final public function setLastName(string $lastName): self
+    {
+        if (!preg_match("/^[A-Za-zÄ-ÿ_.-]+$/u", $lastName))
+        {
+            throw new InvalidLastNameException("Your lastname is invalid.");
+        }
+        $this->lastName = $lastName;
+        return $this;
+    }
+
+    final public function getFirstName(): string
+    {
+        return $this->firstName;
+    }
+
+    final public function setFirstName(string $firstName): self
+    {
+        if (!preg_match("/^[A-Za-zÄ-ÿ_.-]+$/u", $firstName))
+        {
+            throw new InvalidFirstNameException("Your firstname is invalid.");
+        }
+        $this->firstName = $firstName;
+        return $this;
+    }
+
+    final public function suspend(): void
+    {
+        $this->suspended = true;
+        $this->suspendedAt = new DateTime();
+    }
+
+    final public function isSuspended(): bool
+    {
+        return $this->suspended;
+    }
+
+    final public function suspendedAt(): DateTimeInterface
+    {
+        return $this->suspendedAt;
+    }
+
     final public function getPassword(): string
     {
         return $this->password;
@@ -196,10 +264,6 @@ class User implements UserInterface
         $this->deletedAt = new DateTime();
     }
 
-    /**
-     * @param $password
-     * @return bool
-     */
     final public static function isPasswordStrongEnough(string $password): bool
     {
         if (!preg_match('/\d+/', $password)) {
