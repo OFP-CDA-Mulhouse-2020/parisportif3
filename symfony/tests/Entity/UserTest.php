@@ -4,8 +4,8 @@ namespace App\Tests\Entity;
 
 use App\Entity\User;
 use App\Exception\InvalidEmailException;
+use DateInterval;
 use DateTime;
-use DateTimeInterface;
 use PHPUnit\Framework\TestCase;
 
 class UserTest extends TestCase
