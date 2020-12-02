@@ -26,23 +26,28 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=180, unique=true)
      */
     private string $username;
+
     /**
      * @ORM\Column(type="json")
      */
     private array $roles = [];
+
     /**
      * @var string|null The hashed password
      * @ORM\Column(type="string")
      */
     private string $password;
+
     /**
      * @ORM\Column(type="datetime")
      */
     private DateTimeInterface $createdAt;
+
     /**
      * @ORM\Column(type="date")
      */
     private DateTimeInterface $birthDate;
+
     /**
      * @ORM\Column(type="datetimetz")
      */

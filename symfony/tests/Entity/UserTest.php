@@ -15,9 +15,9 @@ class UserTest extends TestCase
     {
         $user = new User();
 
-        self::assertInstanceOf(User::class, $user);
-        self::assertInstanceOf(DateTimeInterface::class, $user->createdAt());
-        self::assertLessThanOrEqual(new DateTime(), $user->createdAt());
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertInstanceOf(DateTimeInterface::class, $user->createdAt());
+        $this->assertLessThanOrEqual(new DateTime(), $user->createdAt());
     }
 
     final public function testUserBirthDate(): void
@@ -25,7 +25,7 @@ class UserTest extends TestCase
         $user = new User();
         $user->setBirthDate(new DateTime("2000-06-12"));
 
-        self::assertTrue($user->isUserOldEnough());
+        $this->assertTrue($user->isUserOldEnough());
     }
 
     final public function testSetLastName(): void
@@ -34,7 +34,7 @@ class UserTest extends TestCase
         $user = new User();
         $user->setLastName($lastName);
 
-        self::assertSame($lastName, $user->getLastName());
+        $this->assertSame($lastName, $user->getLastName());
     }
 
     final public function testSetInvalidLastName(): void
@@ -51,7 +51,7 @@ class UserTest extends TestCase
         $user = new User();
         $user->setFirstName($firstName);
 
-        self::assertSame($firstName, $user->getFirstName());
+        $this->assertSame($firstName, $user->getFirstName());
     }
 
     final public function testSetInvalidFirstName(): void
@@ -68,5 +68,13 @@ class UserTest extends TestCase
         sleep(1);
         $user->suspended();
         $this->assertGreaterThan($user->createdAt(), $user->suspendedAt());
+    }
+
+    final public function testDateCreatedAt(): void
+    {
+        $user = new User();
+        sleep(1);
+
+        $this->assertGreaterThan($user->createdAt(), new DateTime());
     }
 }
