@@ -15,7 +15,6 @@ class UserTest extends TestCase
         $user = new User();
 
         self::assertInstanceOf(User::class, $user);
-        self::assertInstanceOf(DateTimeInterface::class, $user->createdAt());
         self::assertLessThanOrEqual(new DateTime(), $user->createdAt());
     }
 
