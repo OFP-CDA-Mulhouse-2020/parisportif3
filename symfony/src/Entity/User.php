@@ -264,10 +264,6 @@ class User implements UserInterface
         $this->deletedAt = new DateTime();
     }
 
-    /**
-     * @param $password
-     * @return bool
-     */
     final public static function isPasswordStrongEnough(string $password): bool
     {
         if (!preg_match('/\d+/', $password)) {
