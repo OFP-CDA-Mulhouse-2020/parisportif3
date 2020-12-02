@@ -58,6 +58,16 @@ class User implements UserInterface
      */
     private string $firstName;
 
+    /**
+     * @ORM\Column(type="date")
+     */
+    private DateTimeInterface $suspendedAt;
+
+    /**
+     * @ORM\Column(type="bool")
+     */
+    private bool $suspended = false;
+
     public function __construct()
     {
         $this->createdAt = new DateTime();
@@ -178,4 +188,21 @@ class User implements UserInterface
         $this->firstName = $firstName;
         return $this;
     }
+
+    final public function suspended(): void
+    {
+        $this->suspended = true;
+        $this->suspendedAt = new DateTime();
+    }
+
+    final public function isSuspended(): bool
+    {
+        return $this->suspended;
+    }
+
+    final public function suspendedAt(): DateTimeInterface
+    {
+        return $this->suspendedAt;
+    }
+
 }

@@ -61,4 +61,12 @@ class UserTest extends TestCase
         $this->expectException(InvalidFirstNameException::class);
         $user->setFirstName("@%45");
     }
+
+    final public function testUserSuspendedAt(): void
+    {
+        $user = new User();
+        sleep(1);
+        $user->suspended();
+        $this->assertGreaterThan($user->createdAt(), $user->suspendedAt());
+    }
 }
