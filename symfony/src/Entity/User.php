@@ -47,7 +47,7 @@ class User implements UserInterface
      */
     private DateTimeZone $timeZone;
     /**
-     * @ORM\Column(type="bool")
+     * @ORM\Column(type="boolean")
      */
     private bool $active = false;
     /**
@@ -56,7 +56,7 @@ class User implements UserInterface
     private DateTimeInterface $activatedAt;
 
     /**
-     * @ORM\Column(type="bool")
+     * @ORM\Column(type="boolean")
      */
     private bool $deleted = false;
 
