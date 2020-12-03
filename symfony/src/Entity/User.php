@@ -209,8 +209,7 @@ final class User implements UserInterface
 
     public function setFirstName(string $firstName): self
     {
-        if (!preg_match("/^[A-Za-zÄ-ÿ_.-]+$/u", $firstName))
-        {
+        if (!preg_match("/^[A-Za-zÄ-ÿ_.-]+$/u", $firstName)) {
             throw new InvalidFirstNameException("Your firstname is invalid.");
         }
         $this->firstName = $firstName;
@@ -241,7 +240,7 @@ final class User implements UserInterface
     public function setPassword(string $password): self
     {
         try {
-            if ($this->isPasswordStrongEnough($password)) {
+            if (self::isPasswordStrongEnough($password)) {
                 $this->password = $password;
             }
         } catch (InvalidArgumentException $e) {
@@ -249,6 +248,28 @@ final class User implements UserInterface
         }
 
         return $this;
+    }
+
+    public static function isPasswordStrongEnough(string $password): bool
+    {
+        if (!preg_match('/\d+/', $password)) {
+            throw new InvalidArgumentException("\nIl manque au moins un chiffre.");
+        }
+
+        if (!preg_match('/[a-zA-Z]+/', $password)) {
+            throw new InvalidArgumentException("\nIl manque au moins une lettre.");
+        }
+
+        $passwordLength = strlen($password);
+        if ($passwordLength < 8) {
+            throw new InvalidArgumentException("\nLa longueur du mot de passe est trop courte");
+        }
+
+        if ($passwordLength > 32) {
+            throw new InvalidArgumentException("\nLa longueur du mot de passe est trop longue");
+        }
+
+        return true;
     }
 
     public function isActive(): bool
@@ -281,18 +302,5 @@ final class User implements UserInterface
     {
         $this->deleted = true;
         $this->deletedAt = new DateTime();
-    }
-
-    public static function isPasswordStrongEnough(string $password): bool
-    {
-        if (!preg_match('/\d+/', $password)) {
-            throw new InvalidArgumentException("\nIl manque au moins un chiffre.");
-        } elseif (!preg_match('/[a-zA-Z]+/', $password)) {
-            throw new InvalidArgumentException("\nIl manque au moins une lettre.");
-        } elseif (strlen($password) < 8 || strlen($password) > 32) {
-            throw new InvalidArgumentException("\nLa longueur du mot de passe est invalide");
-        } else {
-            return true;
-        }
     }
 }
