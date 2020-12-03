@@ -24,34 +24,21 @@ class User implements UserInterface
      * @ORM\Column(type="integer")
      */
     private int $id;
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     */
+    /** @ORM\Column(type="string", length=180, unique=true) */
     private string $username;
     /**
      * @ORM\Column(type="json")
      */
     private array $roles = [];
-    /**
-     * @var string|null The hashed password
-     * @ORM\Column(type="string")
-     */
+    /** @ORM\Column(type="string") */
     private string $password;
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    /** @ORM\Column(type="string", length=255) */
     private string $email;
-    /**
-     * @ORM\Column(type="date")
-     */
+    /** @ORM\Column(type="date") */
     private DateTimeInterface $birthDate;
-    /**
-     * @ORM\Column(type="datetimetz")
-     */
-    private DateTimeZone $timeZone;
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    /** @ORM\Column(type="string", length=120) */
+    private string $timeZone;
+    /** @ORM\Column(type="datetime") */
     private DateTimeInterface $createdAt;
 
     public function __construct()
