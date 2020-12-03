@@ -18,8 +18,8 @@ final class UserTest extends TestCase
     {
         $user = new User();
 
-        self::assertInstanceOf(User::class, $user);
-        self::assertLessThanOrEqual(new DateTime(), $user->createdAt());
+        $this->assertInstanceOf(User::class, $user);
+        $this->assertLessThanOrEqual(new DateTime(), $user->createdAt());
     }
 
     public function testValidEmail(): void
@@ -29,7 +29,7 @@ final class UserTest extends TestCase
 
         $user->setEmail($email);
 
-        self::assertSame($email, $user->getEmail());
+        $this->assertSame($email, $user->getEmail());
     }
 
     public function testInvalidValidEmail(): void
@@ -48,7 +48,7 @@ final class UserTest extends TestCase
 
         $user->setTimeZone($timezone);
 
-        self::assertSame($timezone, $user->getTimeZone());
+        $this->assertSame($timezone, $user->getTimeZone());
     }
 
     public function testInvalidTimeZone(): void
@@ -56,7 +56,7 @@ final class UserTest extends TestCase
         $user = new User();
         $timezone = 'Random/Truc';
 
-        self::expectException(InvalidTimeZone::class);
+        $this->expectException(InvalidTimeZone::class);
         $user->setTimeZone($timezone);
     }
 
@@ -129,7 +129,7 @@ final class UserTest extends TestCase
     public function testPassWordIsValid(): void
     {
         try {
-            self::assertTrue(User::isPasswordStrongEnough('1AAZDSQDq'));
+            $this->assertTrue(User::isPasswordStrongEnough('1AAZDSQDq'));
         } catch (Exception $e) {
             echo $e->getMessage();
         }
@@ -139,7 +139,7 @@ final class UserTest extends TestCase
      /** @dataProvider passProvider */
     public function testPassWordIsInvalid(string $a): void
     {
-        self::expectException(InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         User::isPasswordStrongEnough($a);
     }
 
@@ -147,13 +147,13 @@ final class UserTest extends TestCase
     {
         $user = new User();
         $user->setActive();
-        self::assertTrue($user->isActive());
+        $this->assertTrue($user->isActive());
     }
 
     public function testUserIsInactive(): void
     {
         $user = new User();
-        self::assertFalse($user->isActive());
+        $this->assertFalse($user->isActive());
     }
 
     public function testUserActivatedAt(): void
@@ -161,20 +161,20 @@ final class UserTest extends TestCase
         $user = new User();
         sleep(1);
         $user->setActive();
-        self::assertGreaterThan($user->createdAt(), $user->activatedAt());
+        $this->assertGreaterThan($user->createdAt(), $user->activatedAt());
     }
 
     public function testUserIsDeleted(): void
     {
         $user = new User();
         $user->delete();
-        self::assertTrue($user->isDeleted());
+        $this->assertTrue($user->isDeleted());
     }
 
     public function testUserIsNotDeleted(): void
     {
         $user = new User();
-        self::assertFalse($user->isDeleted());
+        $this->assertFalse($user->isDeleted());
     }
 
     public function testUserDeletedAt(): void
@@ -182,7 +182,7 @@ final class UserTest extends TestCase
         $user = new User();
         sleep(1);
         $user->delete();
-        self::assertGreaterThan($user->createdAt(), $user->deletedAt());
+        $this->assertGreaterThan($user->createdAt(), $user->deletedAt());
     }
 
     /** @return  array<int, array<int, string>> */
@@ -205,7 +205,7 @@ final class UserTest extends TestCase
 //                ->setTimezone(new DateTimeZone('Europe/Paris'))
 //        );
 //
-//        self::assertTrue($user->isUserOldEnough());
+//        $this->assertTrue($user->isUserOldEnough());
 //    }
 
 //    /**
@@ -221,6 +221,6 @@ final class UserTest extends TestCase
 //
 //        $user->setBirthDate($tenYearsAgo);
 //
-//        self::assertFalse($user->isUserOldEnough());
+//        $this->assertFalse($user->isUserOldEnough());
 //    }
 }

@@ -17,17 +17,17 @@ final class LoginControllerTest extends WebTestCase
     {
         $client = static::createClient();
         $client->request('GET', '/login');
-        self::assertSelectorExists('form');
-        self::assertSelectorExists('form > input');
-        self::assertSelectorExists('form > button');
+        $this->assertSelectorExists('form');
+        $this->assertSelectorExists('form > input');
+        $this->assertSelectorExists('form > button');
     }
 
     public function testShowInput(): void
     {
         $client = static::createClient();
         $client->request('GET', '/login');
-        self::assertSelectorExists('input#inputUsername');
-        self::assertSelectorExists('input#inputPassword');
-        self::assertSelectorExists("button[type='submit']");
+        $this->assertSelectorExists('input#inputUsername');
+        $this->assertSelectorExists('input#inputPassword');
+        $this->assertSelectorExists("button[type='submit']");
     }
 }
