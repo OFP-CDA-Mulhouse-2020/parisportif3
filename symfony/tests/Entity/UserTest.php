@@ -34,7 +34,7 @@ final class UserTest extends TestCase
         $this->assertSame($email, $user->getEmail());
     }
 
-    public function testInvalidValidEmail(): void
+    public function testInvalidEmail(): void
     {
         $user = new User();
         $email = "mîiladøïress@ma@il.com";
@@ -60,14 +60,6 @@ final class UserTest extends TestCase
 
         $this->expectException(InvalidTimeZone::class);
         $user->setTimeZone($timezone);
-    }
-
-    public function testUserBirthDate(): void
-    {
-        $user = new User();
-        $user->setBirthDate(new DateTime("2000-06-12"));
-
-        $this->assertTrue($user->isUserOldEnough());
     }
 
     public function testSetLastName(): void
