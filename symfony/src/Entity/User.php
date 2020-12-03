@@ -47,6 +47,8 @@ final class User implements UserInterface
     private DateTimeInterface $createdAt;
     /** @ORM\Column(type="boolean") */
     private bool $active = false;
+    /** @ORM\Column(type="boolean") */
+    private bool $verified = false;
     /** @ORM\Column(type="date") */
     private DateTimeInterface $activatedAt;
     /** @ORM\Column(type="boolean") */
@@ -278,10 +280,22 @@ final class User implements UserInterface
         return $this->active;
     }
 
-    public function setActive(): void
+    public function setActive(): self
     {
         $this->active = true;
         $this->activatedAt = new DateTime();
+        return $this;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->verified;
+    }
+
+    public function setVerified(): self
+    {
+        $this->verified = true;
+        return $this;
     }
 
     public function activatedAt(): DateTimeInterface
