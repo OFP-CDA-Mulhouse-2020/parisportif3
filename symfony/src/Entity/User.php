@@ -27,6 +27,7 @@ class User implements UserInterface
     /** @ORM\Column(type="string", length=180, unique=true) */
     private string $username;
     /**
+     * @var array<string>
      * @ORM\Column(type="json")
      */
     private array $roles = [];
@@ -102,7 +103,7 @@ class User implements UserInterface
         // $this->plainPassword = null;
     }
 
-    final public function getEmail(): ?string
+    final public function getEmail(): string
     {
         return $this->email;
     }
@@ -151,7 +152,7 @@ class User implements UserInterface
         return $this->birthDate;
     }
 
-    final public function getTimeZone(): ?DateTimeZone
+    final public function getTimeZone(): string
     {
         return $this->timeZone;
     }
