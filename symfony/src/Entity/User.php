@@ -2,24 +2,23 @@
 
 namespace App\Entity;
 
+use App\Exception\InvalidEmailException;
 use App\Exception\InvalidFirstNameException;
 use App\Exception\InvalidLastNameException;
+use App\Exception\InvalidTimeZone;
 use App\Repository\UserRepository;
 use DateTime;
 use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\ConstraintViolation;
+use Symfony\Component\Validator\Validation;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(
- *     fields={"id", "username"},
- *     errorPath="username"
- * )
  */
 final class User implements UserInterface
 {
@@ -27,111 +26,43 @@ final class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     *
-     * @Assert\NotNull
      */
     private int $id;
-
     /**
      * @var array<string>
      * @ORM\Column(type="json")
      */
     private array $roles = [];
-
-    /**
-     * @ORM\Column(type="string", length=180, unique=true)
-     *
-     * @Assert\NotNull
-     *
-     * @TODO Ajouter un validator pour tester la validité de username
-     */
+    /** @ORM\Column(type="string", length=180, unique=true) */
     private string $username;
-
-    /**
-     * @ORM\Column(type="string")
-     *
-     * @Assert\NotNull
-     * @Assert\NotCompromisedPassword
-     *
-     * @TODO Ajouter un validator pour supprimé les test dans ::setPassword() et ::isPasswordStrongEnough()
-     */
+    /** @ORM\Column(type="string") */
     private string $password;
-
-    /**
-     * @ORM\Column(type="string", length=255)
-     *
-     * @Assert\Email(mode="strict")
-     */
+    /** @ORM\Column(type="string", length=255) */
     private string $email;
-
-    /**
-     * @ORM\Column(type="date")
-     *
-     * @Assert\NotNull
-     *
-     * @TODO Ajouter un validator pour vérifier si l'utilisateur à l'age avant de l'ajouter
-     */
+    /** @ORM\Column(type="date") */
     private DateTimeInterface $birthDate;
-
-    /**
-     * @ORM\Column(type="string", length=120)
-     *
-     * @Assert\NotNull
-     * @Assert\Timezone
-     */
+    /** @ORM\Column(type="string", length=120) */
     private string $timeZone;
-
-    /**
-     * @ORM\Column(type="string", length=180)
-     *
-     * @Assert\NotNull
-     *
-     * @TODO Ajouter un validator custom pour tester le nom
-     */
-    private string $lastName;
-
-    /**
-     * @ORM\Column(type="string", length=180)
-     *
-     * @Assert\NotNull
-     *
-     * @TODO Ajouter un validator custom pour tester le nom
-     */
-    private string $firstName;
-
-    /**
-     * @ORM\Column(type="datetime")
-     *
-     * @Assert\NotNull
-     *
-     * @TODO Ajouter un validator custom pour tester si antérieur à maintenant
-     */
+    /** @ORM\Column(type="datetime") */
     private DateTimeInterface $createdAt;
-
-    /** @ORM\Column(type="date", nullable=true) */
-    private ?DateTimeInterface $suspendedAt;
-
-    /** @ORM\Column(type="boolean") */
-    private bool $suspended = false;
-
     /** @ORM\Column(type="boolean") */
     private bool $active = false;
-
-    /** @ORM\Column(type="date", nullable=true) */
-    private ?DateTimeInterface $activatedAt;
-
-    /** @ORM\Column(type="boolean") */
-    private bool $deleted = false;
-
-    /** @ORM\Column(type="date", nullable=true) */
-    private ?DateTimeInterface $deletedAt;
-
     /** @ORM\Column(type="boolean") */
     private bool $verified = false;
-
-    /** @ORM\Column(type="date", nullable=true) */
-    private ?DateTimeInterface $verifiedAt;
-
+    /** @ORM\Column(type="date") */
+    private DateTimeInterface $activatedAt;
+    /** @ORM\Column(type="boolean") */
+    private bool $deleted = false;
+    /** @ORM\Column(type="date") */
+    private DateTimeInterface $deletedAt;
+    /** @ORM\Column(type="string", length=180, unique=true) */
+    private string $lastName;
+    /** @ORM\Column(type="string", length=180, unique=true) */
+    private string $firstName;
+    /** @ORM\Column(type="date") */
+    private DateTimeInterface $suspendedAt;
+    /** @ORM\Column(type="bool") */
+    private bool $suspended = false;
 
     public function __construct()
     {
@@ -192,24 +123,24 @@ final class User implements UserInterface
 
     public function setEmail(string $email): self
     {
+        $validator = Validation::createValidator();
+        $emailConstraint = new Email(
+            [
+                "mode" => Email::VALIDATION_MODE_STRICT
+            ]
+        );
+
+        $errors = $validator->validate($email, $emailConstraint);
+
+        if (count($errors) !== 0) {
+            /** @var ConstraintViolation[] $errors */
+            $errorMessage = $errors[0]->getMessage();
+            throw new InvalidEmailException($errorMessage);
+        }
+
         $this->email = $email;
 
         return $this;
-    }
-
-    public function isUserOldEnough(): bool
-    {
-        $now = (new DateTime())
-            ->setTimezone(new DateTimeZone('Europe/Paris'))
-            ->setTime(0, 0);
-
-        $userAge = (int)$now->diff($this->getBirthDate())->format('%Y');
-        return $userAge >= 18;
-    }
-
-    public function getBirthDate(): DateTimeInterface
-    {
-        return $this->birthDate;
     }
 
     public function setBirthDate(DateTimeInterface $birthDate): self
@@ -219,6 +150,22 @@ final class User implements UserInterface
         return $this;
     }
 
+    //TODO a fixé rapidement
+    public function isUserOldEnough(): bool
+    {
+        $now = new DateTime();
+        $now
+            ->setTimezone(new DateTimeZone("Europe/Paris"))
+            ->setTime(0, 0);
+
+        return $now->diff($this->getBirthDate()) >= "18";
+    }
+
+    private function getBirthDate(): DateTimeInterface
+    {
+        return $this->birthDate;
+    }
+
     public function getTimeZone(): string
     {
         return $this->timeZone;
@@ -226,9 +173,17 @@ final class User implements UserInterface
 
     public function setTimeZone(string $timeZone): self
     {
+        if (!$this->isValidTimeZone($timeZone)) {
+            throw new InvalidTimeZone("Invalid Timezone");
+        }
         $this->timeZone = $timeZone;
 
         return $this;
+    }
+
+    private function isValidTimeZone(string $timeZone): bool
+    {
+        return in_array($timeZone, DateTimeZone::listIdentifiers(), true);
     }
 
     public function createdAt(): DateTimeInterface
@@ -275,7 +230,7 @@ final class User implements UserInterface
         return $this->suspended;
     }
 
-    public function suspendedAt(): ?DateTimeInterface
+    public function suspendedAt(): DateTimeInterface
     {
         return $this->suspendedAt;
     }
@@ -285,20 +240,20 @@ final class User implements UserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): bool
+    public function setPassword(string $password): self
     {
         try {
-            if ($this->isPasswordStrongEnough($password)) {
+            if (self::isPasswordStrongEnough($password)) {
                 $this->password = $password;
-                return true;
             }
         } catch (InvalidArgumentException $e) {
             echo $e->getMessage();
         }
-        return false;
+
+        return $this;
     }
 
-    public function isPasswordStrongEnough(string $password): bool
+    public static function isPasswordStrongEnough(string $password): bool
     {
         if (!preg_match('/\d+/', $password)) {
             throw new InvalidArgumentException("\nIl manque au moins un chiffre.");
@@ -325,13 +280,25 @@ final class User implements UserInterface
         return $this->active;
     }
 
-    public function activate(): void
+    public function setActive(): self
     {
         $this->active = true;
         $this->activatedAt = new DateTime();
+        return $this;
     }
 
-    public function activatedAt(): ?DateTimeInterface
+    public function isVerified(): bool
+    {
+        return $this->verified;
+    }
+
+    public function setVerified(): self
+    {
+        $this->verified = true;
+        return $this;
+    }
+
+    public function activatedAt(): DateTimeInterface
     {
         return $this->activatedAt;
     }
@@ -341,7 +308,7 @@ final class User implements UserInterface
         return $this->deleted;
     }
 
-    public function deletedAt(): ?DateTimeInterface
+    public function deletedAt(): DateTimeInterface
     {
         return $this->deletedAt;
     }
