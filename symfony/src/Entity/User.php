@@ -236,20 +236,20 @@ final class User implements UserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): self
+    public function setPassword(string $password): bool
     {
         try {
-            if (self::isPasswordStrongEnough($password)) {
+            if ($this->isPasswordStrongEnough($password)) {
                 $this->password = $password;
+                return true;
             }
         } catch (InvalidArgumentException $e) {
             echo $e->getMessage();
         }
-
-        return $this;
+        return false;
     }
 
-    public static function isPasswordStrongEnough(string $password): bool
+    public function isPasswordStrongEnough(string $password): bool
     {
         if (!preg_match('/\d+/', $password)) {
             throw new InvalidArgumentException("\nIl manque au moins un chiffre.");
