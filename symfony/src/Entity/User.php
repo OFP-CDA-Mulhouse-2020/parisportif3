@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Exception\InvalidEmailException;
 use App\Exception\InvalidFirstNameException;
 use App\Exception\InvalidLastNameException;
+use App\Exception\InvalidTimeZone;
 use App\Repository\UserRepository;
 use DateTime;
 use DateTimeInterface;
