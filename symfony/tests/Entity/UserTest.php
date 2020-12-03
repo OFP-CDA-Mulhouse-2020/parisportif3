@@ -7,7 +7,9 @@ use App\Exception\InvalidEmailException;
 use App\Exception\InvalidFirstNameException;
 use App\Exception\InvalidLastNameException;
 use App\Exception\InvalidTimeZone;
+use DateInterval;
 use DateTime;
+use DateTimeZone;
 use Exception;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
@@ -60,8 +62,6 @@ final class UserTest extends TestCase
         $user->setTimeZone($timezone);
     }
 
-
-    //TODO A finir  d'urgence
     public function testUserBirthDate(): void
     {
         $user = new User();
@@ -135,8 +135,7 @@ final class UserTest extends TestCase
         }
     }
 
-
-     /** @dataProvider passProvider */
+    /** @dataProvider passProvider */
     public function testPassWordIsInvalid(string $a): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -185,7 +184,7 @@ final class UserTest extends TestCase
         $this->assertGreaterThan($user->createdAt(), $user->deletedAt());
     }
 
-    /** @return  array<int, array<int, string>> */
+    /** @return array<array<string>> */
     public function passProvider(): array
     {
         return [
@@ -197,30 +196,54 @@ final class UserTest extends TestCase
         ];
     }
 
-//    public function testUserIsOldEnough(): void
-//    {
-//        $user = new User();
-//        $user->setBirthDate(
-//            (new DateTime("2000-06-12"))
-//                ->setTimezone(new DateTimeZone('Europe/Paris'))
-//        );
-//
-//        $this->assertTrue($user->isUserOldEnough());
-//    }
+    public function testUserIsOldEnough(): void
+    {
+        $user = new User();
+        $user->setBirthDate(
+            (new DateTime("2000-06-12"))
+                ->setTimezone(new DateTimeZone('Europe/Paris'))
+        );
 
-//    /**
-//     * @throws Exception
-//     */
-//    public function testUserIsNotOldEnough(): void
-//    {
-//        $user = new User();
-//        $tenYearsAgo = (new DateTime())
-//            ->sub(new DateInterval('P10Y'))
-//            ->setTimezone(new DateTimeZone('Europe/Paris'))
-//            ->setTime(0, 0);
-//
-//        $user->setBirthDate($tenYearsAgo);
-//
-//        $this->assertFalse($user->isUserOldEnough());
-//    }
+        $this->assertTrue($user->isUserOldEnough());
+    }
+
+    /**
+     * @dataProvider invalidBirthDate
+     * @throws Exception
+     */
+    public function testUserIsNotOldEnough(DateTime $invalidBirthDate): void
+    {
+        $user = new User();
+        $user->setBirthDate($invalidBirthDate);
+
+        $this->assertFalse($user->isUserOldEnough());
+    }
+
+    /** @return array<array<DateTime>> */
+    public function invalidBirthDate(): array
+    {
+        return [
+            [
+                new DateTime()
+            ],
+            [
+                (new DateTime())
+                    ->sub(new DateInterval('P10Y'))
+                    ->setTimezone(new DateTimeZone('Europe/Paris'))
+                    ->setTime(0, 0)
+            ],
+            [
+                (new DateTime())
+                    ->sub(new DateInterval('P17Y11M'))
+                    ->setTimezone(new DateTimeZone('Europe/Paris'))
+                    ->setTime(0, 0)
+            ],
+            [
+                (new DateTime())
+                    ->sub(new DateInterval('P15Y'))
+                    ->setTimezone(new DateTimeZone('Europe/Paris'))
+                    ->setTime(0, 0)
+            ],
+        ];
+    }
 }

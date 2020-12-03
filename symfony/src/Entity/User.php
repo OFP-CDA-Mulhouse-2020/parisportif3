@@ -143,27 +143,25 @@ final class User implements UserInterface
         return $this;
     }
 
-    public function setBirthDate(DateTimeInterface $birthDate): self
-    {
-        $this->birthDate = $birthDate;
-
-        return $this;
-    }
-
-    //TODO a fixé rapidement
     public function isUserOldEnough(): bool
     {
-        $now = new DateTime();
-        $now
-            ->setTimezone(new DateTimeZone("Europe/Paris"))
+        $now = (new DateTime())
+            ->setTimezone(new DateTimeZone('Europe/Paris'))
             ->setTime(0, 0);
 
-        return $now->diff($this->getBirthDate()) >= "18";
+        return ((int)($now->diff($this->getBirthDate())->format('%Y'))) >= 18;
     }
 
     private function getBirthDate(): DateTimeInterface
     {
         return $this->birthDate;
+    }
+
+    public function setBirthDate(DateTimeInterface $birthDate): self
+    {
+        $this->birthDate = $birthDate;
+
+        return $this;
     }
 
     public function getTimeZone(): string
