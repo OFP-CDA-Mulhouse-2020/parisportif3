@@ -14,8 +14,6 @@ fi
 
 # Changer de dossier ou quitter le script avec une erreur
 cd "${PWD}/symfony/" || exit 1
-composer static-dev
-composer static-test
+composer phpstan
 composer unit-test
-composer standard-test-fix
-composer standard-test
+composer phpcs
