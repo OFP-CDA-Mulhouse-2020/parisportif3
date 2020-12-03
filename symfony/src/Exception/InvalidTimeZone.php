@@ -4,7 +4,7 @@ namespace App\Exception;
 
 use InvalidArgumentException;
 
-class InvalidTimeZone extends InvalidArgumentException
+final class InvalidTimeZone extends InvalidArgumentException
 {
 
 }

@@ -4,16 +4,16 @@ namespace App\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
-class LoginControllerTest extends WebTestCase
+final class LoginControllerTest extends WebTestCase
 {
-    final public function testShowLogin(): void
+    public function testShowLogin(): void
     {
         $client = static::createClient();
         $client->request('GET', '/login');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
-    final public function testShowForm(): void
+    public function testShowForm(): void
     {
         $client = static::createClient();
         $client->request('GET', '/login');
@@ -22,7 +22,7 @@ class LoginControllerTest extends WebTestCase
         self::assertSelectorExists('form > button');
     }
 
-    final public function testShowInput(): void
+    public function testShowInput(): void
     {
         $client = static::createClient();
         $client->request('GET', '/login');

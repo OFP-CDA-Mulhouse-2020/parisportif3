@@ -4,7 +4,7 @@ namespace App\Exception;
 
 use RuntimeException;
 
-class InvalidEmailException extends RuntimeException
+final class InvalidEmailException extends RuntimeException
 {
 
 }
