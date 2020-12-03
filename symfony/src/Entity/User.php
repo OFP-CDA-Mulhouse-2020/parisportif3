@@ -134,6 +134,12 @@ final class User implements UserInterface
     /** @ORM\Column(type="date", nullable=true) */
     private ?DateTimeInterface $deletedAt;
 
+    /** @ORM\Column(type="boolean") */
+    private bool $verified = false;
+
+    /** @ORM\Column(type="date", nullable=true) */
+    private ?DateTimeInterface $verifiedAt;
+
 
     public function __construct()
     {
