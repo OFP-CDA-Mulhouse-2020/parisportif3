@@ -100,11 +100,13 @@ final class User implements UserInterface
         return $this;
     }
 
+    //TODO Implémenter @phpstan-ignore-next-line
     public function getSalt(): void
     {
         // not needed when using the "bcrypt" algorithm in security.yaml
     }
 
+    //TODO Implémenter
     public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here

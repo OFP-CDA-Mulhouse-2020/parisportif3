@@ -47,6 +47,7 @@ final class LoginAuthenticator extends AbstractFormLoginAuthenticator implements
             && $request->isMethod('POST');
     }
 
+    /** @return array<mixed> */
     public function getCredentials(Request $request)
     {
         $credentials = [
@@ -87,7 +88,7 @@ final class LoginAuthenticator extends AbstractFormLoginAuthenticator implements
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
      * @param $credentials
-     * @return string|null
+     * @phpstan-ignore-next-line Can't be typehint because inherit a base Symfony class without typehint.
      */
     public function getPassword($credentials): ?string
     {
@@ -95,9 +96,6 @@ final class LoginAuthenticator extends AbstractFormLoginAuthenticator implements
     }
 
     /**
-     * @param Request $request
-     * @param TokenInterface $token
-     * @param string $providerKey
      * @return RedirectResponse|Response|null
      * @throws Exception
      */
@@ -107,6 +105,7 @@ final class LoginAuthenticator extends AbstractFormLoginAuthenticator implements
             return new RedirectResponse($targetPath);
         }
 
+        //TODO Spécifié une Exception plus générique
         // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
         throw new Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
