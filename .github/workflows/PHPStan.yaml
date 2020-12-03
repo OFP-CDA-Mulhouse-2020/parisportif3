@@ -36,7 +36,7 @@ jobs:
         run: composer install --prefer-dist --no-progress
 
       - name: Install phpunit
-        run: composer unit-test > ./bin/phpunit -h > /dev/null
+        run: composer unit-test -h
 
       - name: PhpStan test
         run: composer static-test
