@@ -106,12 +106,12 @@
             "@php bin/console cache:warmup --env=test"
         ],
         "phpstan": [
-            "@phpstan-dev",
-            "@phpstan-test"
+            "@static-dev",
+            "@static-test"
         ],
         "phpcs": [
-            "@standard-test-fix",
-            "@standard-test"
+            "@standard-test",
+            "@standard-test-fix"
         ],
         "static-dev": "phpstan analyse -c phpstan.neon --no-progress",
         "static-test": "phpstan analyse -c phpstan-test.neon --no-progress",
