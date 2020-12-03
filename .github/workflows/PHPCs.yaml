@@ -1,4 +1,4 @@
-name: PHPUnit
+name: PHPCs
 
 on:
   push:
@@ -35,7 +35,5 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
-      - name: PHPUnit tests
-        uses: php-actions/phpunit@v8
-        with:
-          configuration: ./symfony/phpunit.xml.dist
+      - name: PhpCS test
+        run: composer standard-test

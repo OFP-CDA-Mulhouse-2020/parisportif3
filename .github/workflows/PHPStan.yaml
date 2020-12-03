@@ -1,4 +1,4 @@
-name: PHPUnit
+name: PHPStan
 
 on:
   push:
@@ -35,7 +35,11 @@ jobs:
       - name: Install dependencies
         run: composer install --prefer-dist --no-progress
 
-      - name: PHPUnit tests
-        uses: php-actions/phpunit@v8
-        with:
-          configuration: ./symfony/phpunit.xml.dist
+      - name: Install phpunit
+        run: ./bin/phpunit
+
+      - name: PhpStan test
+        run: composer static-test
+
+      - name: PhpStan dev
+        run: composer static-dev
