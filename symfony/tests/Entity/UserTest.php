@@ -120,18 +120,16 @@ final class UserTest extends TestCase
 
     public function testPassWordIsValid(): void
     {
-        try {
-            $this->assertTrue(User::isPasswordStrongEnough('1AAZDSQDq'));
-        } catch (Exception $e) {
-            echo $e->getMessage();
-        }
+        $user = new User();
+        $this->assertTrue($user->setPassword('1AAZDSQDq'));
     }
 
     /** @dataProvider passProvider */
     public function testPassWordIsInvalid(string $a): void
     {
+        $user = new User();
         $this->expectException(InvalidArgumentException::class);
-        User::isPasswordStrongEnough($a);
+        $user->isPasswordStrongEnough($a);
     }
 
     public function testUserIsActive(): void
