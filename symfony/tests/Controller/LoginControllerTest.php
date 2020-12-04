@@ -8,14 +8,14 @@ final class LoginControllerTest extends WebTestCase
 {
     public function testShowLogin(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $client->request('GET', '/login');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
     public function testShowForm(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $client->request('GET', '/login');
         $this->assertSelectorExists('form');
         $this->assertSelectorExists('form > input');
@@ -24,7 +24,7 @@ final class LoginControllerTest extends WebTestCase
 
     public function testShowInput(): void
     {
-        $client = static::createClient();
+        $client = self::createClient();
         $client->request('GET', '/login');
         $this->assertSelectorExists('input#inputUsername');
         $this->assertSelectorExists('input#inputPassword');
