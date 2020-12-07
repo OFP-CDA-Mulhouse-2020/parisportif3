@@ -12,6 +12,7 @@ use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\ConstraintViolation;
@@ -19,6 +20,10 @@ use Symfony\Component\Validator\Validation;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
+ * @UniqueEntity(
+ *     fields={"id", "username"},
+ *     errorPath="username"
+ * )
  */
 final class User implements UserInterface
 {
@@ -28,39 +33,55 @@ final class User implements UserInterface
      * @ORM\Column(type="integer")
      */
     private int $id;
+
     /**
      * @var array<string>
      * @ORM\Column(type="json")
      */
     private array $roles = [];
+
     /** @ORM\Column(type="string", length=180, unique=true) */
     private string $username;
+
     /** @ORM\Column(type="string") */
     private string $password;
+
     /** @ORM\Column(type="string", length=255) */
     private string $email;
+
     /** @ORM\Column(type="date") */
     private DateTimeInterface $birthDate;
+
     /** @ORM\Column(type="string", length=120) */
     private string $timeZone;
+
     /** @ORM\Column(type="datetime") */
     private DateTimeInterface $createdAt;
+
     /** @ORM\Column(type="boolean") */
     private bool $active = false;
+
     /** @ORM\Column(type="date", nullable=true) */
     private ?DateTimeInterface $activatedAt;
+
     /** @ORM\Column(type="boolean") */
     private bool $deleted = false;
+
     /** @ORM\Column(type="date", nullable=true) */
     private ?DateTimeInterface $deletedAt;
+
     /** @ORM\Column(type="string", length=180, unique=true) */
     private string $lastName;
+
     /** @ORM\Column(type="string", length=180, unique=true) */
     private string $firstName;
+
     /** @ORM\Column(type="date", nullable=true) */
     private ?DateTimeInterface $suspendedAt;
+
     /** @ORM\Column(type="bool") */
     private bool $suspended = false;
+
 
     public function __construct()
     {
