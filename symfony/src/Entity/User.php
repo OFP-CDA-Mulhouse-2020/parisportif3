@@ -276,7 +276,7 @@ final class User implements UserInterface
         return $this->active;
     }
 
-    public function setActive(): void
+    public function activate(): void
     {
         $this->active = true;
         $this->activatedAt = new DateTime();
