@@ -15,4 +15,14 @@ final class RegistrationTest extends WebTestCase
         $this->assertSelectorExists('form > input');
         $this->assertSelectorExists('form > button');
     }
+
+    public function testShowRegistrationFormTypeInput(): void
+    {
+        $client = self::createClient();
+        $client->request('GET', '/login');
+
+        $this->assertSelectorExists('input#inputUsername');
+        $this->assertSelectorExists('input#inputPassword');
+        $this->assertSelectorExists("button[type='submit']");
+    }
 }
