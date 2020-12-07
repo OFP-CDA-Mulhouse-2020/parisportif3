@@ -10,7 +10,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 
-class EmailVerifier
+final class EmailVerifier
 {
     private VerifyEmailHelperInterface $verifyEmailHelper;
     private MailerInterface $mailer;
