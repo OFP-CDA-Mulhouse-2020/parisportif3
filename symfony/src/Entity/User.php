@@ -47,18 +47,18 @@ final class User implements UserInterface
     private DateTimeInterface $createdAt;
     /** @ORM\Column(type="boolean") */
     private bool $active = false;
-    /** @ORM\Column(type="date") */
-    private DateTimeInterface $activatedAt;
+    /** @ORM\Column(type="date", nullable=true) */
+    private ?DateTimeInterface $activatedAt;
     /** @ORM\Column(type="boolean") */
     private bool $deleted = false;
-    /** @ORM\Column(type="date") */
-    private DateTimeInterface $deletedAt;
+    /** @ORM\Column(type="date", nullable=true) */
+    private ?DateTimeInterface $deletedAt;
     /** @ORM\Column(type="string", length=180, unique=true) */
     private string $lastName;
     /** @ORM\Column(type="string", length=180, unique=true) */
     private string $firstName;
-    /** @ORM\Column(type="date") */
-    private DateTimeInterface $suspendedAt;
+    /** @ORM\Column(type="date", nullable=true) */
+    private ?DateTimeInterface $suspendedAt;
     /** @ORM\Column(type="bool") */
     private bool $suspended = false;
 
@@ -226,7 +226,7 @@ final class User implements UserInterface
         return $this->suspended;
     }
 
-    public function suspendedAt(): DateTimeInterface
+    public function suspendedAt(): ?DateTimeInterface
     {
         return $this->suspendedAt;
     }
@@ -282,7 +282,7 @@ final class User implements UserInterface
         $this->activatedAt = new DateTime();
     }
 
-    public function activatedAt(): DateTimeInterface
+    public function activatedAt(): ?DateTimeInterface
     {
         return $this->activatedAt;
     }
@@ -292,7 +292,7 @@ final class User implements UserInterface
         return $this->deleted;
     }
 
-    public function deletedAt(): DateTimeInterface
+    public function deletedAt(): ?DateTimeInterface
     {
         return $this->deletedAt;
     }
