@@ -2,6 +2,7 @@
 
 namespace App\Tests\Controller;
 
+use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 final class LoginControllerTest extends WebTestCase
@@ -30,4 +31,31 @@ final class LoginControllerTest extends WebTestCase
         $this->assertSelectorExists('input#inputPassword');
         $this->assertSelectorExists("button[type='submit']");
     }
+
+    public function testLoginWithInvalidUser(): void
+    {
+        $client = self::createClient();
+
+        $user = new User();
+        $user->setUsername('invalidTest');
+        $user->setPassword('12345678A');
+
+        $crawler = $client->request('GET', '/login');
+
+        $form = $crawler->selectButton('Sign in')->form();
+
+        $form['username']->setValue($user->getUsername());
+        $form['password']->setValue($user->getPassword());
+
+        $client->submit($form);
+
+        $this->assertResponseRedirects("/login");
+
+        $client->followRedirect();
+
+        $this->assertSelectorExists('.alert-danger');
+        $this->assertSelectorTextContains('.alert-danger', 'Username could not be found.');
+    }
+
+
 }
