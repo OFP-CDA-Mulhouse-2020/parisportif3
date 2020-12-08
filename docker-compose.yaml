@@ -44,14 +44,14 @@ services:
       PHP_XDEBUG_REMOTE_PORT: "9000"
       PHP_XDEBUG_IDE_KEY: "PHPSTORM"
 
-      # Autre
-      #env_file:
-        #- ./Docker_config/apache/php_ini_conf.env
+        # Autre
+        #env_file:
+      #- ./Docker_config/apache/php_ini_conf.env
+    volumes:
+      - "./symfony:/var/www/html"
     labels:
       - "traefik.http.routers.php.rule=Host(`php.docker.localhost`)"
       - "traefik.http.routers.php.entrypoints=web"
-    volumes:
-      - "./symfony:/var/www/html"
 
   composer:
     #container_name: "composer"
@@ -89,14 +89,6 @@ services:
     labels:
       - "traefik.http.routers.phpmyadmin.rule=Host(`phpmyadmin.docker.localhost`)"
       - "traefik.http.routers.phpmyadmin.entrypoints=web"
-
-  #TODO Supprimer quand n'est plus nécessaire
-  whoami:
-    container_name: "simple-service"
-    image: "traefik/whoami"
-    labels:
-      - "traefik.http.routers.whoami.rule=Host(`whoami.docker.localhost`)"
-      - "traefik.http.routers.whoami.entrypoints=web"
 
   mailhog:
     image: "mailhog/mailhog"
