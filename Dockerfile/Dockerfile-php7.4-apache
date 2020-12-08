@@ -18,7 +18,6 @@ RUN set -eux; \
     a2enmod -q rewrite;
 
 # Config de PHP
-
 COPY docker-config/php/conf.d/opcache.ini \
     ${PHP_INI_DIR}/conf.d/opcache.ini
 
@@ -35,5 +34,12 @@ RUN set -eux; \
     cp "${PHP_INI_DIR}/php.ini-development" \
     "${PHP_INI_DIR}/php.ini";
 
-#EXPOSE 80
+#Config pour les permissions de /var/www/html
+COPY docker-config/apache2/entrypoint.sh \
+    /entrypoint.sh
+RUN chmod 744 /entrypoint.sh
 
+ENTRYPOINT ["/entrypoint.sh"]
+
+EXPOSE 80
+CMD ["apache2-foreground"]
