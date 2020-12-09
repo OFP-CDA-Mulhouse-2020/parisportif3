@@ -45,6 +45,8 @@ final class User implements UserInterface
      *
      * @Assert\Unique
      * @Assert\NotNull
+     *
+     * @TODO Ajouter un validator pour tester la validité de username
      */
     private string $username;
 
@@ -105,6 +107,8 @@ final class User implements UserInterface
      * @ORM\Column(type="datetime")
      *
      * @Assert\NotNull
+     *
+     * @TODO Ajouter un validator custom pour tester si antérieur à maintenant
      */
     private DateTimeInterface $createdAt;
 
