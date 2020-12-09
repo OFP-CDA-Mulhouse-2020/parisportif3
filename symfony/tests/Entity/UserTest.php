@@ -3,16 +3,17 @@
 namespace App\Tests\Entity;
 
 use App\Entity\User;
-use App\Exception\InvalidEmailException;
 use App\Exception\InvalidFirstNameException;
 use App\Exception\InvalidLastNameException;
-use App\Exception\InvalidTimeZone;
+use DateInterval;
 use DateTime;
+use DateTimeZone;
 use Exception;
 use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpKernel\KernelInterface;
 
-final class UserTest extends TestCase
+final class UserTest extends WebTestCase
 {
     public function testConstructor(): void
     {
@@ -32,13 +33,24 @@ final class UserTest extends TestCase
         $this->assertSame($email, $user->getEmail());
     }
 
-    public function testInvalidValidEmail(): void
+    public function testInvalidEmail(): void
     {
         $user = new User();
         $email = "mîiladøïress@ma@il.com";
-
-        $this->expectException(InvalidEmailException::class);
         $user->setEmail($email);
+
+        $kernel = $this->getKernel();
+        $validator = $kernel->getContainer()->get('validator');
+        $violations = $validator->validate($user);
+
+        $this->assertGreaterThanOrEqual(1, count($violations));
+    }
+
+    private function getKernel(): KernelInterface
+    {
+        $kernel = $this->bootKernel();
+        $kernel->boot();
+        return $kernel;
     }
 
     public function testValidTimeZone(): void
@@ -55,19 +67,13 @@ final class UserTest extends TestCase
     {
         $user = new User();
         $timezone = 'Random/Truc';
-
-        $this->expectException(InvalidTimeZone::class);
         $user->setTimeZone($timezone);
-    }
 
+        $kernel = $this->getKernel();
+        $validator = $kernel->getContainer()->get('validator');
+        $violations = $validator->validate($user);
 
-    //TODO A finir  d'urgence
-    public function testUserBirthDate(): void
-    {
-        $user = new User();
-        $user->setBirthDate(new DateTime("2000-06-12"));
-
-        $this->assertTrue($user->isUserOldEnough());
+        $this->assertGreaterThanOrEqual(1, count($violations));
     }
 
     public function testSetLastName(): void
@@ -83,6 +89,7 @@ final class UserTest extends TestCase
     {
         $user = new User();
 
+        // TODO Modifié apres la création du Validator de nom
         $this->expectException(InvalidLastNameException::class);
         $user->setLastName("@%45");
     }
@@ -100,6 +107,7 @@ final class UserTest extends TestCase
     {
         $user = new User();
 
+        // TODO Modifié apres la création du Validator de nom
         $this->expectException(InvalidFirstNameException::class);
         $user->setFirstName("@%45");
     }
@@ -128,25 +136,24 @@ final class UserTest extends TestCase
 
     public function testPassWordIsValid(): void
     {
-        try {
-            $this->assertTrue(User::isPasswordStrongEnough('1AAZDSQDq'));
-        } catch (Exception $e) {
-            echo $e->getMessage();
-        }
+        $user = new User();
+        $this->assertTrue($user->setPassword('1AAZDSQDq'));
     }
 
-
-     /** @dataProvider passProvider */
+    /** @dataProvider passProvider */
     public function testPassWordIsInvalid(string $a): void
     {
+        $user = new User();
+
+        // TODO Modifié apres la création du Validator de mot de passe
         $this->expectException(InvalidArgumentException::class);
-        User::isPasswordStrongEnough($a);
+        $user->isPasswordStrongEnough($a);
     }
 
     public function testUserIsActive(): void
     {
         $user = new User();
-        $user->setActive();
+        $user->activate();
         $this->assertTrue($user->isActive());
     }
 
@@ -160,7 +167,7 @@ final class UserTest extends TestCase
     {
         $user = new User();
         sleep(1);
-        $user->setActive();
+        $user->activate();
         $this->assertGreaterThan($user->createdAt(), $user->activatedAt());
     }
 
@@ -185,7 +192,7 @@ final class UserTest extends TestCase
         $this->assertGreaterThan($user->createdAt(), $user->deletedAt());
     }
 
-    /** @return  array<int, array<int, string>> */
+    /** @return array<array<string>> */
     public function passProvider(): array
     {
         return [
@@ -197,30 +204,54 @@ final class UserTest extends TestCase
         ];
     }
 
-//    public function testUserIsOldEnough(): void
-//    {
-//        $user = new User();
-//        $user->setBirthDate(
-//            (new DateTime("2000-06-12"))
-//                ->setTimezone(new DateTimeZone('Europe/Paris'))
-//        );
-//
-//        $this->assertTrue($user->isUserOldEnough());
-//    }
+    public function testUserIsOldEnough(): void
+    {
+        $user = new User();
+        $user->setBirthDate(
+            (new DateTime("2000-06-12"))
+                ->setTimezone(new DateTimeZone('Europe/Paris'))
+        );
 
-//    /**
-//     * @throws Exception
-//     */
-//    public function testUserIsNotOldEnough(): void
-//    {
-//        $user = new User();
-//        $tenYearsAgo = (new DateTime())
-//            ->sub(new DateInterval('P10Y'))
-//            ->setTimezone(new DateTimeZone('Europe/Paris'))
-//            ->setTime(0, 0);
-//
-//        $user->setBirthDate($tenYearsAgo);
-//
-//        $this->assertFalse($user->isUserOldEnough());
-//    }
+        $this->assertTrue($user->isUserOldEnough());
+    }
+
+    /**
+     * @dataProvider invalidBirthDate
+     * @throws Exception
+     */
+    public function testUserIsNotOldEnough(DateTime $invalidBirthDate): void
+    {
+        $user = new User();
+        $user->setBirthDate($invalidBirthDate);
+
+        $this->assertFalse($user->isUserOldEnough());
+    }
+
+    /** @return array<array<DateTime>> */
+    public function invalidBirthDate(): array
+    {
+        return [
+            [
+                new DateTime()
+            ],
+            [
+                (new DateTime())
+                    ->sub(new DateInterval('P10Y'))
+                    ->setTimezone(new DateTimeZone('Europe/Paris'))
+                    ->setTime(0, 0)
+            ],
+            [
+                (new DateTime())
+                    ->sub(new DateInterval('P17Y11M'))
+                    ->setTimezone(new DateTimeZone('Europe/Paris'))
+                    ->setTime(0, 0)
+            ],
+            [
+                (new DateTime())
+                    ->sub(new DateInterval('P15Y'))
+                    ->setTimezone(new DateTimeZone('Europe/Paris'))
+                    ->setTime(0, 0)
+            ],
+        ];
+    }
 }
