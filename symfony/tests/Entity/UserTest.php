@@ -141,7 +141,7 @@ final class UserTest extends WebTestCase
     public function testUserIsActive(): void
     {
         $user = new User();
-        $user->setActive();
+        $user->activate();
         $this->assertTrue($user->isActive());
     }
 
@@ -155,7 +155,7 @@ final class UserTest extends WebTestCase
     {
         $user = new User();
         sleep(1);
-        $user->setActive();
+        $user->activate();
         $this->assertGreaterThan($user->createdAt(), $user->activatedAt());
     }
 
