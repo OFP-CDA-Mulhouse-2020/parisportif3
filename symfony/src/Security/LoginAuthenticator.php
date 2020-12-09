@@ -52,7 +52,7 @@ final class LoginAuthenticator extends AbstractFormLoginAuthenticator implements
     }
 
     /** @return array<mixed> */
-    public function getCredentials(Request $request)
+    public function getCredentials(Request $request): array
     {
         $credentials = [
             'username' => $request->request->get('username'),
