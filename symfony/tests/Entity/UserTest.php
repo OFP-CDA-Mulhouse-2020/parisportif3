@@ -15,13 +15,6 @@ use Symfony\Component\HttpKernel\KernelInterface;
 
 final class UserTest extends WebTestCase
 {
-    private function getKernel(): KernelInterface
-    {
-        $kernel = $this->bootKernel();
-        $kernel->boot();
-        return $kernel;
-    }
-
     public function testConstructor(): void
     {
         $user = new User();
@@ -51,6 +44,13 @@ final class UserTest extends WebTestCase
         $violations = $validator->validate($user);
 
         $this->assertGreaterThanOrEqual(1, count($violations));
+    }
+
+    private function getKernel(): KernelInterface
+    {
+        $kernel = $this->bootKernel();
+        $kernel->boot();
+        return $kernel;
     }
 
     public function testValidTimeZone(): void
@@ -89,6 +89,7 @@ final class UserTest extends WebTestCase
     {
         $user = new User();
 
+        // TODO Modifié apres la création du Validator de nom
         $this->expectException(InvalidLastNameException::class);
         $user->setLastName("@%45");
     }
@@ -106,6 +107,7 @@ final class UserTest extends WebTestCase
     {
         $user = new User();
 
+        // TODO Modifié apres la création du Validator de nom
         $this->expectException(InvalidFirstNameException::class);
         $user->setFirstName("@%45");
     }
@@ -142,6 +144,8 @@ final class UserTest extends WebTestCase
     public function testPassWordIsInvalid(string $a): void
     {
         $user = new User();
+
+        // TODO Modifié apres la création du Validator de mot de passe
         $this->expectException(InvalidArgumentException::class);
         $user->isPasswordStrongEnough($a);
     }
