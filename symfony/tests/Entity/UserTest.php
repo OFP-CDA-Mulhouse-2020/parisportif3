@@ -67,9 +67,13 @@ final class UserTest extends WebTestCase
     {
         $user = new User();
         $timezone = 'Random/Truc';
-
-        $this->expectException(InvalidTimeZone::class);
         $user->setTimeZone($timezone);
+
+        $kernel = $this->getKernel();
+        $validator = $kernel->getContainer()->get('validator');
+        $violations = $validator->validate($user);
+
+        $this->assertGreaterThanOrEqual(1, count($violations));
     }
 
     public function testSetLastName(): void
