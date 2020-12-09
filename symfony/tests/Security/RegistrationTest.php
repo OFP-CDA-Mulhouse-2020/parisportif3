@@ -9,7 +9,7 @@ final class RegistrationTest extends WebTestCase
     public function testShowRegistrationFormType(): void
     {
         $client = self::createClient();
-        $client->request('GET', '/login');
+        $client->request('GET', '/register');
 
         $this->assertSelectorExists('form');
         $this->assertSelectorExists('form > input');
@@ -19,10 +19,11 @@ final class RegistrationTest extends WebTestCase
     public function testShowRegistrationFormTypeInput(): void
     {
         $client = self::createClient();
-        $client->request('GET', '/login');
+        $client->request('GET', '/register');
 
-        $this->assertSelectorExists('input#inputUsername');
-        $this->assertSelectorExists('input#inputPassword');
+        $this->assertSelectorExists('input#registration_form_username');
+        $this->assertSelectorExists('input#registration_form_plainPassword_first');
+        $this->assertSelectorExists('input#registration_form_birthDate');
         $this->assertSelectorExists("button[type='submit']");
     }
 }
