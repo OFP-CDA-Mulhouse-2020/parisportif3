@@ -348,7 +348,13 @@ final class User implements UserInterface
     public function setVerified(): self
     {
         $this->verified = true;
+        $this->verifiedAt = new DateTime();
         return $this;
+    }
+
+    public function verifiedAt(): ?DateTimeInterface
+    {
+        return $this->verifiedAt;
     }
 
     public function activatedAt(): ?DateTimeInterface
