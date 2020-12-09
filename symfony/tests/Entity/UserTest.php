@@ -3,19 +3,25 @@
 namespace App\Tests\Entity;
 
 use App\Entity\User;
-use App\Exception\InvalidEmailException;
 use App\Exception\InvalidFirstNameException;
 use App\Exception\InvalidLastNameException;
-use App\Exception\InvalidTimeZone;
 use DateInterval;
 use DateTime;
 use DateTimeZone;
 use Exception;
 use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpKernel\KernelInterface;
 
-final class UserTest extends TestCase
+final class UserTest extends WebTestCase
 {
+    private function getKernel(): KernelInterface
+    {
+        $kernel = $this->bootKernel();
+        $kernel->boot();
+        return $kernel;
+    }
+
     public function testConstructor(): void
     {
         $user = new User();
