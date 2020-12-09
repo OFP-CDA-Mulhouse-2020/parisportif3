@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -55,7 +54,6 @@ final class User implements UserInterface
      *
      * @Assert\NotNull
      * @Assert\NotCompromisedPassword
-     * @SecurityAssert\UserPassword
      *
      * @TODO Ajouter un validator pour supprimé les test dans ::setPassword() et ::isPasswordStrongEnough()
      */
@@ -211,7 +209,7 @@ final class User implements UserInterface
         return $userAge >= 18;
     }
 
-    private function getBirthDate(): DateTimeInterface
+    public function getBirthDate(): DateTimeInterface
     {
         return $this->birthDate;
     }
