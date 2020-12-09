@@ -44,9 +44,13 @@ final class UserTest extends WebTestCase
     {
         $user = new User();
         $email = "mîiladøïress@ma@il.com";
-
-        $this->expectException(InvalidEmailException::class);
         $user->setEmail($email);
+
+        $kernel = $this->getKernel();
+        $validator = $kernel->getContainer()->get('validator');
+        $violations = $validator->validate($user);
+
+        $this->assertGreaterThanOrEqual(1, count($violations));
     }
 
     public function testValidTimeZone(): void
