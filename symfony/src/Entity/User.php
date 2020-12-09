@@ -7,6 +7,7 @@ use App\Exception\InvalidLastNameException;
 use App\Repository\UserRepository;
 use DateTime;
 use DateTimeInterface;
+use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -196,7 +197,8 @@ final class User implements UserInterface
             ->setTimezone(new DateTimeZone('Europe/Paris'))
             ->setTime(0, 0);
 
-        return ((int)($now->diff($this->getBirthDate())->format('%Y'))) >= 18;
+        $userAge = (int)$now->diff($this->getBirthDate())->format('%Y');
+        return $userAge >= 18;
     }
 
     private function getBirthDate(): DateTimeInterface
