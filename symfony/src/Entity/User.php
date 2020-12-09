@@ -65,10 +65,6 @@ final class User implements UserInterface
     private ?DateTimeInterface $activatedAt;
 
     /** @ORM\Column(type="boolean") */
-    private bool $verified = false;
-    /** @ORM\Column(type="date", nullable=true) */
-    private ?DateTimeInterface $verifiedAt;
-    /** @ORM\Column(type="boolean") */
     private bool $deleted = false;
 
     /** @ORM\Column(type="date", nullable=true) */
