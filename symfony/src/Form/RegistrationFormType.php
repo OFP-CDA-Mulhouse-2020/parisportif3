@@ -64,7 +64,7 @@ final class RegistrationFormType extends AbstractType
                 ]
             )
             ->add(
-                'plainPassword',
+                'password',
                 RepeatedType::class,
                 [
                     // instead of being set onto the object directly,
@@ -74,7 +74,7 @@ final class RegistrationFormType extends AbstractType
                     'options' => ['attr' => ['class' => 'password-field']],
                     'required' => true,
                     'mapped' => false,
-                    'first_options' => ['label' => 'Password'],
+                    'first_options' => ['label' => 'password'],
                     'second_options' => ['label' => 'Repeat Password'],
                     'constraints' => [
                         new NotBlank(
