@@ -14,11 +14,30 @@ class EncounterEvent
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     *
      */
-    private $id;
+    private int $id;
 
-    public function getId(): ?int
+    /**
+     * @ORM\ManyToOne(targetEntity=SportType::class)
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private SportType $sportType;
+
+    public function getId(): int
     {
         return $this->id;
+    }
+
+    public function getSportType(): SportType
+    {
+        return $this->sportType;
+    }
+
+    public function setSportType(SportType $sportType): self
+    {
+        $this->sportType = $sportType;
+
+        return $this;
     }
 }
