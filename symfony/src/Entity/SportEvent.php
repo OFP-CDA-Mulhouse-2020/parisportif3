@@ -22,6 +22,11 @@ final class SportEvent
      */
     private string $location;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private string $competition;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -35,6 +40,18 @@ final class SportEvent
     public function setLocation(string $location): self
     {
         $this->location = $location;
+
+        return $this;
+    }
+
+    public function getCompetition(): ?string
+    {
+        return $this->competition;
+    }
+
+    public function setCompetition(string $competition): self
+    {
+        $this->competition = $competition;
 
         return $this;
     }
