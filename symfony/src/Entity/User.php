@@ -28,7 +28,6 @@ final class User implements UserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      *
-     * @Assert\Unique
      * @Assert\NotNull
      */
     private int $id;
@@ -42,7 +41,6 @@ final class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      *
-     * @Assert\Unique
      * @Assert\NotNull
      *
      * @TODO Ajouter un validator pour tester la validité de username
