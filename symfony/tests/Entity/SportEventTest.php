@@ -35,4 +35,19 @@ final class SportEventTest extends TestCase
 
         $this->assertSame($location, $sportEvent->getLocation());
     }
+
+    //TODO adresse valide avec API
+
+    /*
+     * Est-ce que SportEvent contient une competition
+     */
+    public function testCompetitionInputIsReturned(): void
+    {
+        $sportEvent = new SportEvent();
+        $competition = 'Super sport 2022';
+
+        $sportEvent->setCompetition($competition);
+
+        $this->assertSame($competition, $sportEvent->getCompetition());
+    }
 }
