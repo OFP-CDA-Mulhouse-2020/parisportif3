@@ -22,4 +22,17 @@ final class SportEventTest extends TestCase
 
         $this->assertInstanceOf(SportEvent::class, $sportEvent);
     }
+
+    /*
+     * Est-ce que SportEvent contient un lieu valide
+     */
+    public function testLocationInputIsReturned(): void
+    {
+        $sportEvent = new SportEvent();
+        $location = '23 rue des peupliers';
+
+        $sportEvent->setLocation($location);
+
+        $this->assertSame($location, $sportEvent->getLocation());
+    }
 }
