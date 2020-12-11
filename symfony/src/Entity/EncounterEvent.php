@@ -40,4 +40,6 @@ class EncounterEvent
 
         return $this;
     }
+
+    //TODO::Ajouter la relation SportEvent
 }
