@@ -29,5 +29,9 @@ final class TransactionTest extends WebTestCase
     public function testShouldHaveAValidDateAtTheCreationOfObject(): void
     {
         $this->assertLessThan(new DateTime(), $this->transaction->getTransactionDate());
+        $violations = $this->validator->validate($this->transaction);
+        $this->assertCount(0, $violations);
     }
+
+
 }
