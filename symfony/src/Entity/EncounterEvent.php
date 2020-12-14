@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=EncounterEventRepository::class)
  */
-class EncounterEvent
+final class EncounterEvent
 {
     /**
      * @ORM\Id

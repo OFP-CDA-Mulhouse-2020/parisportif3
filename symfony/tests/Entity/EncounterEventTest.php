@@ -6,7 +6,7 @@ use App\Entity\EncounterEvent;
 use App\Entity\SportType;
 use PHPUnit\Framework\TestCase;
 
-class EncounterEventTest extends TestCase
+final class EncounterEventTest extends TestCase
 {
     //Doit pouvoir créer une instance de la classe EncounterEvent
     public function testCreateEncounterEventObject(): void

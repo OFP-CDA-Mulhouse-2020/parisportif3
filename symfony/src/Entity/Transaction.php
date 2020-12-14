@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *     errorPath="ID"
  * )
  */
-class Transaction
+final class Transaction
 {
     /**
      * @ORM\Id

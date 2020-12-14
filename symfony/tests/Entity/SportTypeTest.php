@@ -6,7 +6,7 @@ use App\Entity\SportType;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 
-class SportTypeTest extends WebTestCase
+final class SportTypeTest extends WebTestCase
 {
     private function getKernel(): KernelInterface
     {
