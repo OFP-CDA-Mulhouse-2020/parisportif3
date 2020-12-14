@@ -27,7 +27,7 @@ final class Transaction
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\DateTime()
+     * @Assert\NotNull
      */
     private DateTimeInterface $transactionDate;
 
@@ -44,12 +44,5 @@ final class Transaction
     public function getTransactionDate(): ?DateTimeInterface
     {
         return $this->transactionDate;
-    }
-
-    public function setTransactionDate(DateTimeInterface $transactionDate): self
-    {
-        $this->transactionDate = $transactionDate;
-
-        return $this;
     }
 }
