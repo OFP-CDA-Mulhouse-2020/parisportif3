@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class BetTemplateChoiceTest extends WebTestCase
 {
+    //Doit pouvoir créer une instance de la classe BetTemplateChoice
     public function testCreateBetTemplateChoiceObject(): void
     {
         $this->assertInstanceOf(
@@ -15,6 +16,7 @@ class BetTemplateChoiceTest extends WebTestCase
         );
     }
 
+    //Doit mettre à jour une description
     public function testCanUpdateBetTemplateChoice(): void
     {
         $BetTemplateChoice = new BetTemplateChoice();
