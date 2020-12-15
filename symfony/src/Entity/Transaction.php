@@ -31,6 +31,12 @@ final class Transaction
      */
     private DateTimeInterface $transactionDate;
 
+    /**
+     * @ORM\Column(type="integer")
+     * @Assert\GreaterThan (99)
+     */
+    private int $amount;
+
     public function __construct()
     {
         $this->transactionDate = new DateTime();
@@ -45,4 +51,20 @@ final class Transaction
     {
         return $this->transactionDate;
     }
+
+    //TODO:: Ajouter la relation avec Wallet
+
+    public function getAmount(): ?int
+    {
+        return $this->amount;
+    }
+
+    public function setAmount(int $amount): self
+    {
+        $this->amount = $amount;
+
+        return $this;
+    }
+
+    //TODO:: Ajouter la relation avec BetTemplateChoice
 }

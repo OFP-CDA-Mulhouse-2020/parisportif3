@@ -34,4 +34,46 @@ final class TransactionTest extends WebTestCase
     }
 
 
+    //Doit permettre d'ajouter un objet de classe Wallet
+    public function testCanInsertAWalletObject(): void
+    {
+        $userWallet = new Wallet();
+        $this->transaction->setWallet($userWallet);
+
+        $this->assertInstanceOf(Wallet::class, $this->transaction->getWallet());
+    }
+
+    public function testCanBetAValidAmount(): void
+    {
+        $this->transaction->setAmount(1384);
+
+        $this->assertEquals(1384, $this->transaction->getAmount());
+    }
+
+    /** @dataProvider amountProvider */
+    public function testCanBetAInvalidAmount($amountProvider): void
+    {
+        $this->transaction->setAmount($amountProvider);
+        $violations = $this->validator->validate($this->transaction);
+
+        $this->assertGreaterThan(0, count($violations));
+    }
+
+    public function amountProvider(): array
+    {
+        return [
+            [0],
+            [-20],
+            [50],
+            [99],
+        ];
+    }
+
+    public function testCanInsertABetChoiceObject(): void
+    {
+        $userBetChoice = new BetTemplateChoice();
+        $this->transaction->setBetTemplateChoice($userBetChoice);
+
+        $this->assertInstanceOf(BetTemplateChoice::class, $this->transaction->getBetTemplateChoice());
+    }
 }
