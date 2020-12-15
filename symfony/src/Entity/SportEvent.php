@@ -3,6 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\SportEventRepository;
+use DateInterval;
+use DateTime;
+use DateTimeInterface;
+use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -26,6 +30,11 @@ final class SportEvent
      * @ORM\Column(type="string", length=255)
      */
     private string $competition;
+
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private DateTimeInterface $date;
 
     public function getId(): ?int
     {
@@ -52,6 +61,21 @@ final class SportEvent
     public function setCompetition(string $competition): self
     {
         $this->competition = $competition;
+
+        return $this;
+    }
+
+    public function getDate(): ?\DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(\DateTimeInterface $date): self
+    {
+        $maxDate = new DateTime('now', new DateTimeZone('Europe/Paris'));
+        $maxDate->add(new DateInterval('P2D'));
+
+        $this->date = $date;
 
         return $this;
     }
