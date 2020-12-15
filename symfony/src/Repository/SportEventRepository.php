@@ -7,12 +7,15 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
+ * @template TEntityClass of object
+ * @extends ServiceEntityRepository<TEntityClass>
+ *
  * @method SportEvent|null find($id, $lockMode = null, $lockVersion = null)
  * @method SportEvent|null findOneBy(array $criteria, array $orderBy = null)
  * @method SportEvent[]    findAll()
  * @method SportEvent[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class SportEventRepository extends ServiceEntityRepository
+final class SportEventRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
