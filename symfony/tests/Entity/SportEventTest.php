@@ -3,11 +3,12 @@
 namespace App\Tests\Entity;
 
 use App\Entity\SportEvent;
+use App\Tests\GeneralTestMethod;
 use DateInterval;
 use DateTime;
 use DateTimeZone;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Validator\Validator\TraceableValidator;
 
 final class SportEventTest extends WebTestCase
 {
@@ -16,31 +17,29 @@ final class SportEventTest extends WebTestCase
      * Il doit avoir une date et une dateTimeZone
      * Il ne doit pas accepté les caractères spéciaux et les nombres dans les noms
      */
+    private SportEvent $sportEvent;
+    private TraceableValidator $validator;
 
-    private function getKernel(): KernelInterface
+    public function setUp(): void
     {
-        $kernel = $this->bootKernel();
-        $kernel->boot();
-        return $kernel;
+        $this->sportEvent = new SportEvent();
+        $this->validator = GeneralTestMethod::getKernelAndValidator()["validator"];
     }
 
     //Est-ce que je peux créer un SportEvent
     public function testCreateSportEvent(): void
     {
-        $sportEvent = new SportEvent();
-
-        $this->assertInstanceOf(SportEvent::class, $sportEvent);
+        $this->assertInstanceOf(SportEvent::class, $this->sportEvent);
     }
 
     //Est-ce que SportEvent contient un lieu valide
     public function testLocationInputIsReturned(): void
     {
-        $sportEvent = new SportEvent();
         $location = '23 rue des peupliers';
 
-        $sportEvent->setLocation($location);
+        $this->sportEvent->setLocation($location);
 
-        $this->assertSame($location, $sportEvent->getLocation());
+        $this->assertSame($location, $this->sportEvent->getLocation());
     }
 
     //TODO adresse valide avec API
@@ -48,33 +47,63 @@ final class SportEventTest extends WebTestCase
     //Est-ce que SportEvent contient une competition
     public function testCompetitionInputIsReturned(): void
     {
-        $sportEvent = new SportEvent();
         $competition = 'Super sport 2022';
 
-        $sportEvent->setCompetition($competition);
+        $this->sportEvent->setCompetition($competition);
 
-        $this->assertSame($competition, $sportEvent->getCompetition());
+        $this->assertSame($competition, $this->sportEvent->getCompetition());
     }
 
     /*
     Est-ce que la date est supérieure de 2 jours à la date actuelle
-    et que l'heure est supérieur de 48H à l'heure actuelle
     */
     public function testValidDate(): void
     {
-        $sportEvent = new SportEvent();
         $date = new DateTime('now', new DateTimeZone('Europe/Paris'));
         $date->add(new DateInterval('P4D'));
+        $this->sportEvent->setTimeZone('Europe/Paris');
+        $this->sportEvent->setDate($date);
 
-        $kernel = $this->getKernel();
-        $validator = $kernel->getContainer()->get('validator');
-        $violations = $validator->validate($sportEvent);
+        $violations = $this->validator->validate($this->sportEvent);
 
-        $sportEvent->setDate($date);
-        $this->assertSame($date, $sportEvent->getDate());
+        $this->assertSame($date, $this->sportEvent->getDate());
         $this->assertCount(0, $violations);
     }
 
+    //Si la Date n'est pas supérieure à la date actuelle de 2 jours
+    public function testInvalidDate(): void
+    {
+        $date = new DateTime('now', new DateTimeZone('Europe/Paris'));
+        $date->add(new DateInterval('P4D'));
+        $this->sportEvent->setTimeZone('Jupiter/Mars');
+        $this->sportEvent->setDate($date);
+
+        $violations = $this->validator->validate($this->sportEvent);
+
+        $this->assertSame($date, $this->sportEvent->getDate());
+        $this->assertGreaterThanOrEqual(1, count($violations));
+    }
+
     //Est-ce que la DateTimeZone est la bonne !
-    //TODO finir le test sur Timezone
+
+    public function testValidTimeZone(): void
+    {
+        $timeZone = 'Europe/Paris';
+        $this->sportEvent->setTimeZone($timeZone);
+        $violations = $this->validator->validate($this->sportEvent);
+
+        $this->assertSame($timeZone, $this->sportEvent->getTimeZone());
+        $this->assertCount(0, $violations);
+    }
+
+    //Si la Timezone n'est pas celle du SportEvent
+    public function testInvalidTimeZone(): void
+    {
+        $timeZone = 'Pluton/Venus';
+        $this->sportEvent->setTimeZone($timeZone);
+        $violations = $this->validator->validate($this->sportEvent);
+
+        $this->assertSame($timeZone, $this->sportEvent->getTimeZone());
+        $this->assertGreaterThanOrEqual(1, count($violations));
+    }
 }
