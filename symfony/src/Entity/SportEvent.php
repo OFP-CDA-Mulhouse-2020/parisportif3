@@ -8,6 +8,7 @@ use DateTime;
 use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=SportEventRepository::class)
@@ -35,6 +36,14 @@ final class SportEvent
      * @ORM\Column(type="datetime")
      */
     private DateTimeInterface $date;
+
+    /**
+     * @ORM\Column(type="string", length=120)
+     *
+     * @Assert\NotNull
+     * @Assert\Timezone
+     */
+    private string $timeZone;
 
     public function getId(): ?int
     {
@@ -72,10 +81,25 @@ final class SportEvent
 
     public function setDate(\DateTimeInterface $date): self
     {
-        $maxDate = new DateTime('now', new DateTimeZone('Europe/Paris'));
-        $maxDate->add(new DateInterval('P2D'));
+        $minDate = new DateTime('now', new DateTimeZone('Europe/Paris'));
+        $minDate->add(new DateInterval('P2D'));
 
-        $this->date = $date;
+
+        if ($date >= $minDate) {
+            $this->date = $date;
+        }
+
+        return $this;
+    }
+
+    public function getTimeZone(): string
+    {
+        return $this->timeZone;
+    }
+
+    public function setTimeZone(string $timeZone): self
+    {
+        $this->timeZone = $timeZone;
 
         return $this;
     }
