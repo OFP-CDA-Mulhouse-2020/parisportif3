@@ -8,7 +8,6 @@ use DateTime;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Validator\Validator\TraceableValidator;
 
-
 final class TransactionTest extends WebTestCase
 {
     private TraceableValidator $validator;
@@ -35,13 +34,13 @@ final class TransactionTest extends WebTestCase
 
 
     //Doit permettre d'ajouter un objet de classe Wallet
-    public function testCanInsertAWalletObject(): void
-    {
-        $userWallet = new Wallet();
-        $this->transaction->setWallet($userWallet);
-
-        $this->assertInstanceOf(Wallet::class, $this->transaction->getWallet());
-    }
+//    public function testCanInsertAWalletObject(): void
+//    {
+//        $userWallet = new Wallet();
+//        $this->transaction->setWallet($userWallet);
+//
+//        $this->assertInstanceOf(Wallet::class, $this->transaction->getWallet());
+//    }
 
     public function testCanBetAValidAmount(): void
     {
@@ -51,7 +50,7 @@ final class TransactionTest extends WebTestCase
     }
 
     /** @dataProvider amountProvider */
-    public function testCanBetAInvalidAmount($amountProvider): void
+    public function testCantBetAInvalidAmount(int $amountProvider): void
     {
         $this->transaction->setAmount($amountProvider);
         $violations = $this->validator->validate($this->transaction);
@@ -59,6 +58,7 @@ final class TransactionTest extends WebTestCase
         $this->assertGreaterThan(0, count($violations));
     }
 
+    /** @return array<array<int>> */
     public function amountProvider(): array
     {
         return [
@@ -69,11 +69,11 @@ final class TransactionTest extends WebTestCase
         ];
     }
 
-    public function testCanInsertABetChoiceObject(): void
-    {
-        $userBetChoice = new BetTemplateChoice();
-        $this->transaction->setBetTemplateChoice($userBetChoice);
-
-        $this->assertInstanceOf(BetTemplateChoice::class, $this->transaction->getBetTemplateChoice());
-    }
+//    public function testCanInsertABetChoiceObject(): void
+//    {
+//        $userBetChoice = new BetTemplateChoice();
+//        $this->transaction->setBetTemplateChoice($userBetChoice);
+//
+//        $this->assertInstanceOf(BetTemplateChoice::class, $this->transaction->getBetTemplateChoice());
+//    }
 }
