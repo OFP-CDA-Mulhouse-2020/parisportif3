@@ -80,7 +80,7 @@ final class SportTypeTest extends WebTestCase
         $this->assertGreaterThanOrEqual(1, count($violations));
     }
 
-
+    /** @return array<array<string>> */
     public function invalidSportNameProvider(): array
     {
         return [
@@ -92,6 +92,7 @@ final class SportTypeTest extends WebTestCase
         ];
     }
 
+    /** @return array<array<string>> */
     public function validSportNameProvider(): array
     {
         return [
