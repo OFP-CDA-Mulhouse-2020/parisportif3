@@ -34,11 +34,13 @@ final class BetChoice
         return $this->id;
     }
 
+    /** @return array<int> */
     public function getChoice(): ?array
     {
         return $this->choice;
     }
 
+    /** @param array<int> $choice */
     public function setChoice(array $choice): self
     {
         $this->choice = $choice;
