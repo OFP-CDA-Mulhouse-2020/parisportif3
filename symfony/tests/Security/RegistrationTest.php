@@ -22,7 +22,7 @@ final class RegistrationTest extends WebTestCase
         $client->request('GET', '/register');
 
         $this->assertSelectorExists('input#registration_form_username');
-        $this->assertSelectorExists('input#registration_form_plainPassword_first');
+        $this->assertSelectorExists('input#registration_form_password_first');
         $this->assertSelectorExists('input#registration_form_birthDate');
         $this->assertSelectorExists("button[type='submit']");
     }
