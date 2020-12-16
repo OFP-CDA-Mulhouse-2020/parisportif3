@@ -28,11 +28,13 @@ final class BetTemplateChoice
         return $this->id;
     }
 
+    /** @return array<string> */
     public function getUpdatedDescription(): ?array
     {
         return $this->updatedDescription;
     }
 
+    /** @param array<string> $updatedDescription */
     public function updateDescription(array $updatedDescription): self
     {
         $this->updatedDescription = $updatedDescription;
