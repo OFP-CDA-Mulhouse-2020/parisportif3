@@ -27,6 +27,7 @@ final class AthleteTest extends WebTestCase
         $this->assertCount(0, $this->validator->validate($this->athlete));
     }
 
+    /** @return array<array<string>> */
     public function validLastNameProvider(): array
     {
         return [
@@ -51,6 +52,7 @@ final class AthleteTest extends WebTestCase
         $this->assertGreaterThanOrEqual(1, count($violations));
     }
 
+    /** @return array<array<string>> */
     public function invalidLastNameProvider(): array
     {
         return [
@@ -71,6 +73,7 @@ final class AthleteTest extends WebTestCase
         $this->assertCount(0, $this->validator->validate($this->athlete));
     }
 
+    /** @return array<array<string>> */
     public function validFirstNameProvider(): array
     {
         return [
@@ -94,6 +97,7 @@ final class AthleteTest extends WebTestCase
         $this->assertGreaterThanOrEqual(1, count($violations));
     }
 
+    /** @return array<array<string>> */
     public function invalidFirstNameProvider(): array
     {
         return [
