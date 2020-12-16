@@ -26,11 +26,11 @@ final class EncounterEventTest extends TestCase
     }
 
     //Doit pouvoir insérer un objet de la classe SportEvent
-    public function testInsertSportEventObject(): void
-    {
-        $encounterEvent = new EncounterEvent();
-        $sportEvent = new SportEvent();
-
-        $this->assertTrue($encounterEvent->setSportEvent($sportEvent));
-    }
+//    public function testInsertSportEventObject(): void
+//    {
+//        $encounterEvent = new EncounterEvent();
+//        $sportEvent = new SportEvent();
+//
+//        $this->assertTrue($encounterEvent->setSportEvent($sportEvent));
+//    }
 }
