@@ -22,7 +22,10 @@ final class BetChoice
      * @ORM\Column(type="array")
      * @var array<int>
      * @Assert\NotNull
+     * @Assert\NotBlank
      * @Assert\All({
+     *     @Assert\GreaterThan(0),
+     *     @Assert\NotNull,
      *     @Assert\NotBlank,
      *     @Assert\Type("int")
      * })
