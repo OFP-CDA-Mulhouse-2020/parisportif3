@@ -9,13 +9,7 @@ use Symfony\Component\Validator\Validator\TraceableValidator;
 
 final class BetChoiceTest extends WebTestCase
 {
-    /**
-     * @var BetChoice
-     */
     private BetChoice $betChoice;
-    /**
-     * @var mixed
-     */
     private TraceableValidator $validator;
 
     public function setUp(): void
@@ -33,20 +27,27 @@ final class BetChoiceTest extends WebTestCase
         $this->assertCount(0, $this->validator->validate($this->betChoice));
     }
 
-    /** @dataProvider invalidBetChoiceProvider */
-    public function testInvalidBetChoice(array $invalidBetChoiceProvider): void
+    /**
+     * @dataProvider invalidBetChoiceProvider
+     * @param array<int> $invalidBetChoice
+     */
+    public function testInvalidBetChoice(array $invalidBetChoice): void
     {
-        $this->betChoice->setChoice($invalidBetChoiceProvider);
+        $this->betChoice->setChoice($invalidBetChoice);
         $violations = $this->validator->validate($this->betChoice);
 
         $this->assertGreaterThanOrEqual(1, count($violations));
     }
 
+    /** @return array<array<array<float|int|string>>> */
     public function invalidBetChoiceProvider(): array
     {
         return [
             [['']],
-            [['juin']]
+            [['juin']],
+            [[]],
+            [[-15]],
+            [[2.7]]
         ];
     }
 }
