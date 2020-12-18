@@ -23,4 +23,8 @@ final class CartItem
     {
         return $this->id;
     }
+
+    //TODO Ajouter la relation avec Bet
+
+    //TODO Ajouter la relation avec BetChoices
 }
