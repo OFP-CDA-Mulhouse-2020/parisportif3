@@ -7,6 +7,7 @@
 
 namespace App\Tests\Entity;
 
+use App\Entity\CartItem;
 use App\Tests\GeneralTestMethod;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Validator\TraceableValidator;
