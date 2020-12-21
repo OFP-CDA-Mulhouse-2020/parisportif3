@@ -1,10 +1,5 @@
 <?php
 
-/**
- * @author  Etienne Schmitt <etienne@schmitt-etienne.fr>
- * @license GPL 2.0 or any later
- */
-
 namespace App\Tests\Entity;
 
 use App\Entity\CartItem;
