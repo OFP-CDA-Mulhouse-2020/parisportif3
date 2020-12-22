@@ -4,6 +4,7 @@ namespace App\Tests\Controller;
 
 use App\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DomCrawler\Field\FormField;
 
 final class LoginControllerTest extends WebTestCase
 {
@@ -44,6 +45,8 @@ final class LoginControllerTest extends WebTestCase
 
         $form = $crawler->selectButton('Sign in')->form();
 
+        assert($form['username'] instanceof FormField);
+        assert($form['password'] instanceof FormField);
         $form['username']->setValue($user->getUsername());
         $form['password']->setValue($user->getPassword());
 
