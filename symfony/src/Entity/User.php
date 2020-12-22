@@ -12,7 +12,6 @@ use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\Validator\Constraints as SecurityAssert;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -28,9 +27,6 @@ final class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     *
-     * @Assert\Unique
-     * @Assert\NotNull
      */
     private int $id;
 
@@ -43,7 +39,6 @@ final class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      *
-     * @Assert\Unique
      * @Assert\NotNull
      *
      * @TODO Ajouter un validator pour tester la validité de username
@@ -55,7 +50,6 @@ final class User implements UserInterface
      *
      * @Assert\NotNull
      * @Assert\NotCompromisedPassword
-     * @SecurityAssert\UserPassword
      *
      * @TODO Ajouter un validator pour supprimé les test dans ::setPassword() et ::isPasswordStrongEnough()
      */
@@ -130,6 +124,11 @@ final class User implements UserInterface
     /** @ORM\Column(type="date", nullable=true) */
     private ?DateTimeInterface $deletedAt;
 
+    /** @ORM\Column(type="boolean") */
+    private bool $verified = false;
+
+    /** @ORM\Column(type="date", nullable=true) */
+    private ?DateTimeInterface $verifiedAt;
 
     public function __construct()
     {
@@ -205,7 +204,7 @@ final class User implements UserInterface
         return $userAge >= 18;
     }
 
-    private function getBirthDate(): DateTimeInterface
+    public function getBirthDate(): DateTimeInterface
     {
         return $this->birthDate;
     }
@@ -322,11 +321,29 @@ final class User implements UserInterface
     {
         return $this->active;
     }
-
-    public function activate(): void
+  
+    public function activate(): self
     {
         $this->active = true;
         $this->activatedAt = new DateTime();
+        return $this;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->verified;
+    }
+
+    public function setVerified(): self
+    {
+        $this->verified = true;
+        $this->verifiedAt = new DateTime();
+        return $this;
+    }
+
+    public function verifiedAt(): ?DateTimeInterface
+    {
+        return $this->verifiedAt;
     }
 
     public function activatedAt(): ?DateTimeInterface

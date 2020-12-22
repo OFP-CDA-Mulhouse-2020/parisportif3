@@ -8,10 +8,13 @@ framework:
     # Remove or comment this section to explicitly disable session support.
     session:
         handler_id: null
-        cookie_secure: auto
+        #TODO:: Changer en auto lorsqu'on passera en HTTPS://.
+        cookie_secure: false
         cookie_samesite: lax
 
     #esi: true
     #fragments: true
     php_errors:
         log: true
+
+    validation: { enable_annotations: true }
