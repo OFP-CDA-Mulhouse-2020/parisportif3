@@ -14,9 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Validator\Constraints\Email;
-use Symfony\Component\Validator\ConstraintViolation;
-use Symfony\Component\Validator\Validation;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -40,10 +38,23 @@ final class User implements UserInterface
      */
     private array $roles = [];
 
-    /** @ORM\Column(type="string", length=180, unique=true) */
+    /**
+     * @ORM\Column(type="string", length=180, unique=true)
+     *
+     * @Assert\NotNull
+     *
+     * @TODO Ajouter un validator pour tester la validité de username
+     */
     private string $username;
 
-    /** @ORM\Column(type="string") */
+    /**
+     * @ORM\Column(type="string")
+     *
+     * @Assert\NotNull
+     * @Assert\NotCompromisedPassword
+     *
+     * @TODO Ajouter un validator pour supprimé les test dans ::setPassword() et ::isPasswordStrongEnough()
+     */
     private string $password;
 
     /** @ORM\Column(type="string", length=255) */
@@ -81,6 +92,12 @@ final class User implements UserInterface
 
     /** @ORM\Column(type="bool") */
     private bool $suspended = false;
+
+    /** @ORM\Column(type="boolean") */
+    private bool $verified = false;
+
+    /** @ORM\Column(type="date", nullable=true) */
+    private ?DateTimeInterface $verifiedAt;
 
 
     public function __construct()
@@ -180,7 +197,7 @@ final class User implements UserInterface
         return $now->diff($this->getBirthDate()) >= "18";
     }
 
-    private function getBirthDate(): DateTimeInterface
+    public function getBirthDate(): DateTimeInterface
     {
         return $this->birthDate;
     }

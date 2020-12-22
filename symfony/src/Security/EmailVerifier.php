@@ -2,6 +2,7 @@
 
 namespace App\Security;
 
+
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
@@ -32,6 +33,7 @@ final class EmailVerifier
         UserInterface $user,
         TemplatedEmail $email
     ): void {
+
         assert($user instanceof User);
         $signatureComponents = $this->verifyEmailHelper->generateSignature(
             $verifyEmailRouteName,
@@ -59,6 +61,8 @@ final class EmailVerifier
             (string)$user->getId(),
             $user->getEmail()
         );
+
+        $this->verifyEmailHelper->validateEmailConfirmation($request->getUri(), $user->getId(), $user->getEmail());
 
         $user->setVerified();
 
