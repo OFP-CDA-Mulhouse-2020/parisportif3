@@ -27,8 +27,6 @@ final class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     *
-     * @Assert\NotNull
      */
     private int $id;
 
@@ -131,7 +129,6 @@ final class User implements UserInterface
 
     /** @ORM\Column(type="date", nullable=true) */
     private ?DateTimeInterface $verifiedAt;
-
 
     public function __construct()
     {
@@ -324,7 +321,7 @@ final class User implements UserInterface
     {
         return $this->active;
     }
-
+  
     public function activate(): self
     {
         $this->active = true;
