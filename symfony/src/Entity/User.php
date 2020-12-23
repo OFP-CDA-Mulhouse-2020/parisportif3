@@ -2,16 +2,13 @@
 
 namespace App\Entity;
 
-use App\Exception\InvalidEmailException;
 use App\Exception\InvalidFirstNameException;
 use App\Exception\InvalidLastNameException;
-use App\Exception\InvalidTimeZone;
 use App\Repository\UserRepository;
 use DateTime;
 use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
-use InvalidArgumentException;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -29,6 +26,7 @@ final class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
+     *
      */
     private int $id;
 
@@ -50,24 +48,68 @@ final class User implements UserInterface
     /**
      * @ORM\Column(type="string")
      *
-     * @Assert\NotNull
      * @Assert\NotCompromisedPassword
      *
      * @TODO Ajouter un validator pour supprimé les test dans ::setPassword() et ::isPasswordStrongEnough()
      */
     private string $password;
 
-    /** @ORM\Column(type="string", length=255) */
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\Email(mode="strict")
+     */
     private string $email;
 
-    /** @ORM\Column(type="date") */
+    /**
+     * @ORM\Column(type="date")
+     *
+     * @Assert\NotNull
+     *
+     * @TODO Ajouter un validator pour vérifier si l'utilisateur à l'age avant de l'ajouter
+     */
     private DateTimeInterface $birthDate;
 
-    /** @ORM\Column(type="string", length=120) */
-    private string $timeZone;
+    /**
+     * @ORM\Column(type="string", length=120)
+     *
+     * @Assert\NotNull
+     * @Assert\Timezone
+     */
+    private string $timeZone = "Europe/Paris";
 
-    /** @ORM\Column(type="datetime") */
+    /**
+     * @ORM\Column(type="string", length=180)
+     *
+     * @Assert\NotNull
+     *
+     * @TODO Ajouter un validator custom pour tester le nom
+     */
+    private string $lastName;
+
+    /**
+     * @ORM\Column(type="string", length=180)
+     *
+     * @Assert\NotNull
+     *
+     * @TODO Ajouter un validator custom pour tester le nom
+     */
+    private string $firstName;
+
+    /**
+     * @ORM\Column(type="datetime")
+     *
+     * @Assert\NotNull
+     *
+     * @TODO Ajouter un validator custom pour tester si antérieur à maintenant
+     */
     private DateTimeInterface $createdAt;
+
+    /** @ORM\Column(type="date", nullable=true) */
+    private ?DateTimeInterface $suspendedAt;
+
+    /** @ORM\Column(type="boolean") */
+    private bool $suspended = false;
 
     /** @ORM\Column(type="boolean") */
     private bool $active = false;
@@ -80,18 +122,6 @@ final class User implements UserInterface
 
     /** @ORM\Column(type="date", nullable=true) */
     private ?DateTimeInterface $deletedAt;
-
-    /** @ORM\Column(type="string", length=180, unique=true) */
-    private string $lastName;
-
-    /** @ORM\Column(type="string", length=180, unique=true) */
-    private string $firstName;
-
-    /** @ORM\Column(type="date", nullable=true) */
-    private ?DateTimeInterface $suspendedAt;
-
-    /** @ORM\Column(type="bool") */
-    private bool $suspended = false;
 
     /** @ORM\Column(type="boolean") */
     private bool $verified = false;
@@ -159,24 +189,24 @@ final class User implements UserInterface
 
     public function setEmail(string $email): self
     {
-        $validator = Validation::createValidator();
-        $emailConstraint = new Email(
-            [
-                "mode" => Email::VALIDATION_MODE_STRICT
-            ]
-        );
-
-        $errors = $validator->validate($email, $emailConstraint);
-
-        if (count($errors) !== 0) {
-            /** @var ConstraintViolation[] $errors */
-            $errorMessage = $errors[0]->getMessage();
-            throw new InvalidEmailException($errorMessage);
-        }
-
         $this->email = $email;
 
         return $this;
+    }
+
+    public function isUserOldEnough(): bool
+    {
+        $now = (new DateTime())
+            ->setTimezone(new DateTimeZone('Europe/Paris'))
+            ->setTime(0, 0);
+
+        $userAge = (int)$now->diff($this->getBirthDate())->format('%Y');
+        return $userAge >= 18;
+    }
+
+    public function getBirthDate(): DateTimeInterface
+    {
+        return $this->birthDate;
     }
 
     public function setBirthDate(DateTimeInterface $birthDate): self
@@ -186,22 +216,6 @@ final class User implements UserInterface
         return $this;
     }
 
-    //TODO a fixé rapidement
-    public function isUserOldEnough(): bool
-    {
-        $now = new DateTime();
-        $now
-            ->setTimezone(new DateTimeZone("Europe/Paris"))
-            ->setTime(0, 0);
-
-        return $now->diff($this->getBirthDate()) >= "18";
-    }
-
-    public function getBirthDate(): DateTimeInterface
-    {
-        return $this->birthDate;
-    }
-
     public function getTimeZone(): string
     {
         return $this->timeZone;
@@ -209,17 +223,9 @@ final class User implements UserInterface
 
     public function setTimeZone(string $timeZone): self
     {
-        if (!$this->isValidTimeZone($timeZone)) {
-            throw new InvalidTimeZone("Invalid Timezone");
-        }
         $this->timeZone = $timeZone;
 
         return $this;
-    }
-
-    private function isValidTimeZone(string $timeZone): bool
-    {
-        return in_array($timeZone, DateTimeZone::listIdentifiers(), true);
     }
 
     public function createdAt(): DateTimeInterface
@@ -278,37 +284,8 @@ final class User implements UserInterface
 
     public function setPassword(string $password): self
     {
-        try {
-            if (self::isPasswordStrongEnough($password)) {
-                $this->password = $password;
-            }
-        } catch (InvalidArgumentException $e) {
-            echo $e->getMessage();
-        }
-
+        $this->password = $password;
         return $this;
-    }
-
-    public static function isPasswordStrongEnough(string $password): bool
-    {
-        if (!preg_match('/\d+/', $password)) {
-            throw new InvalidArgumentException("\nIl manque au moins un chiffre.");
-        }
-
-        if (!preg_match('/[a-zA-Z]+/', $password)) {
-            throw new InvalidArgumentException("\nIl manque au moins une lettre.");
-        }
-
-        $passwordLength = strlen($password);
-        if ($passwordLength < 8) {
-            throw new InvalidArgumentException("\nLa longueur du mot de passe est trop courte");
-        }
-
-        if ($passwordLength > 32) {
-            throw new InvalidArgumentException("\nLa longueur du mot de passe est trop longue");
-        }
-
-        return true;
     }
 
     public function isActive(): bool

@@ -64,7 +64,7 @@ final class RegistrationFormType extends AbstractType
                 ]
             )
             ->add(
-                'password',
+                'plainPassword',
                 RepeatedType::class,
                 [
                     // instead of being set onto the object directly,
