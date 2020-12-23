@@ -9,7 +9,6 @@ use DateInterval;
 use DateTime;
 use DateTimeZone;
 use Exception;
-use InvalidArgumentException;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -132,22 +131,6 @@ final class UserTest extends WebTestCase
         sleep(1);
 
         $this->assertGreaterThan($user->createdAt(), new DateTime());
-    }
-
-    public function testPassWordIsValid(): void
-    {
-        $user = new User();
-        $this->assertTrue($user->setPassword('1AAZDSQDq'));
-    }
-
-    /** @dataProvider passProvider */
-    public function testPassWordIsInvalid(string $a): void
-    {
-        $user = new User();
-
-        // TODO Modifié apres la création du Validator de mot de passe
-        $this->expectException(InvalidArgumentException::class);
-        $user->isPasswordStrongEnough($a);
     }
 
     public function testUserIsActive(): void
