@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\ReceiptRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ReceiptRepository::class)
@@ -19,6 +20,8 @@ final class Receipt
 
     /**
      * @ORM\Column(type="integer")
+     *
+     * @Assert\GreaterThan(0)
      */
     private int $amount;
 
