@@ -20,7 +20,10 @@ final class Bet
 
     /**
      * @ORM\Column(type="integer")
+     *
      * @Assert\GreaterThanOrEqual(1)
+     * @Assert\NotNull
+     * @Assert\NotBlank
      */
     private int $amount;
 
