@@ -58,6 +58,8 @@ final class Bet
 
     /**
      * @ORM\Column(type="integer")
+     *
+     * @Assert\GreaterThan(100)
      */
     private int $cote;
 
