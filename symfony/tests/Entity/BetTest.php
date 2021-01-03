@@ -12,10 +12,17 @@ final class BetTest extends WebTestCase
 {
     private TraceableValidator $validator;
     private Bet $bet;
+    private const STATUS_UNPAID = 0;
+    private const STATUS_PENDING = 1;
+    private const STATUS_PAID = 2;
 
     public function setUp(): void
     {
         $this->bet = new Bet();
+
+        $this->bet->setAmount(50);
+        $this->bet->setStatus($this::STATUS_PAID);
+
         $this->validator = GeneralTestMethod::getKernelAndValidator()['validator'];
     }
 
@@ -61,5 +68,22 @@ final class BetTest extends WebTestCase
         yield [-1400];
         yield [-1];
         yield [-420];
+    }
+
+    /** @dataProvider validStatusProvider */
+    public function testStatusIsValid(int $status): void
+    {
+        $this->bet->setStatus($status);
+
+        $violations = $this->validator->validate($this->bet);
+        $this->assertCount(0, $violations);
+    }
+
+    /** @return Generator<array<int>> */
+    public function validStatusProvider(): Generator
+    {
+        yield [$this::STATUS_UNPAID];
+        yield [$this::STATUS_PENDING];
+        yield [$this::STATUS_PAID];
     }
 }
