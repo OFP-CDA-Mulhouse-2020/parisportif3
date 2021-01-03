@@ -39,6 +39,7 @@ final class BetTest extends WebTestCase
             (new DateTime())
                 ->add(new DateInterval('P2D'))
         );
+        $this->bet->setCote(125);
 
         $violations = $this->validator->validate($this->bet);
 
@@ -64,6 +65,7 @@ final class BetTest extends WebTestCase
             (new DateTime())
                 ->add(new DateInterval('P2D'))
         );
+        $this->bet->setCote(125);
 
         $violations = $this->validator->validate($this->bet);
         $this->assertGreaterThanOrEqual(1, count($violations));
@@ -89,6 +91,7 @@ final class BetTest extends WebTestCase
             (new DateTime())
                 ->add(new DateInterval('P2D'))
         );
+        $this->bet->setCote(125);
 
         $violations = $this->validator->validate($this->bet);
         $this->assertCount(0, $violations);
@@ -112,6 +115,7 @@ final class BetTest extends WebTestCase
             (new DateTime())
                 ->add(new DateInterval('P2D'))
         );
+        $this->bet->setCote(125);
 
         $violations = $this->validator->validate($this->bet);
         $this->assertGreaterThanOrEqual(1, count($violations));
@@ -135,6 +139,7 @@ final class BetTest extends WebTestCase
 
         $this->bet->setAmount(50);
         $this->bet->setStatus($this::STATUS_PAID);
+        $this->bet->setCote(125);
 
         $violations = $this->validator->validate($this->bet);
         $this->assertCount(0, $violations);
@@ -150,6 +155,10 @@ final class BetTest extends WebTestCase
 
     public function testDateIsInvalid(): void
     {
+        $this->bet->setAmount(50);
+        $this->bet->setStatus($this::STATUS_PAID);
+        $this->bet->setCote(125);
+
         $violations = $this->validator->validate($this->bet);
         $this->assertGreaterThanOrEqual(1, count($violations));
     }
