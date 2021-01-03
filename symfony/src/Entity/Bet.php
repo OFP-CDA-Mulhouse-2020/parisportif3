@@ -56,6 +56,11 @@ final class Bet
      */
     private DateTimeInterface $date;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private int $cote;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -93,6 +98,18 @@ final class Bet
     public function setDate(DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getCote(): ?int
+    {
+        return $this->cote;
+    }
+
+    public function setCote(int $cote): self
+    {
+        $this->cote = $cote;
 
         return $this;
     }
