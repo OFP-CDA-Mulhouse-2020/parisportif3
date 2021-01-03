@@ -40,4 +40,21 @@ final class ReceiptTest extends WebTestCase
         yield [100];
         yield [10];
     }
+
+    /** @dataProvider invalidAmountProvider */
+    public function testReceiptAmountIsInvalid(int $amount): void
+    {
+        $this->receipt->setAmount($amount);
+
+        $violations = $this->validator->validate($this->receipt);
+        $this->assertGreaterThanOrEqual(1, count($violations));
+    }
+
+    /** @return Generator <array<int>> */
+    public function invalidAmountProvider(): Generator
+    {
+        yield [-100];
+        yield [0];
+        yield [-400];
+    }
 }
