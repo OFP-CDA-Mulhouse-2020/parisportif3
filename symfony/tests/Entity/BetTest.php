@@ -86,4 +86,24 @@ final class BetTest extends WebTestCase
         yield [$this::STATUS_PENDING];
         yield [$this::STATUS_PAID];
     }
+
+    /** @dataProvider invalidStatusProvider */
+    public function testStatusIsInvalid(int $status): void
+    {
+        $this->bet->setStatus($status);
+
+        $violations = $this->validator->validate($this->bet);
+        $this->assertGreaterThanOrEqual(1, count($violations));
+    }
+
+    /** @return Generator<array<int>> */
+    public function invalidStatusProvider(): Generator
+    {
+        yield [42];
+        yield [-1];
+        yield [5];
+        yield [8];
+        yield [6];
+        yield [3];
+    }
 }
