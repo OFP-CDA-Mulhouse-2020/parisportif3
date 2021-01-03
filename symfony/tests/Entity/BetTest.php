@@ -127,4 +127,30 @@ final class BetTest extends WebTestCase
         yield [6];
         yield [3];
     }
+
+    /** @dataProvider validDateProvider */
+    public function testDateIsOlderThanNow(DateTime $dateBet): void
+    {
+        $this->bet->setDate($dateBet);
+
+        $this->bet->setAmount(50);
+        $this->bet->setStatus($this::STATUS_PAID);
+
+        $violations = $this->validator->validate($this->bet);
+        $this->assertCount(0, $violations);
+    }
+
+    /** @return Generator<array<DateTime>> */
+    public function validDateProvider(): Generator
+    {
+        yield [(new DateTime())->add(new DateInterval('PT2H'))];
+        yield [(new DateTime())->add(new DateInterval('PT5M'))];
+        yield [(new DateTime())->add(new DateInterval('P2D'))];
+    }
+
+    public function testDateIsInvalid(): void
+    {
+        $violations = $this->validator->validate($this->bet);
+        $this->assertGreaterThanOrEqual(1, count($violations));
+    }
 }

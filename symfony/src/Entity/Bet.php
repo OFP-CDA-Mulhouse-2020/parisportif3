@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\BetRepository;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -48,6 +49,13 @@ final class Bet
         self::STATUS_PAID => "STATUS_PAID"
     ];
 
+    /**
+     * @ORM\Column(type="datetime")
+     *
+     * @Assert\NotNull
+     */
+    private DateTimeInterface $date;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -73,6 +81,18 @@ final class Bet
     public function setStatus(int $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getDate(): ?DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(DateTimeInterface $date): self
+    {
+        $this->date = $date;
 
         return $this;
     }
