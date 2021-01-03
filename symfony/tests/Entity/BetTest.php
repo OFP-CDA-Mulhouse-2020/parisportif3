@@ -4,6 +4,8 @@ namespace App\Tests\Entity;
 
 use App\Entity\Bet;
 use App\Tests\GeneralTestMethod;
+use DateInterval;
+use DateTime;
 use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Validator\Validator\TraceableValidator;
@@ -20,9 +22,6 @@ final class BetTest extends WebTestCase
     {
         $this->bet = new Bet();
 
-        $this->bet->setAmount(50);
-        $this->bet->setStatus($this::STATUS_PAID);
-
         $this->validator = GeneralTestMethod::getKernelAndValidator()['validator'];
     }
 
@@ -35,6 +34,11 @@ final class BetTest extends WebTestCase
     public function testAmountIsEnough(int $value): void
     {
         $this->bet->setAmount($value);
+        $this->bet->setStatus($this::STATUS_PAID);
+        $this->bet->setDate(
+            (new DateTime())
+                ->add(new DateInterval('P2D'))
+        );
 
         $violations = $this->validator->validate($this->bet);
 
@@ -55,6 +59,11 @@ final class BetTest extends WebTestCase
     public function testAmountIsInvalid(int $value): void
     {
         $this->bet->setAmount($value);
+        $this->bet->setStatus($this::STATUS_PAID);
+        $this->bet->setDate(
+            (new DateTime())
+                ->add(new DateInterval('P2D'))
+        );
 
         $violations = $this->validator->validate($this->bet);
         $this->assertGreaterThanOrEqual(1, count($violations));
@@ -75,6 +84,12 @@ final class BetTest extends WebTestCase
     {
         $this->bet->setStatus($status);
 
+        $this->bet->setAmount(50);
+        $this->bet->setDate(
+            (new DateTime())
+                ->add(new DateInterval('P2D'))
+        );
+
         $violations = $this->validator->validate($this->bet);
         $this->assertCount(0, $violations);
     }
@@ -91,6 +106,12 @@ final class BetTest extends WebTestCase
     public function testStatusIsInvalid(int $status): void
     {
         $this->bet->setStatus($status);
+
+        $this->bet->setAmount(50);
+        $this->bet->setDate(
+            (new DateTime())
+                ->add(new DateInterval('P2D'))
+        );
 
         $violations = $this->validator->validate($this->bet);
         $this->assertGreaterThanOrEqual(1, count($violations));
