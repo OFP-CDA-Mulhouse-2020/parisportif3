@@ -32,6 +32,8 @@ final class Bet
      *
      * @Assert\NotNull
      * @Assert\NotBlank
+     * @Assert\GreaterThanOrEqual(0)
+     * @Assert\LessThanOrEqual(2)
      */
     private int $status;
 
