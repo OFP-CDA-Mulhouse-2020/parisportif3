@@ -7,7 +7,9 @@
 
 namespace App\Tests\Entity;
 
+use App\Entity\Receipt;
 use App\Tests\GeneralTestMethod;
+use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Validator\Validator\TraceableValidator;
 
@@ -20,5 +22,22 @@ final class ReceiptTest extends WebTestCase
     {
         $this->receipt = new Receipt();
         $this->validator = GeneralTestMethod::getKernelAndValidator()['validator'];
+    }
+
+    /** @dataProvider validAmountProvider */
+    public function testReceiptAmountIsValid(int $amount): void
+    {
+        $this->receipt->setAmount($amount);
+
+        $violations = $this->validator->validate($this->receipt);
+        $this->assertCount(0, $violations);
+    }
+
+    /** @return Generator <array<int>> */
+    public function validAmountProvider(): Generator
+    {
+        yield [500];
+        yield [100];
+        yield [10];
     }
 }
