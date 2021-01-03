@@ -153,4 +153,29 @@ final class BetTest extends WebTestCase
         $violations = $this->validator->validate($this->bet);
         $this->assertGreaterThanOrEqual(1, count($violations));
     }
+
+    /** @dataProvider validCote */
+    public function testCoteIsValid(int $cote): void
+    {
+        $this->bet->setCote($cote);
+
+        $this->bet->setAmount(50);
+        $this->bet->setStatus($this::STATUS_PAID);
+        $this->bet->setDate(
+            (new DateTime())
+                ->add(new DateInterval('P2D'))
+        );
+
+        $violations = $this->validator->validate($this->bet);
+        $this->assertCount(0, $violations);
+    }
+
+    /** @return Generator<array<int>> */
+    public function validCote(): Generator
+    {
+        yield [115];
+        yield [110];
+        yield [250];
+        yield [1000];
+    }
 }
