@@ -17,8 +17,25 @@ final class Receipt
      */
     private int $id;
 
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private int $amount;
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getAmount(): ?int
+    {
+        return $this->amount;
+    }
+
+    public function setAmount(int $amount): self
+    {
+        $this->amount = $amount;
+
+        return $this;
     }
 }
