@@ -2,11 +2,11 @@
 
 namespace App\Security;
 
-
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
@@ -28,12 +28,12 @@ final class EmailVerifier
         $this->entityManager = $manager;
     }
 
+    /** @throws TransportExceptionInterface */
     public function sendEmailConfirmation(
         string $verifyEmailRouteName,
         UserInterface $user,
         TemplatedEmail $email
     ): void {
-
         assert($user instanceof User);
         $signatureComponents = $this->verifyEmailHelper->generateSignature(
             $verifyEmailRouteName,
@@ -61,8 +61,6 @@ final class EmailVerifier
             (string)$user->getId(),
             $user->getEmail()
         );
-
-        $this->verifyEmailHelper->validateEmailConfirmation($request->getUri(), $user->getId(), $user->getEmail());
 
         $user->setVerified();
 

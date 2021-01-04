@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Exception\InvalidFirstNameException;
 use App\Exception\InvalidLastNameException;
 use App\Repository\UserRepository;
+use DateInterval;
 use DateTime;
 use DateTimeInterface;
 use DateTimeZone;
@@ -200,7 +201,11 @@ final class User implements UserInterface
             ->setTimezone(new DateTimeZone('Europe/Paris'))
             ->setTime(0, 0);
 
-        $userAge = (int)$now->diff($this->getBirthDate())->format('%Y');
+        $ageDiff = $now->diff($this->getBirthDate());
+
+        assert($ageDiff instanceof DateInterval);
+        $userAge = (int)$ageDiff->format('%Y');
+
         return $userAge >= 18;
     }
 
