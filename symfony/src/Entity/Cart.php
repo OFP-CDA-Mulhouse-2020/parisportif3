@@ -17,10 +17,25 @@ final class Cart
      */
     private int $id;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=CartItem::class)
+     */
+    private ?CartItem $cartItem;
+
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    // TODO faire les relations
+    public function getCartItem(): ?CartItem
+    {
+        return $this->cartItem;
+    }
+
+    public function setCartItem(?CartItem $cartItem): self
+    {
+        $this->cartItem = $cartItem;
+
+        return $this;
+    }
 }
