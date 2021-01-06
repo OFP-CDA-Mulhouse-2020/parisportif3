@@ -22,9 +22,8 @@ final class Bet
     /**
      * @ORM\Column(type="integer")
      *
-     * @Assert\GreaterThanOrEqual(1)
+     * @Assert\GreaterThan(0)
      * @Assert\NotNull
-     * @Assert\NotBlank
      */
     private int $amount;
 
@@ -32,7 +31,6 @@ final class Bet
      * @ORM\Column(type="integer")
      *
      * @Assert\NotNull
-     * @Assert\NotBlank
      * @Assert\GreaterThanOrEqual(0)
      * @Assert\LessThanOrEqual(2)
      */
@@ -42,7 +40,7 @@ final class Bet
     public const STATUS_PENDING = 1;
     public const STATUS_PAID = 2;
 
-    /** @var array|string[] */
+    /** @var array<int, string> */
     public static array $statusList = [
         self::STATUS_UNPAID => "STATUS_UNPAID",
         self::STATUS_PENDING => "STATUS_PENDING",
@@ -59,16 +57,18 @@ final class Bet
     /**
      * @ORM\Column(type="integer")
      *
+     * @Assert\NotNull
      * @Assert\GreaterThan(100)
      */
     private int $cote;
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getAmount(): ?int
+    public function getAmount(): int
     {
         return $this->amount;
     }
@@ -80,7 +80,7 @@ final class Bet
         return $this;
     }
 
-    public function getStatus(): ?int
+    public function getStatus(): int
     {
         return $this->status;
     }
@@ -92,7 +92,7 @@ final class Bet
         return $this;
     }
 
-    public function getDate(): ?DateTimeInterface
+    public function getDate(): DateTimeInterface
     {
         return $this->date;
     }
@@ -104,7 +104,7 @@ final class Bet
         return $this;
     }
 
-    public function getCote(): ?int
+    public function getCote(): int
     {
         return $this->cote;
     }
