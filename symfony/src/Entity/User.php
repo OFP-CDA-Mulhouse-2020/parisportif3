@@ -109,7 +109,7 @@ final class User implements UserInterface
     /**
      * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="user")
      */
-    private Collection $transactions;
+    private Collection $transactionHistory;
 
     /** Dates */
 
@@ -374,30 +374,31 @@ final class User implements UserInterface
     }
 
     /** @return Collection<int, Transaction> */
-    public function getTransaction(): Collection
+    public function getTransactionHistory(): Collection
     {
-        return $this->transactions;
+        return $this->transactionHistory;
     }
 
-    public function addTransaction(Transaction $transaction): self
+    public function addTransactionHistory(Transaction $transactionHistory): self
     {
-        if (!$this->transactions->contains($transaction)) {
-            $this->transactions[] = $transaction;
-            $transaction->setUser($this);
+        if (!$this->transactionHistory->contains($transactionHistory)) {
+            $this->transactionHistory[] = $transactionHistory;
+            $transactionHistory->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeTransaction(Transaction $transaction): self
+    public function removeTransactionHistory(Transaction $transactionHistory): self
     {
-        if ($this->transactions->removeElement($transaction)) {
+        if ($this->transactionHistory->removeElement($transactionHistory)) {
             // set the owning side to null (unless already changed)
-            if ($transaction->getUser() === $this) {
-                $transaction->setUser(null);
+            if ($transactionHistory->getUser() === $this) {
+                $transactionHistory->setUser(null);
             }
         }
 
         return $this;
     }
+
 }

@@ -35,7 +35,7 @@ final class Transaction
     private int $totalPrice;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="transaction")
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="transactionHistory")
      * @ORM\JoinColumn(nullable=false)
      */
     private $user;
