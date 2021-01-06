@@ -9,6 +9,7 @@ use DateInterval;
 use DateTime;
 use DateTimeInterface;
 use DateTimeZone;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -108,6 +109,7 @@ final class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="user")
+     * @var Collection<int, Transaction>
      */
     private Collection $transactionHistory;
 
@@ -152,6 +154,7 @@ final class User implements UserInterface
     public function __construct()
     {
         $this->createdAt = new DateTime();
+        $this->transactionHistory = new ArrayCollection();
     }
 
     public function getId(): int
@@ -400,5 +403,4 @@ final class User implements UserInterface
 
         return $this;
     }
-
 }
