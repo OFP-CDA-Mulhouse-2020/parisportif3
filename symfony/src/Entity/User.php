@@ -9,6 +9,7 @@ use DateInterval;
 use DateTime;
 use DateTimeInterface;
 use DateTimeZone;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -129,6 +130,18 @@ final class User implements UserInterface
 
     /** @ORM\Column(type="date", nullable=true) */
     private ?DateTimeInterface $verifiedAt;
+
+    /**
+     * @ORM\OneToOne(targetEntity=Wallet::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private Wallet $wallet;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="user")
+     * @var Collection<int, Transaction>
+     */
+    private Collection $transactions;
 
 
     public function __construct()
@@ -341,5 +354,45 @@ final class User implements UserInterface
     {
         $this->deleted = true;
         $this->deletedAt = new DateTime();
+    }
+
+    public function getWallet(): ?Wallet
+    {
+        return $this->wallet;
+    }
+
+    public function setWallet(Wallet $wallet): self
+    {
+        $this->wallet = $wallet;
+
+        return $this;
+    }
+
+    /** @return Collection<int, Transaction> */
+    public function getTransaction(): Collection
+    {
+        return $this->transactions;
+    }
+
+    public function addTransaction(Transaction $transaction): self
+    {
+        if (!$this->transactions->contains($transaction)) {
+            $this->transactions[] = $transaction;
+            $transaction->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeTransaction(Transaction $transaction): self
+    {
+        if ($this->transactions->removeElement($transaction)) {
+            // set the owning side to null (unless already changed)
+            if ($transaction->getUser() === $this) {
+                $transaction->setUser(null);
+            }
+        }
+
+        return $this;
     }
 }
