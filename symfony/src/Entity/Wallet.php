@@ -48,7 +48,7 @@ final class Wallet
         return $this;
     }
 
-    public function subtractToBalance(int $balance): self
+    public function removeFromBalance(int $balance): self
     {
         $this->balance -= $balance;
 
