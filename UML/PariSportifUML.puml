@@ -109,7 +109,7 @@ class EncounterEvent{
 
 ' Relation
 User "1" *- "1" Wallet : manage >
-User "1" *-- "1" Transaction : pay >
+User "1" *-- "0..*" Transaction : pay >
 Receipt "1" *-- "0..*" Wallet : print <
 SportEvent "0..*"  *-- "1" EncounterEvent : occur >
 CartItem "1" *- "1" BetChoices : insert <
