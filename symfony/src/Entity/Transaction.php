@@ -38,7 +38,7 @@ final class Transaction
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="transactionHistory")
      * @ORM\JoinColumn(nullable=false)
      */
-    private $user;
+    private User $user;
 
     public function __construct()
     {
@@ -67,12 +67,12 @@ final class Transaction
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User
     {
         return $this->user;
     }
 
-    public function setUser(?User $user): self
+    public function setUser(User $user): self
     {
         $this->user = $user;
 
