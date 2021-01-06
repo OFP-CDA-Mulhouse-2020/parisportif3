@@ -216,6 +216,9 @@ final class User implements UserInterface
         return $this;
     }
 
+    /**
+     * TODO Retravailler pour permettre la portabilité de la TimeZone ainsi que l'âge de majorité
+     */
     public function isUserOldEnough(): bool
     {
         $now = (new DateTime())
