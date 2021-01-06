@@ -5,6 +5,8 @@ namespace App\Entity;
 use App\Repository\TransactionRepository;
 use DateTime;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -40,9 +42,16 @@ final class Transaction
      */
     private User $user;
 
+    /**
+     * @ORM\OneToMany(targetEntity=CartItem::class, mappedBy="transaction")
+     * @var Collection<int, CartItem>
+     */
+    private Collection $cartItemList;
+
     public function __construct()
     {
         $this->transactionDate = new DateTime();
+        $this->cartItemList = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -75,6 +84,34 @@ final class Transaction
     public function setUser(User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /** @return Collection<int, CartItem> */
+    public function getCartItemList(): Collection
+    {
+        return $this->cartItemList;
+    }
+
+    public function addCartItemList(CartItem $cartItemList): self
+    {
+        if (!$this->cartItemList->contains($cartItemList)) {
+            $this->cartItemList[] = $cartItemList;
+            $cartItemList->setTransaction($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCartItemList(CartItem $cartItemList): self
+    {
+        if ($this->cartItemList->removeElement($cartItemList)) {
+            // set the owning side to null (unless already changed)
+            if ($cartItemList->getTransaction() === $this) {
+                $cartItemList->setTransaction(null);
+            }
+        }
 
         return $this;
     }
