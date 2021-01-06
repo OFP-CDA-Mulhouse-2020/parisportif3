@@ -38,6 +38,8 @@ final class User implements UserInterface
      */
     private array $roles = [];
 
+    /** Personal data */
+
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      *
@@ -64,23 +66,6 @@ final class User implements UserInterface
     private string $email;
 
     /**
-     * @ORM\Column(type="date")
-     *
-     * @Assert\NotNull
-     *
-     * @TODO Ajouter un validator pour vérifier si l'utilisateur à l'age avant de l'ajouter
-     */
-    private DateTimeInterface $birthDate;
-
-    /**
-     * @ORM\Column(type="string", length=120)
-     *
-     * @Assert\NotNull
-     * @Assert\Timezone
-     */
-    private string $timeZone = "Europe/Paris";
-
-    /**
      * @ORM\Column(type="string", length=180)
      *
      * @Assert\NotNull
@@ -99,37 +84,21 @@ final class User implements UserInterface
     private string $firstName;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="date")
      *
      * @Assert\NotNull
      *
-     * @TODO Ajouter un validator custom pour tester si antérieur à maintenant
+     * @TODO Ajouter un validator pour vérifier si l'utilisateur à l'age avant de l'ajouter
      */
-    private DateTimeInterface $createdAt;
+    private DateTimeInterface $birthDate;
 
-    /** @ORM\Column(type="date", nullable=true) */
-    private ?DateTimeInterface $suspendedAt;
-
-    /** @ORM\Column(type="boolean") */
-    private bool $suspended = false;
-
-    /** @ORM\Column(type="boolean") */
-    private bool $active = false;
-
-    /** @ORM\Column(type="date", nullable=true) */
-    private ?DateTimeInterface $activatedAt;
-
-    /** @ORM\Column(type="boolean") */
-    private bool $deleted = false;
-
-    /** @ORM\Column(type="date", nullable=true) */
-    private ?DateTimeInterface $deletedAt;
-
-    /** @ORM\Column(type="boolean") */
-    private bool $verified = false;
-
-    /** @ORM\Column(type="date", nullable=true) */
-    private ?DateTimeInterface $verifiedAt;
+    /**
+     * @ORM\Column(type="string", length=120)
+     *
+     * @Assert\NotNull
+     * @Assert\Timezone
+     */
+    private string $timeZone;
 
     /**
      * @ORM\OneToOne(targetEntity=Wallet::class, cascade={"persist", "remove"})
@@ -139,9 +108,45 @@ final class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="user")
-     * @var Collection<int, Transaction>
      */
     private Collection $transactions;
+
+    /** Dates */
+
+    /** @ORM\Column(type="date", nullable=true) */
+    private ?DateTimeInterface $verifiedAt;
+
+    /**
+     * @ORM\Column(type="datetime")
+     *
+     * @Assert\NotNull
+     *
+     * @TODO Ajouter un validator custom pour tester si antérieur à maintenant
+     */
+    private DateTimeInterface $createdAt;
+
+    /** @ORM\Column(type="date", nullable=true) */
+    private ?DateTimeInterface $deletedAt;
+
+    /** @ORM\Column(type="date", nullable=true) */
+    private ?DateTimeInterface $activatedAt;
+
+    /** @ORM\Column(type="date", nullable=true) */
+    private ?DateTimeInterface $suspendedAt;
+
+    /** Status */
+
+    /** @ORM\Column(type="boolean") */
+    private bool $active = false;
+
+    /** @ORM\Column(type="boolean") */
+    private bool $verified = false;
+
+    /** @ORM\Column(type="boolean") */
+    private bool $suspended = false;
+
+    /** @ORM\Column(type="boolean") */
+    private bool $deleted = false;
 
 
     public function __construct()
