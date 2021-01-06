@@ -331,7 +331,7 @@ final class User implements UserInterface
         return $this->verified;
     }
 
-    public function setVerified(): self
+    public function verify(): self
     {
         $this->verified = true;
         $this->verifiedAt = new DateTime();
@@ -382,7 +382,7 @@ final class User implements UserInterface
         return $this->transactionHistory;
     }
 
-    public function addTransactionHistory(Transaction $transactionHistory): self
+    public function addTransactionToHistory(Transaction $transactionHistory): self
     {
         if (!$this->transactionHistory->contains($transactionHistory)) {
             $this->transactionHistory[] = $transactionHistory;
@@ -392,7 +392,7 @@ final class User implements UserInterface
         return $this;
     }
 
-    public function removeTransactionHistory(Transaction $transactionHistory): self
+    public function removeTransactionFromHistory(Transaction $transactionHistory): self
     {
         if ($this->transactionHistory->removeElement($transactionHistory)) {
             // set the owning side to null (unless already changed)
