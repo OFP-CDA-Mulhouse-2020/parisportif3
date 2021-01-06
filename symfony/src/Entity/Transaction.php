@@ -11,10 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TransactionRepository::class)
- * @UniqueEntity(
- *     fields={"id"},
- *     errorPath="ID"
- * )
+ * @UniqueEntity(fields={"id"})
  */
 final class Transaction
 {
@@ -33,9 +30,15 @@ final class Transaction
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\GreaterThan (99)
+     * @Assert\GreaterThan(0)
      */
-    private int $amount;
+    private int $totalPrice;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="transaction")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
 
     public function __construct()
     {
@@ -52,19 +55,27 @@ final class Transaction
         return $this->transactionDate;
     }
 
-    //TODO:: Ajouter la relation avec Wallet
-
-    public function getAmount(): ?int
+    public function getTotalPrice(): ?int
     {
-        return $this->amount;
+        return $this->totalPrice;
     }
 
-    public function setAmount(int $amount): self
+    public function setTotalPrice(int $totalPrice): self
     {
-        $this->amount = $amount;
+        $this->totalPrice = $totalPrice;
 
         return $this;
     }
 
-    //TODO:: Ajouter la relation avec BetTemplateChoice
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
 }
