@@ -25,6 +25,18 @@ final class CartItem
      */
     private Transaction $transaction;
 
+    /**
+     * @ORM\OneToOne(targetEntity=Bet::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private Bet $bet;
+
+    /**
+     * @ORM\OneToOne(targetEntity=BetChoice::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private BetChoice $betChoice;
+
     public function getId(): int
     {
         return $this->id;
@@ -42,6 +54,30 @@ final class CartItem
     public function setTransaction(Transaction $transaction): self
     {
         $this->transaction = $transaction;
+
+        return $this;
+    }
+
+    public function getBet(): ?Bet
+    {
+        return $this->bet;
+    }
+
+    public function setBet(Bet $bet): self
+    {
+        $this->bet = $bet;
+
+        return $this;
+    }
+
+    public function getBetChoice(): ?BetChoice
+    {
+        return $this->betChoice;
+    }
+
+    public function setBetChoice(BetChoice $betChoice): self
+    {
+        $this->betChoice = $betChoice;
 
         return $this;
     }
