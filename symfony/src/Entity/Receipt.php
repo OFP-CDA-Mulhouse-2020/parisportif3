@@ -25,6 +25,11 @@ final class Receipt
      */
     private int $amount;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Wallet::class)
+     */
+    private ?Wallet $wallet;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -38,6 +43,18 @@ final class Receipt
     public function setAmount(int $amount): self
     {
         $this->amount = $amount;
+
+        return $this;
+    }
+
+    public function getWallet(): ?Wallet
+    {
+        return $this->wallet;
+    }
+
+    public function setWallet(?Wallet $wallet): self
+    {
+        $this->wallet = $wallet;
 
         return $this;
     }
