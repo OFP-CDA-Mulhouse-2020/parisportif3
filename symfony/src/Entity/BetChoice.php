@@ -20,6 +20,9 @@ final class BetChoice
 
     /**
      * @ORM\Column(type="array")
+     *
+     * @TODO Corriger les assertions pour coller à l'UML
+     *
      * @var array<int>
      * @Assert\NotNull
      * @Assert\NotBlank
@@ -37,13 +40,19 @@ final class BetChoice
         return $this->id;
     }
 
-    /** @return array<int> */
+    /**
+     * @TODO Corriger pour coller à l'UML
+     * @return array<int>
+     */
     public function getChoice(): ?array
     {
         return $this->choice;
     }
 
-    /** @param array<int> $choice */
+    /**
+     * @TODO Corriger pour coller à l'UML
+     * @param array<int> $choice
+     */
     public function setChoice(array $choice): self
     {
         $this->choice = $choice;
