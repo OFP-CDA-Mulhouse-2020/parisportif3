@@ -44,15 +44,15 @@ final class TransactionTest extends WebTestCase
 
     public function testCanBetAValidAmount(): void
     {
-        $this->transaction->setAmount(1384);
+        $this->transaction->setTotalPrice(1384);
 
-        $this->assertEquals(1384, $this->transaction->getAmount());
+        $this->assertEquals(1384, $this->transaction->getTotalPrice());
     }
 
     /** @dataProvider amountProvider */
     public function testCantBetAInvalidAmount(int $amountProvider): void
     {
-        $this->transaction->setAmount($amountProvider);
+        $this->transaction->setTotalPrice($amountProvider);
         $violations = $this->validator->validate($this->transaction);
 
         $this->assertGreaterThan(0, count($violations));
@@ -64,8 +64,6 @@ final class TransactionTest extends WebTestCase
         return [
             [0],
             [-20],
-            [50],
-            [99],
         ];
     }
 
