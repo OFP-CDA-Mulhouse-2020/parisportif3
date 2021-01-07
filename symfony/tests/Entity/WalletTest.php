@@ -50,14 +50,14 @@ final class WalletTest extends WebTestCase
     public function testCanSubtractAmountToBalance(): void
     {
         $this->wallet->addToBalance(30);
-        $this->wallet->subtractToBalance(20);
+        $this->wallet->removeFromBalance(20);
 
         $this->assertEquals(10, $this->wallet->getBalance());
     }
 
     public function testCantSubtractMoreThanPossible(): void
     {
-        $this->wallet->subtractToBalance(30);
+        $this->wallet->removeFromBalance(30);
 
         $violations = $this->validator->validate($this->wallet);
         $this->assertGreaterThan(0, count($violations));
