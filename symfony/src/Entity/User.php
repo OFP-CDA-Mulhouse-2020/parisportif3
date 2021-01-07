@@ -99,7 +99,7 @@ final class User implements UserInterface
      * @Assert\NotNull
      * @Assert\Timezone
      */
-    private string $timeZone;
+    private string $timeZone = "Europe/Paris";
 
     /**
      * @ORM\OneToOne(targetEntity=Wallet::class, cascade={"persist", "remove"})
