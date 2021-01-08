@@ -100,18 +100,12 @@ class SportType {
     -nbrAthleteActive: int
 }
 
-class EncounterEvent{
-    -id: int
-    -description: string
-}
-
 ' ========================================================================='
 
 ' Relation
 User "1" *- "1" Wallet : manage >
 User "1" *-- "0..*" Transaction : pay >
 Receipt "0..*" *-- "1" Wallet : print <
-SportEvent "0..*"  *-- "1" EncounterEvent : occur >
 CartItem "1" *- "1" BetChoices : insert <
 CartItem "1" *-- "1" Bet : insert <
 SportType "1" --* "1" BetTemplate : list >
