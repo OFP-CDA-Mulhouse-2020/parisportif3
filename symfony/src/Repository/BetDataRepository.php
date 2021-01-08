@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\Bet;
+use App\Entity\BetData;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -10,20 +10,20 @@ use Doctrine\Persistence\ManagerRegistry;
  * @template TEntityClass of object
  * @extends ServiceEntityRepository<TEntityClass>
  *
- * @method Bet|null find($id, $lockMode = null, $lockVersion = null)
- * @method Bet|null findOneBy(array $criteria, array $orderBy = null)
- * @method Bet[]    findAll()
- * @method Bet[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method BetData|null find($id, $lockMode = null, $lockVersion = null)
+ * @method BetData|null findOneBy(array $criteria, array $orderBy = null)
+ * @method BetData[]    findAll()
+ * @method BetData[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-final class BetRepository extends ServiceEntityRepository
+final class BetDataRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, Bet::class);
+        parent::__construct($registry, BetData::class);
     }
 
     // /**
-    //  * @return Bet[] Returns an array of Bet objects
+    //  * @return BetData[] Returns an array of BetData objects
     //  */
     /*
      *
@@ -41,7 +41,7 @@ final class BetRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?Bet
+    public function findOneBySomeField($value): ?BetData
     {
         return $this->createQueryBuilder('b')
             ->andWhere('b.exampleField = :val')
