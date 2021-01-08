@@ -3,22 +3,30 @@
 namespace App\Tests\Controller;
 
 use App\Entity\User;
+use App\Tests\GeneralTestMethod;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DomCrawler\Field\FormField;
 
 final class LoginControllerTest extends WebTestCase
 {
+    private KernelBrowser $client;
+
+    public function setUp(): void
+    {
+        $this->client = GeneralTestMethod::getClient();
+    }
+
+
     public function testShowLogin(): void
     {
-        $client = self::createClient();
-        $client->request('GET', '/login');
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        $this->client->request('GET', '/login');
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 
     public function testShowForm(): void
     {
-        $client = self::createClient();
-        $client->request('GET', '/login');
+        $this->client->request('GET', '/login');
         $this->assertSelectorExists('form');
         $this->assertSelectorExists('form > input');
         $this->assertSelectorExists('form > button');
@@ -26,8 +34,7 @@ final class LoginControllerTest extends WebTestCase
 
     public function testShowInput(): void
     {
-        $client = self::createClient();
-        $client->request('GET', '/login');
+        $this->client->request('GET', '/login');
         $this->assertSelectorExists('input#inputUsername');
         $this->assertSelectorExists('input#inputPassword');
         $this->assertSelectorExists("button[type='submit']");
@@ -35,13 +42,11 @@ final class LoginControllerTest extends WebTestCase
 
     public function testLoginWithInvalidUser(): void
     {
-        $client = self::createClient();
-
         $user = new User();
         $user->setUsername('invalidTest');
         $user->setPassword('12345678A');
 
-        $crawler = $client->request('GET', '/login');
+        $crawler = $this->client->request('GET', '/login');
 
         $form = $crawler->selectButton('Sign in')->form();
 
@@ -50,11 +55,11 @@ final class LoginControllerTest extends WebTestCase
         $form['username']->setValue($user->getUsername());
         $form['password']->setValue($user->getPassword());
 
-        $client->submit($form);
+        $this->client->submit($form);
 
         $this->assertResponseRedirects("/login");
 
-        $client->followRedirect();
+        $this->client->followRedirect();
 
         $this->assertSelectorExists('.alert-danger');
         $this->assertSelectorTextContains('.alert-danger', 'Username could not be found.');

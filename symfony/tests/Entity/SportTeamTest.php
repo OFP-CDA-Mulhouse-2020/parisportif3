@@ -14,7 +14,7 @@ final class SportTeamTest extends WebTestCase
 
     public function setUp(): void
     {
-        $this->validator = GeneralTestMethod::getKernelAndValidator()['validator'];
+        $this->validator = GeneralTestMethod::getValidator();
         $this->team = new SportTeam();
     }
 

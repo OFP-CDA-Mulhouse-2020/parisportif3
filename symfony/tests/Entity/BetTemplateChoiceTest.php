@@ -14,7 +14,7 @@ class BetTemplateChoiceTest extends WebTestCase
 
     public function setUp(): void
     {
-        $this->validator = GeneralTestMethod::getKernelAndValidator()['validator'];
+        $this->validator = GeneralTestMethod::getValidator();
         $this->betTemplateChoice = new BetTemplateChoice();
     }
 

@@ -15,7 +15,7 @@ final class TransactionTest extends WebTestCase
 
     public function setUp(): void
     {
-        $this->validator = GeneralTestMethod::getKernelAndValidator()['validator'];
+        $this->validator = GeneralTestMethod::getValidator();
         $this->transaction = new Transaction();
     }
 

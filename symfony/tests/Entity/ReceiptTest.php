@@ -21,7 +21,7 @@ final class ReceiptTest extends WebTestCase
     public function setUp(): void
     {
         $this->receipt = new Receipt();
-        $this->validator = GeneralTestMethod::getKernelAndValidator()['validator'];
+        $this->validator = GeneralTestMethod::getValidator();
     }
 
     /** @dataProvider validAmountProvider */

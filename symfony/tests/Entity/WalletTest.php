@@ -14,7 +14,7 @@ final class WalletTest extends WebTestCase
 
     public function setUp(): void
     {
-        $this->validator = GeneralTestMethod::getKernelAndValidator()['validator'];
+        $this->validator = GeneralTestMethod::getValidator();
         $this->wallet = new Wallet();
     }
 
