@@ -60,7 +60,7 @@ class Bet{
 class BetData {
     -id: ?int
     -amount: int
-    -status: int
+    -paid: bool
     -date: DateTime
     -cote: int
 }
