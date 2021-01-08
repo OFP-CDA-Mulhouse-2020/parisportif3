@@ -52,12 +52,12 @@ class Transaction{
     -totalPrice: int
 }
 
-class CartItem{
+class Bet{
     -id: int
 }
 
 'Bets
-class Bet {
+class BetData {
     -id: int
     -amount: int
     -status: int
@@ -65,7 +65,7 @@ class Bet {
     -cote: int
 }
 
-class BetChoices{
+class BetChoice{
     -id: int
     -choice: array<string, int>
 }
@@ -106,16 +106,16 @@ class SportType {
 User "1" *- "1" Wallet : manage >
 User "1" *-- "0..*" Transaction : pay >
 Receipt "0..*" *-- "1" Wallet : print <
-CartItem "1" *- "1" BetChoices : insert <
-CartItem "1" *-- "1" Bet : insert <
+Bet "1" *- "1" BetChoice : insert <
+Bet "1" *-- "1" BetData : insert <
 SportType "1" --* "1" BetTemplate : list >
 
 
 SportTeam "1..*" o-- "1..*" Athlete : employ >
-Transaction "0..*" o-- "1" CartItem : add <
+Transaction "1..*" o-- "1" Bet : add <
 SportTeam "1..*" o-- "2..*" SportEvent : participate >
 SportEvent "1" o-- "0..*" SportType : define <
-BetChoices "1" o--- "1" BetTemplateChoice: choose >
+BetChoice "1" o--- "1" BetTemplateChoice: choose >
 
 
 BetTemplate "0..*" -- "1" BetTemplateChoice : specify <
