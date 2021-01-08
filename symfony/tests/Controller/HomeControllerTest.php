@@ -2,7 +2,7 @@
 
 namespace App\Tests\Controller;
 
-use App\Tests\FunctionalTestMethod;
+use App\Tests\GeneralTestMethod;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -12,7 +12,7 @@ final class HomeControllerTest extends WebTestCase
 
     public function setUp(): void
     {
-        $this->client = FunctionalTestMethod::getClient();
+        $this->client = GeneralTestMethod::getClient();
     }
 
 

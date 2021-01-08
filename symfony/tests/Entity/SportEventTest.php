@@ -23,7 +23,7 @@ final class SportEventTest extends WebTestCase
     public function setUp(): void
     {
         $this->sportEvent = new SportEvent();
-        $this->validator = GeneralTestMethod::getKernelAndValidator()["validator"];
+        $this->validator = GeneralTestMethod::getValidator();
     }
 
     //Est-ce que je peux créer un SportEvent

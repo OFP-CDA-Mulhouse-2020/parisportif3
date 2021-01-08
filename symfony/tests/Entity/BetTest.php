@@ -22,7 +22,7 @@ final class BetTest extends WebTestCase
     {
         $this->bet = new Bet();
 
-        $this->validator = GeneralTestMethod::getKernelAndValidator()['validator'];
+        $this->validator = GeneralTestMethod::getValidator();
     }
 
     public function testCartItemClassExist(): void

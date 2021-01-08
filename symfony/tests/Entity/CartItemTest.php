@@ -15,7 +15,7 @@ final class CartItemTest extends TestCase
     public function setUp(): void
     {
         $this->cart = new CartItem();
-        $this->validator = GeneralTestMethod::getKernelAndValidator()['validator'];
+        $this->validator = GeneralTestMethod::getValidator();
     }
 
     public function testCartItemClassExist(): void
