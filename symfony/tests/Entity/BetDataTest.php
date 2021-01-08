@@ -2,7 +2,7 @@
 
 namespace App\Tests\Entity;
 
-use App\Entity\Bet;
+use App\Entity\BetData;
 use App\Tests\GeneralTestMethod;
 use DateInterval;
 use DateTime;
@@ -10,38 +10,38 @@ use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Validator\Validator\TraceableValidator;
 
-final class BetTest extends WebTestCase
+final class BetDataTest extends WebTestCase
 {
     private TraceableValidator $validator;
-    private Bet $bet;
+    private BetData $betData;
     private const STATUS_UNPAID = 0;
     private const STATUS_PENDING = 1;
     private const STATUS_PAID = 2;
 
     public function setUp(): void
     {
-        $this->bet = new Bet();
+        $this->betData = new BetData();
 
         $this->validator = GeneralTestMethod::getValidator();
     }
 
     public function testCartItemClassExist(): void
     {
-        $this->assertInstanceOf(Bet::class, $this->bet);
+        $this->assertInstanceOf(BetData::class, $this->betData);
     }
 
     /** @dataProvider validAmountProvider */
     public function testAmountIsEnough(int $value): void
     {
-        $this->bet->setAmount($value);
-        $this->bet->setStatus($this::STATUS_PAID);
-        $this->bet->setDate(
+        $this->betData->setAmount($value);
+        $this->betData->setStatus($this::STATUS_PAID);
+        $this->betData->setDate(
             (new DateTime())
                 ->add(new DateInterval('P2D'))
         );
-        $this->bet->setCote(125);
+        $this->betData->setCote(125);
 
-        $violations = $this->validator->validate($this->bet);
+        $violations = $this->validator->validate($this->betData);
 
         $this->assertCount(0, $violations);
     }
@@ -59,15 +59,15 @@ final class BetTest extends WebTestCase
     /** @dataProvider invalidAmountProvider */
     public function testAmountIsInvalid(int $value): void
     {
-        $this->bet->setAmount($value);
-        $this->bet->setStatus($this::STATUS_PAID);
-        $this->bet->setDate(
+        $this->betData->setAmount($value);
+        $this->betData->setStatus($this::STATUS_PAID);
+        $this->betData->setDate(
             (new DateTime())
                 ->add(new DateInterval('P2D'))
         );
-        $this->bet->setCote(125);
+        $this->betData->setCote(125);
 
-        $violations = $this->validator->validate($this->bet);
+        $violations = $this->validator->validate($this->betData);
         $this->assertGreaterThanOrEqual(1, count($violations));
     }
 
@@ -84,16 +84,16 @@ final class BetTest extends WebTestCase
     /** @dataProvider validStatusProvider */
     public function testStatusIsValid(int $status): void
     {
-        $this->bet->setStatus($status);
+        $this->betData->setStatus($status);
 
-        $this->bet->setAmount(50);
-        $this->bet->setDate(
+        $this->betData->setAmount(50);
+        $this->betData->setDate(
             (new DateTime())
                 ->add(new DateInterval('P2D'))
         );
-        $this->bet->setCote(125);
+        $this->betData->setCote(125);
 
-        $violations = $this->validator->validate($this->bet);
+        $violations = $this->validator->validate($this->betData);
         $this->assertCount(0, $violations);
     }
 
@@ -108,16 +108,16 @@ final class BetTest extends WebTestCase
     /** @dataProvider invalidStatusProvider */
     public function testStatusIsInvalid(int $status): void
     {
-        $this->bet->setStatus($status);
+        $this->betData->setStatus($status);
 
-        $this->bet->setAmount(50);
-        $this->bet->setDate(
+        $this->betData->setAmount(50);
+        $this->betData->setDate(
             (new DateTime())
                 ->add(new DateInterval('P2D'))
         );
-        $this->bet->setCote(125);
+        $this->betData->setCote(125);
 
-        $violations = $this->validator->validate($this->bet);
+        $violations = $this->validator->validate($this->betData);
         $this->assertGreaterThanOrEqual(1, count($violations));
     }
 
@@ -135,13 +135,13 @@ final class BetTest extends WebTestCase
     /** @dataProvider validDateProvider */
     public function testDateIsOlderThanNow(DateTime $dateBet): void
     {
-        $this->bet->setDate($dateBet);
+        $this->betData->setDate($dateBet);
 
-        $this->bet->setAmount(50);
-        $this->bet->setStatus($this::STATUS_PAID);
-        $this->bet->setCote(125);
+        $this->betData->setAmount(50);
+        $this->betData->setStatus($this::STATUS_PAID);
+        $this->betData->setCote(125);
 
-        $violations = $this->validator->validate($this->bet);
+        $violations = $this->validator->validate($this->betData);
         $this->assertCount(0, $violations);
     }
 
@@ -155,27 +155,27 @@ final class BetTest extends WebTestCase
 
     public function testDateIsInvalid(): void
     {
-        $this->bet->setAmount(50);
-        $this->bet->setStatus($this::STATUS_PAID);
-        $this->bet->setCote(125);
+        $this->betData->setAmount(50);
+        $this->betData->setStatus($this::STATUS_PAID);
+        $this->betData->setCote(125);
 
-        $violations = $this->validator->validate($this->bet);
+        $violations = $this->validator->validate($this->betData);
         $this->assertGreaterThanOrEqual(1, count($violations));
     }
 
     /** @dataProvider validCote */
     public function testCoteIsValid(int $cote): void
     {
-        $this->bet->setCote($cote);
+        $this->betData->setCote($cote);
 
-        $this->bet->setAmount(50);
-        $this->bet->setStatus($this::STATUS_PAID);
-        $this->bet->setDate(
+        $this->betData->setAmount(50);
+        $this->betData->setStatus($this::STATUS_PAID);
+        $this->betData->setDate(
             (new DateTime())
                 ->add(new DateInterval('P2D'))
         );
 
-        $violations = $this->validator->validate($this->bet);
+        $violations = $this->validator->validate($this->betData);
         $this->assertCount(0, $violations);
     }
 
@@ -191,16 +191,16 @@ final class BetTest extends WebTestCase
     /** @dataProvider invalidCote */
     public function testCoteIsInvalid(int $cote): void
     {
-        $this->bet->setCote($cote);
+        $this->betData->setCote($cote);
 
-        $this->bet->setAmount(50);
-        $this->bet->setStatus($this::STATUS_PAID);
-        $this->bet->setDate(
+        $this->betData->setAmount(50);
+        $this->betData->setStatus($this::STATUS_PAID);
+        $this->betData->setDate(
             (new DateTime())
                 ->add(new DateInterval('P2D'))
         );
 
-        $violations = $this->validator->validate($this->bet);
+        $violations = $this->validator->validate($this->betData);
         $this->assertGreaterThanOrEqual(1, count($violations));
     }
 

@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\BetRepository;
+use App\Repository\BetDataRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity(repositoryClass=BetRepository::class)
+ * @ORM\Entity(repositoryClass=BetDataRepository::class)
  */
-final class Bet
+final class BetData
 {
     /**
      * @ORM\Id

@@ -26,10 +26,10 @@ final class CartItem
     private Transaction $transaction;
 
     /**
-     * @ORM\OneToOne(targetEntity=Bet::class, cascade={"persist", "remove"})
+     * @ORM\OneToOne(targetEntity=BetData::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
-    private Bet $bet;
+    private BetData $betData;
 
     /**
      * @ORM\OneToOne(targetEntity=BetChoice::class, cascade={"persist", "remove"})
@@ -42,7 +42,7 @@ final class CartItem
         return $this->id;
     }
 
-    //TODO Ajouter la relation avec Bet
+    //TODO Ajouter la relation avec BetData
 
     //TODO Ajouter la relation avec BetChoices
 
@@ -58,14 +58,14 @@ final class CartItem
         return $this;
     }
 
-    public function getBet(): ?Bet
+    public function getBetData(): ?BetData
     {
-        return $this->bet;
+        return $this->betData;
     }
 
-    public function setBet(Bet $bet): self
+    public function setBetData(BetData $betData): self
     {
-        $this->bet = $bet;
+        $this->betData = $betData;
 
         return $this;
     }
