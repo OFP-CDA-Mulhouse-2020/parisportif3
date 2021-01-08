@@ -4,7 +4,7 @@ skinparam linetype ortho
 
 ' Human management
 class User {
-    -id: int
+    -id: ?int
     -roles: array
     ..Personal data..
     -username: string
@@ -28,7 +28,7 @@ class User {
 }
 
 class Athlete {
-    -id: int
+    -id: ?int
     -lastName: string
     -firstName: string
     -sportTeams: Collection<int, SportTeam>
@@ -36,29 +36,29 @@ class Athlete {
 
 ' Money management
 class Receipt{
-    -id: int
+    -id: ?int
     -amount: int
 }
 
 class Wallet {
-    -id: int
+    -id: ?int
     -balance: int
 }
 
 'History
 class Transaction{
-    -id: int
+    -id: ?int
     -date: DateTimeInterface
     -totalPrice: int
 }
 
 class Bet{
-    -id: int
+    -id: ?int
 }
 
 'Bets
 class BetData {
-    -id: int
+    -id: ?int
     -amount: int
     -status: int
     -date: DateTime
@@ -71,18 +71,18 @@ class BetChoice{
 }
 
 class BetTemplate{
-    -id: int
+    -id: ?int
     -description: array<string, array<string>>
 }
 
 class BetTemplateChoice{
-    -id: int
+    -id: ?int
     -updatedDescription : array<string, array<string>>
 }
 
 ' Sport management
 class SportEvent {
-    -id: int
+    -id: ?int
     -lieu: string
     -competition: string
     -date: Date
@@ -90,12 +90,12 @@ class SportEvent {
 }
 
 class SportTeam {
-    -id: int
+    -id: ?int
     -teamName: string
 }
 
 class SportType {
-    -id: int
+    -id: ?int
     -nameType: string
     -nbrAthleteActive: int
 }
