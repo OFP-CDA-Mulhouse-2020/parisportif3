@@ -65,7 +65,7 @@ final class Transaction
         return $this->transactionDate;
     }
 
-    public function getTotalPrice(): ?int
+    public function getTotalPrice(): int
     {
         return $this->totalPrice;
     }
@@ -77,7 +77,7 @@ final class Transaction
         return $this;
     }
 
-    public function getUser(): User
+    public function getUser(): ?User
     {
         return $this->user;
     }
