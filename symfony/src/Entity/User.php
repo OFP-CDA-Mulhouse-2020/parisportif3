@@ -115,9 +115,6 @@ final class User implements UserInterface
 
     /** Dates */
 
-    /** @ORM\Column(type="date", nullable=true) */
-    private ?DateTimeInterface $verifiedAt;
-
     /**
      * @ORM\Column(type="datetime")
      *
@@ -126,6 +123,9 @@ final class User implements UserInterface
      * @TODO Ajouter un validator custom pour tester si antérieur à maintenant
      */
     private DateTimeInterface $createdAt;
+
+    /** @ORM\Column(type="date", nullable=true) */
+    private ?DateTimeInterface $verifiedAt;
 
     /** @ORM\Column(type="date", nullable=true) */
     private ?DateTimeInterface $deletedAt;
@@ -162,18 +162,6 @@ final class User implements UserInterface
         return $this->id;
     }
 
-    public function getUsername(): string
-    {
-        return $this->username;
-    }
-
-    public function setUsername(string $username): self
-    {
-        $this->username = $username;
-
-        return $this;
-    }
-
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -191,17 +179,29 @@ final class User implements UserInterface
         return $this;
     }
 
-    //TODO Implémenter @phpstan-ignore-next-line
-    public function getSalt(): void
+    /** Personal Data */
+
+    public function getUsername(): string
     {
-        // not needed when using the "bcrypt" algorithm in security.yaml
+        return $this->username;
     }
 
-    //TODO Implémenter
-    public function eraseCredentials(): void
+    public function setUsername(string $username): self
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        $this->username = $username;
+
+        return $this;
+    }
+
+    public function getPassword(): string
+    {
+        return $this->password;
+    }
+
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+        return $this;
     }
 
     public function getEmail(): string
@@ -216,21 +216,34 @@ final class User implements UserInterface
         return $this;
     }
 
-    /**
-     * TODO Retravailler pour permettre la portabilité de la TimeZone ainsi que l'âge de majorité
-     */
-    public function isUserOldEnough(): bool
+    public function getLastName(): string
     {
-        $now = (new DateTime())
-            ->setTimezone(new DateTimeZone('Europe/Paris'))
-            ->setTime(0, 0);
+        return $this->lastName;
+    }
 
-        $ageDiff = $now->diff($this->getBirthDate());
+    /** @TODO Utiliser plutôt un validateur */
+    public function setLastName(string $lastName): self
+    {
+        if (!preg_match("/^[A-Za-zÄ-ÿ_.-]+$/u", $lastName)) {
+            throw new InvalidLastNameException("Your lastname is invalid.");
+        }
+        $this->lastName = $lastName;
+        return $this;
+    }
 
-        assert($ageDiff instanceof DateInterval);
-        $userAge = (int)$ageDiff->format('%Y');
+    public function getFirstName(): string
+    {
+        return $this->firstName;
+    }
 
-        return $userAge >= 18;
+    /** TODO Utiliser plutôt un validateur */
+    public function setFirstName(string $firstName): self
+    {
+        if (!preg_match("/^[A-Za-zÄ-ÿ_.-]+$/u", $firstName)) {
+            throw new InvalidFirstNameException("Your firstname is invalid.");
+        }
+        $this->firstName = $firstName;
+        return $this;
     }
 
     public function getBirthDate(): DateTimeInterface
@@ -257,48 +270,54 @@ final class User implements UserInterface
         return $this;
     }
 
+    public function getWallet(): Wallet
+    {
+        return $this->wallet;
+    }
+
+    public function setWallet(Wallet $wallet): self
+    {
+        $this->wallet = $wallet;
+
+        return $this;
+    }
+
+    /** @return Collection<int, Transaction> */
+    public function getTransactionHistory(): Collection
+    {
+        return $this->transactionHistory;
+    }
+
+    public function addTransactionToHistory(Transaction $transaction): self
+    {
+        if (!$this->transactionHistory->contains($transaction)) {
+            $this->transactionHistory[] = $transaction;
+            $transaction->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /** Dates */
+
     public function createdAt(): DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    public function getLastName(): string
+    public function verifiedAt(): ?DateTimeInterface
     {
-        return $this->lastName;
+        return $this->verifiedAt;
     }
 
-    public function setLastName(string $lastName): self
+    public function deletedAt(): ?DateTimeInterface
     {
-        if (!preg_match("/^[A-Za-zÄ-ÿ_.-]+$/u", $lastName)) {
-            throw new InvalidLastNameException("Your lastname is invalid.");
-        }
-        $this->lastName = $lastName;
-        return $this;
+        return $this->deletedAt;
     }
 
-    public function getFirstName(): string
+    public function activatedAt(): ?DateTimeInterface
     {
-        return $this->firstName;
-    }
-
-    public function setFirstName(string $firstName): self
-    {
-        if (!preg_match("/^[A-Za-zÄ-ÿ_.-]+$/u", $firstName)) {
-            throw new InvalidFirstNameException("Your firstname is invalid.");
-        }
-        $this->firstName = $firstName;
-        return $this;
-    }
-
-    public function suspend(): void
-    {
-        $this->suspended = true;
-        $this->suspendedAt = new DateTime();
-    }
-
-    public function isSuspended(): bool
-    {
-        return $this->suspended;
+        return $this->activatedAt;
     }
 
     public function suspendedAt(): ?DateTimeInterface
@@ -306,16 +325,7 @@ final class User implements UserInterface
         return $this->suspendedAt;
     }
 
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(string $password): self
-    {
-        $this->password = $password;
-        return $this;
-    }
+    /** Status */
 
     public function isActive(): bool
     {
@@ -341,24 +351,20 @@ final class User implements UserInterface
         return $this;
     }
 
-    public function verifiedAt(): ?DateTimeInterface
+    public function isSuspended(): bool
     {
-        return $this->verifiedAt;
+        return $this->suspended;
     }
 
-    public function activatedAt(): ?DateTimeInterface
+    public function suspend(): void
     {
-        return $this->activatedAt;
+        $this->suspended = true;
+        $this->suspendedAt = new DateTime();
     }
 
     public function isDeleted(): bool
     {
         return $this->deleted;
-    }
-
-    public function deletedAt(): ?DateTimeInterface
-    {
-        return $this->deletedAt;
     }
 
     public function delete(): void
@@ -367,43 +373,35 @@ final class User implements UserInterface
         $this->deletedAt = new DateTime();
     }
 
-    public function getWallet(): ?Wallet
+    /** Custom logic */
+
+    //TODO Implémenter @phpstan-ignore-next-line
+    public function getSalt(): void
     {
-        return $this->wallet;
+        // not needed when using the "bcrypt" algorithm in security.yaml
     }
 
-    public function setWallet(Wallet $wallet): self
+    //TODO Implémenter
+    public function eraseCredentials(): void
     {
-        $this->wallet = $wallet;
-
-        return $this;
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
-    /** @return Collection<int, Transaction> */
-    public function getTransactionHistory(): Collection
+    /**
+     * TODO Retravailler pour permettre le changement de TimeZone ainsi que l'âge
+     */
+    public function isUserOldEnough(): bool
     {
-        return $this->transactionHistory;
-    }
+        $now = (new DateTime())
+            ->setTimezone(new DateTimeZone('Europe/Paris'))
+            ->setTime(0, 0);
 
-    public function addTransactionToHistory(Transaction $transactionHistory): self
-    {
-        if (!$this->transactionHistory->contains($transactionHistory)) {
-            $this->transactionHistory[] = $transactionHistory;
-            $transactionHistory->setUser($this);
-        }
+        $ageDiff = $now->diff($this->getBirthDate());
 
-        return $this;
-    }
+        assert($ageDiff instanceof DateInterval);
+        $userAge = (int)$ageDiff->format('%Y');
 
-    public function removeTransactionFromHistory(Transaction $transactionHistory): self
-    {
-        if ($this->transactionHistory->removeElement($transactionHistory)) {
-            // set the owning side to null (unless already changed)
-            if ($transactionHistory->getUser() === $this) {
-                $transactionHistory->setUser(null);
-            }
-        }
-
-        return $this;
+        return $userAge >= 18;
     }
 }
