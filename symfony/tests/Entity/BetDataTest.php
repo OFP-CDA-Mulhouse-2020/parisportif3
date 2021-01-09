@@ -14,9 +14,8 @@ final class BetDataTest extends WebTestCase
 {
     private TraceableValidator $validator;
     private BetData $betData;
-    private const STATUS_UNPAID = 0;
-    private const STATUS_PENDING = 1;
-    private const STATUS_PAID = 2;
+    private const STATUS_UNPAID = false;
+    private const STATUS_PAID = true;
 
     public function setUp(): void
     {
@@ -34,7 +33,7 @@ final class BetDataTest extends WebTestCase
     public function testAmountIsEnough(int $value): void
     {
         $this->betData->setAmount($value);
-        $this->betData->setStatus($this::STATUS_PAID);
+        $this->betData->setPaidStatus($this::STATUS_PAID);
         $this->betData->setDate(
             (new DateTime())
                 ->add(new DateInterval('P2D'))
@@ -60,7 +59,7 @@ final class BetDataTest extends WebTestCase
     public function testAmountIsInvalid(int $value): void
     {
         $this->betData->setAmount($value);
-        $this->betData->setStatus($this::STATUS_PAID);
+        $this->betData->setPaidStatus($this::STATUS_PAID);
         $this->betData->setDate(
             (new DateTime())
                 ->add(new DateInterval('P2D'))
@@ -82,9 +81,9 @@ final class BetDataTest extends WebTestCase
     }
 
     /** @dataProvider validStatusProvider */
-    public function testStatusIsValid(int $status): void
+    public function testStatusIsValid(bool $status): void
     {
-        $this->betData->setStatus($status);
+        $this->betData->setPaidStatus($status);
 
         $this->betData->setAmount(50);
         $this->betData->setDate(
@@ -97,39 +96,11 @@ final class BetDataTest extends WebTestCase
         $this->assertCount(0, $violations);
     }
 
-    /** @return Generator<array<int>> */
+    /** @return Generator<array<bool>> */
     public function validStatusProvider(): Generator
     {
         yield [$this::STATUS_UNPAID];
-        yield [$this::STATUS_PENDING];
         yield [$this::STATUS_PAID];
-    }
-
-    /** @dataProvider invalidStatusProvider */
-    public function testStatusIsInvalid(int $status): void
-    {
-        $this->betData->setStatus($status);
-
-        $this->betData->setAmount(50);
-        $this->betData->setDate(
-            (new DateTime())
-                ->add(new DateInterval('P2D'))
-        );
-        $this->betData->setCote(125);
-
-        $violations = $this->validator->validate($this->betData);
-        $this->assertGreaterThanOrEqual(1, count($violations));
-    }
-
-    /** @return Generator<array<int>> */
-    public function invalidStatusProvider(): Generator
-    {
-        yield [42];
-        yield [-1];
-        yield [5];
-        yield [8];
-        yield [6];
-        yield [3];
     }
 
     /** @dataProvider validDateProvider */
@@ -138,7 +109,7 @@ final class BetDataTest extends WebTestCase
         $this->betData->setDate($dateBet);
 
         $this->betData->setAmount(50);
-        $this->betData->setStatus($this::STATUS_PAID);
+        $this->betData->setPaidStatus($this::STATUS_PAID);
         $this->betData->setCote(125);
 
         $violations = $this->validator->validate($this->betData);
@@ -156,7 +127,7 @@ final class BetDataTest extends WebTestCase
     public function testDateIsInvalid(): void
     {
         $this->betData->setAmount(50);
-        $this->betData->setStatus($this::STATUS_PAID);
+        $this->betData->setPaidStatus($this::STATUS_PAID);
         $this->betData->setCote(125);
 
         $violations = $this->validator->validate($this->betData);
@@ -169,7 +140,7 @@ final class BetDataTest extends WebTestCase
         $this->betData->setCote($cote);
 
         $this->betData->setAmount(50);
-        $this->betData->setStatus($this::STATUS_PAID);
+        $this->betData->setPaidStatus($this::STATUS_PAID);
         $this->betData->setDate(
             (new DateTime())
                 ->add(new DateInterval('P2D'))
@@ -194,7 +165,7 @@ final class BetDataTest extends WebTestCase
         $this->betData->setCote($cote);
 
         $this->betData->setAmount(50);
-        $this->betData->setStatus($this::STATUS_PAID);
+        $this->betData->setPaidStatus($this::STATUS_PAID);
         $this->betData->setDate(
             (new DateTime())
                 ->add(new DateInterval('P2D'))
