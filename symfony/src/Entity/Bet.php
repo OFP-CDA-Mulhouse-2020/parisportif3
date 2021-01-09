@@ -17,7 +17,7 @@ final class Bet
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private ?int $id;
 
     /**
      * @ORM\ManyToOne(targetEntity=Transaction::class, inversedBy="betList")
@@ -37,7 +37,7 @@ final class Bet
      */
     private BetChoice $betChoice;
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }

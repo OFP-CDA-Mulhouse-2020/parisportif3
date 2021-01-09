@@ -29,9 +29,8 @@ final class User implements UserInterface
      * @ORM\Id
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
-     *
      */
-    private int $id;
+    private ?int $id;
 
     /**
      * @var array<string>
@@ -157,7 +156,7 @@ final class User implements UserInterface
         $this->transactionHistory = new ArrayCollection();
     }
 
-    public function getId(): int
+    public function getId(): ?int
     {
         return $this->id;
     }
