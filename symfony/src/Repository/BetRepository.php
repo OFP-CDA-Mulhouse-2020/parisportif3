@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\CartItem;
+use App\Entity\Bet;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -10,20 +10,20 @@ use Doctrine\Persistence\ManagerRegistry;
  * @template TEntityClass of object
  * @extends ServiceEntityRepository<TEntityClass>
  *
- * @method CartItem|null find($id, $lockMode = null, $lockVersion = null)
- * @method CartItem|null findOneBy(array $criteria, array $orderBy = null)
- * @method CartItem[]    findAll()
- * @method CartItem[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Bet|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Bet|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Bet[]    findAll()
+ * @method Bet[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-final class CartItemRepository extends ServiceEntityRepository
+final class BetRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, CartItem::class);
+        parent::__construct($registry, Bet::class);
     }
 
     // /**
-    //  * @return CartItem[] Returns an array of CartItem objects
+    //  * @return Bet[] Returns an array of Bet objects
     //  */
     /*
     public function findByExampleField($value)
@@ -40,7 +40,7 @@ final class CartItemRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?CartItem
+    public function findOneBySomeField($value): ?Bet
     {
         return $this->createQueryBuilder('c')
             ->andWhere('c.exampleField = :val')

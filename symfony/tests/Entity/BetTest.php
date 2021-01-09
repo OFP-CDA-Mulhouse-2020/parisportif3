@@ -2,24 +2,24 @@
 
 namespace App\Tests\Entity;
 
-use App\Entity\CartItem;
+use App\Entity\Bet;
 use App\Tests\GeneralTestMethod;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Validator\Validator\TraceableValidator;
 
-final class CartItemTest extends TestCase
+final class BetTest extends TestCase
 {
     private TraceableValidator $validator;
-    private CartItem $cart;
+    private Bet $bet;
 
     public function setUp(): void
     {
-        $this->cart = new CartItem();
+        $this->bet = new Bet();
         $this->validator = GeneralTestMethod::getValidator();
     }
 
     public function testCartItemClassExist(): void
     {
-        $this->assertInstanceOf(CartItem::class, $this->cart);
+        $this->assertInstanceOf(Bet::class, $this->bet);
     }
 }
