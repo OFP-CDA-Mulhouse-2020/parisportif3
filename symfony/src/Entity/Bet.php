@@ -2,15 +2,15 @@
 
 namespace App\Entity;
 
-use App\Repository\CartItemRepository;
+use App\Repository\BetRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
- * @ORM\Entity(repositoryClass=CartItemRepository::class)
+ * @ORM\Entity(repositoryClass=BetRepository::class)
  * @UniqueEntity("id")
  */
-final class CartItem
+final class Bet
 {
     /**
      * @ORM\Id
@@ -20,7 +20,7 @@ final class CartItem
     private int $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Transaction::class, inversedBy="cartItemList")
+     * @ORM\ManyToOne(targetEntity=Transaction::class, inversedBy="betList")
      * @ORM\JoinColumn(nullable=false)
      */
     private Transaction $transaction;

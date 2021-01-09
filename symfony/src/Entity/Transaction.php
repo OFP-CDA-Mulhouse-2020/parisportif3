@@ -43,15 +43,16 @@ final class Transaction
     private User $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=CartItem::class, mappedBy="transaction")
-     * @var Collection<int, CartItem>
+     * @ORM\OneToMany(targetEntity=Bet::class, mappedBy="transaction")
+     * @var Collection<int, Bet>
      */
-    private Collection $cartItemList;
+    private Collection $betList;
+
 
     public function __construct()
     {
         $this->transactionDate = new DateTime();
-        $this->cartItemList = new ArrayCollection();
+        $this->betList = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -88,29 +89,17 @@ final class Transaction
         return $this;
     }
 
-    /** @return Collection<int, CartItem> */
-    public function getCartItemList(): Collection
+    /** @return Collection<int, Bet> */
+    public function getBetList(): Collection
     {
-        return $this->cartItemList;
+        return $this->betList;
     }
 
-    public function addCartItemList(CartItem $cartItemList): self
+    public function addBetToList(Bet $bet): self
     {
-        if (!$this->cartItemList->contains($cartItemList)) {
-            $this->cartItemList[] = $cartItemList;
-            $cartItemList->setTransaction($this);
-        }
-
-        return $this;
-    }
-
-    public function removeCartItemList(CartItem $cartItemList): self
-    {
-        if ($this->cartItemList->removeElement($cartItemList)) {
-            // set the owning side to null (unless already changed)
-            if ($cartItemList->getTransaction() === $this) {
-                $cartItemList->setTransaction(null);
-            }
+        if (!$this->betList->contains($bet)) {
+            $this->betList[] = $bet;
+            $bet->setTransaction($this);
         }
 
         return $this;
