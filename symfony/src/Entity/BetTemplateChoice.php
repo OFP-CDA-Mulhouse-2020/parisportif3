@@ -15,7 +15,7 @@ final class BetTemplateChoice
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private ?int $id;
 
     /**
      * @var array<string>
