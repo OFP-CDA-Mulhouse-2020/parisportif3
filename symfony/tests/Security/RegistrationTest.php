@@ -1,6 +1,6 @@
 <?php
 
-namespace App\tests\Security;
+namespace App\Tests\Security;
 
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
