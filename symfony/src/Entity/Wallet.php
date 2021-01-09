@@ -29,7 +29,7 @@ final class Wallet
         return $this->id;
     }
 
-    public function getBalance(): ?int
+    public function getBalance(): int
     {
         return $this->balance;
     }
