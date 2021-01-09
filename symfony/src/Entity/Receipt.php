@@ -27,8 +27,9 @@ final class Receipt
 
     /**
      * @ORM\ManyToOne(targetEntity=Wallet::class)
+     * @ORM\JoinColumn(nullable=false)
      */
-    private ?Wallet $wallet;
+    private Wallet $wallet;
 
     public function getId(): ?int
     {
@@ -47,12 +48,12 @@ final class Receipt
         return $this;
     }
 
-    public function getWallet(): ?Wallet
+    public function getWallet(): Wallet
     {
         return $this->wallet;
     }
 
-    public function setWallet(?Wallet $wallet): self
+    public function setWallet(Wallet $wallet): self
     {
         $this->wallet = $wallet;
 
