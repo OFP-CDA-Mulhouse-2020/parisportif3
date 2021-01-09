@@ -28,24 +28,11 @@ final class BetData
     private int $amount;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="boot")
      *
      * @Assert\NotNull
-     * @Assert\GreaterThanOrEqual(0)
-     * @Assert\LessThanOrEqual(2)
      */
-    private int $status;
-
-    public const STATUS_UNPAID = 0;
-    public const STATUS_PENDING = 1;
-    public const STATUS_PAID = 2;
-
-    /** @var array<int, string> */
-    public static array $statusList = [
-        self::STATUS_UNPAID => "STATUS_UNPAID",
-        self::STATUS_PENDING => "STATUS_PENDING",
-        self::STATUS_PAID => "STATUS_PAID"
-    ];
+    private bool $paidStatus;
 
     /**
      * @ORM\Column(type="datetime")
@@ -80,14 +67,14 @@ final class BetData
         return $this;
     }
 
-    public function getStatus(): int
+    public function getPaidStatus(): bool
     {
-        return $this->status;
+        return $this->paidStatus;
     }
 
-    public function setStatus(int $status): self
+    public function setPaidStatus(bool $paidStatus): self
     {
-        $this->status = $status;
+        $this->paidStatus = $paidStatus;
 
         return $this;
     }
