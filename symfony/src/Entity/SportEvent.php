@@ -9,10 +9,12 @@ use DateTimeInterface;
 use DateTimeZone;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=SportEventRepository::class)
+ * @UniqueEntity("id")
  * @TODO Un évènement sportif est unique, il ne peu en avoir 2 avec le même nom et la même année
  */
 final class SportEvent

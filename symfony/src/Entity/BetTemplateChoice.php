@@ -4,9 +4,12 @@ namespace App\Entity;
 
 use App\Repository\BetTemplateChoiceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=BetTemplateChoiceRepository::class)
+ * @UniqueEntity("id")
+ * @TODO Ajouter l'unicité avec BetTemplate et updatedDescription
  */
 final class BetTemplateChoice
 {
