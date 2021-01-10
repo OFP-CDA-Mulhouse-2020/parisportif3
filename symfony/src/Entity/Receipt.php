@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ReceiptRepository::class)
+ * @TODO Ajouter entité unique
  */
 final class Receipt
 {
@@ -28,8 +29,12 @@ final class Receipt
     /**
      * @ORM\ManyToOne(targetEntity=Wallet::class)
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @TODO besoin d'un wallet OU de la valeur d'un wallet à un instant T?
      */
     private Wallet $wallet;
+
+    //TODO Ajouter une relation avec User, car seulement cette utilisateurs est sensé y avoir accès
 
     public function getId(): ?int
     {

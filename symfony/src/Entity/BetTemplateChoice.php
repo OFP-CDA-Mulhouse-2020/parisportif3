@@ -20,8 +20,12 @@ final class BetTemplateChoice
     /**
      * @var array<string, array<string>>
      * @ORM\Column(type="array")
+     * @TODO Valider avec le validator
      */
     private array $updatedDescription = [];
+
+    //TODO Ajouter la relation avec BetTemplate
+
 
     public function getId(): ?int
     {

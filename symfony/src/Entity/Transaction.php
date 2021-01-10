@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TransactionRepository::class)
+ * @TODO Ajouter d'autre champ pour être unique
  * @UniqueEntity(fields={"id"})
  */
 final class Transaction
