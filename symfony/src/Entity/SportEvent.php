@@ -40,10 +40,11 @@ final class SportEvent
     /**
      * @ORM\Column(type="string", length=120)
      *
-     * @Assert\NotNull
+     * @Assert\NotBlank
      * @Assert\Timezone
      */
     private string $timeZone;
+
 
     public function getId(): ?int
     {
@@ -74,12 +75,12 @@ final class SportEvent
         return $this;
     }
 
-    public function getDate(): ?\DateTimeInterface
+    public function getDate(): ?DateTimeInterface
     {
         return $this->date;
     }
 
-    public function setDate(\DateTimeInterface $date): self
+    public function setDate(DateTimeInterface $date): self
     {
         $minDate = new DateTime('now', new DateTimeZone('Europe/Paris'));
         $minDate->add(new DateInterval('P2D'));
