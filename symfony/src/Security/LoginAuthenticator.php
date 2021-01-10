@@ -111,8 +111,7 @@ final class LoginAuthenticator extends AbstractFormLoginAuthenticator implements
             return new RedirectResponse($targetPath);
         }
 
-        //TODO Spécifié une Exception moins générique
-        // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
+       // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
         throw new RuntimeException('TODO: provide a valid redirect inside ' . __FILE__);
     }
 
