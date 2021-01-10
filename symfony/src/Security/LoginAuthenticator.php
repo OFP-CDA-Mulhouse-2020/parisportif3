@@ -5,6 +5,7 @@ namespace App\Security;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use RuntimeException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -67,12 +68,12 @@ final class LoginAuthenticator extends AbstractFormLoginAuthenticator implements
         return $credentials;
     }
 
-    //TODO Ajouter un message
-    public function getUser($credentials, UserProviderInterface $userProvider)
+    public function getUser($credentials, UserProviderInterface $userProvider): UserInterface
     {
         $token = new CsrfToken('authenticate', $credentials['csrf_token']);
         if (!$this->csrfTokenManager->isTokenValid($token)) {
-            throw new InvalidCsrfTokenException();
+            //TODO Ajouter un message
+            throw new InvalidCsrfTokenException("");
         }
 
         $user = $this->entityManager->getRepository(User::class)->findOneBy(['username' => $credentials['username']]);
@@ -92,8 +93,7 @@ final class LoginAuthenticator extends AbstractFormLoginAuthenticator implements
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
-     * @param $credentials
-     * @phpstan-ignore-next-line Can't be typehint because inherit a base Symfony class without typehint.
+     * @noinspection MissingParameterTypeDeclarationInspection
      */
     public function getPassword($credentials): ?string
     {
@@ -103,6 +103,7 @@ final class LoginAuthenticator extends AbstractFormLoginAuthenticator implements
     /**
      * @return RedirectResponse|Response|null
      * @throws Exception
+     * @noinspection MissingReturnTypeInspection
      */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $providerKey)
     {
@@ -110,9 +111,9 @@ final class LoginAuthenticator extends AbstractFormLoginAuthenticator implements
             return new RedirectResponse($targetPath);
         }
 
-        //TODO Spécifié une Exception plus générique
+        //TODO Spécifié une Exception moins générique
         // For example : return new RedirectResponse($this->urlGenerator->generate('some_route'));
-        throw new Exception('TODO: provide a valid redirect inside ' . __FILE__);
+        throw new RuntimeException('TODO: provide a valid redirect inside ' . __FILE__);
     }
 
     protected function getLoginUrl(): string
