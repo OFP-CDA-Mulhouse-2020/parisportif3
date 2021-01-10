@@ -8,8 +8,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=BetRepository::class)
- * @TODO Utiliser d'autre champs pour rendre l'entité unique
- * @UniqueEntity("id")
+ * @UniqueEntity("id", "transaction", "betData", "betChoice")
  */
 final class Bet
 {
