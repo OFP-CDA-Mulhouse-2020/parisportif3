@@ -18,10 +18,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @UniqueEntity(
- *     fields={"id", "username"},
- *     errorPath="username"
- * )
+ * @UniqueEntity("id")
+ * @UniqueEntity("username")
  */
 final class User implements UserInterface
 {

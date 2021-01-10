@@ -4,11 +4,13 @@ namespace App\Entity;
 
 use App\Repository\ReceiptRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ReceiptRepository::class)
- * @TODO Ajouter entité unique
+ * @UniqueEntity("id")
+ * @TODO Ajouter unicité
  */
 final class Receipt
 {

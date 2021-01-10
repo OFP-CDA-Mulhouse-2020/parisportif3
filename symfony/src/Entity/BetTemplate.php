@@ -9,10 +9,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=BetTemplateRepository::class)
- * @UniqueEntity(
- *     fields={"id", "availableBetsList"},
- *     errorPath="availableBetsList"
- * )
+ * @UniqueEntity("id")
+ * @TODO Rajouter les l'unicité après avoir rajouter les relations
  */
 final class BetTemplate
 {

@@ -9,10 +9,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=SportTeamRepository::class)
- * @UniqueEntity(
- *     fields={"id", "teamName"},
- *     errorPath="teamName"
- * )
+ * @UniqueEntity("id")
+ * @UniqueEntity("teamName")
  */
 final class SportTeam
 {
