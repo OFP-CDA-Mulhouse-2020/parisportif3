@@ -18,7 +18,7 @@ final class BetTemplateChoice
     private ?int $id;
 
     /**
-     * @var array<string>
+     * @var array<string, array<string>>
      * @ORM\Column(type="array")
      */
     private array $updatedDescription = [];
@@ -28,13 +28,13 @@ final class BetTemplateChoice
         return $this->id;
     }
 
-    /** @return array<string> */
+    /** @return array<string, array<string>> */
     public function getUpdatedDescription(): ?array
     {
         return $this->updatedDescription;
     }
 
-    /** @param array<string> $updatedDescription */
+    /** @param array<string, array<string>> $updatedDescription */
     public function updateDescription(array $updatedDescription): self
     {
         $this->updatedDescription = $updatedDescription;
