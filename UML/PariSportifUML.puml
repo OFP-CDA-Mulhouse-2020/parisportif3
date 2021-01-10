@@ -116,8 +116,6 @@ Transaction "1..*" o-- "1" Bet : add <
 SportTeam "1..*" o-- "2..*" SportEvent : participate >
 SportEvent "1" o-- "0..*" SportType : define <
 BetChoice "1" o--- "1" BetTemplateChoice: choose >
-
-
-BetTemplate "0..*" -- "1" BetTemplateChoice : specify <
+BetTemplate "0..*" --o "1" BetTemplateChoice : specify <
 
 @enduml
