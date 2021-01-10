@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=SportEventRepository::class)
+ * @TODO Un évènement sportif est unique, il ne peu en avoir 2 avec le même nom et la même année
  */
 final class SportEvent
 {
@@ -44,6 +45,10 @@ final class SportEvent
      * @Assert\Timezone
      */
     private string $timeZone;
+
+    //TODO Ajouter la relation avec SportType
+
+    //TODO Ajouter la relation avec SportTeam
 
 
     public function getId(): ?int
@@ -80,6 +85,7 @@ final class SportEvent
         return $this->date;
     }
 
+    /** @TODO Rendre la timezone dynamique, et gérer l'exception */
     public function setDate(DateTimeInterface $date): self
     {
         $minDate = new DateTime('now', new DateTimeZone('Europe/Paris'));

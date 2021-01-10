@@ -8,6 +8,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=SportTypeRepository::class)
+ * @TODO Ajouter entité Unique
  */
 final class SportType
 {

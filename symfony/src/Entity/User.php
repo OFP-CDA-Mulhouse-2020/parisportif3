@@ -97,6 +97,7 @@ final class User implements UserInterface
      *
      * @Assert\NotNull
      * @Assert\Timezone
+     * @TODO Rendre dynamique
      */
     private string $timeZone = "Europe/Paris";
 

@@ -32,6 +32,11 @@ final class BetTemplate
      */
     private array $availableBetsList = [];
 
+    //TODO Ajouter la relation avec SportType
+
+    //TODO Ajouter la relation avec BetTemplateChoice
+
+
     public function getId(): ?int
     {
         return $this->id;
@@ -50,8 +55,4 @@ final class BetTemplate
 
         return $this;
     }
-
-    //TODO Ajouter la relation avec SportType
-
-    //TODO Ajouter la relation avec BetTemplateChoice
 }
