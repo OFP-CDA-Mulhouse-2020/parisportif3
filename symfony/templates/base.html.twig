@@ -8,6 +8,7 @@
             rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1"
             crossorigin="anonymous"
     >
+    <link rel="stylesheet" href="{{ asset('/assets/css/style.css') }}"
     {% block stylesheets %}
     {% endblock %}
 </head>
@@ -17,7 +18,7 @@
         <div class="main">
             <div id="menu" class="navbar navbar-light bg-light">
                 <div class="container-fluid">
-                    <a class="navbar-brand" href="#">
+                    <a class="navbar-brand" href="/">
                         <img src="{{ asset('/assets/img/logo-BetWare_c.png') }}"
                              alt="logo"
                              width="50"
@@ -25,31 +26,48 @@
                         >
                     </a>
                     <div class="d-flex justify-content-end">
-                        <button
-                                id="button_login"
-                                class="btn btn-outline-primary my-2 my-sm-0 mx-2"
-                                type="button"
-                                onclick="location.href='/login'">
-                            Se connecter
-                        </button>
-                        <button
-                                id="button_register"
-                                class="btn btn-outline-primary my-2 my-sm-0 mx-2"
-                                type="button"
-                                onclick="location.href='/register'">
-                            S'enregistrer
-                        </button>
+                        {% if user is defined and user is not empty %}
+                            <button
+                                    id="button_logout"
+                                    class="btn btn-outline-danger my-2 my-sm-0 mx-2"
+                                    type="button"
+                                    onclick="location.href='/logout'">
+                                Se déconnecter
+                            </button>
+                        {% else %}
+                            <button
+                                    id="button_login"
+                                    class="btn btn-outline-primary my-2 my-sm-0 mx-2"
+                                    type="button"
+                                    onclick="location.href='/login'">
+                                Se connecter
+                            </button>
+                            <button
+                                    id="button_register"
+                                    class="btn btn-outline-primary my-2 my-sm-0 mx-2"
+                                    type="button"
+                                    onclick="location.href='/register'">
+                                S'enregistrer
+                            </button>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
     {% endblock %}
 </header>
+<main>
 {% block body %}{% endblock %}
+</main>
 <footer>
     {% block footer %}
 
     {% endblock %}
+</footer>
+<footer id="footer" class="bg-light text-center text-lg-start">
+    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.2)">
+        © 2020 Copyright: BetWare&trade;
+    </div>
 </footer>
 {% block javascripts %}{% endblock %}
 </body>
