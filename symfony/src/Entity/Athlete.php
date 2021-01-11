@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=AthleteRepository::class)
  * @UniqueEntity("id")
- * @UniqueEntity("lastName", "firstName")
+ * @UniqueEntity({"lastName", "firstName"})
  */
 final class Athlete
 {
