@@ -2,19 +2,17 @@
 
 namespace App\Entity;
 
-use App\Exception\InvalidFirstNameException;
-use App\Exception\InvalidLastNameException;
 use App\Repository\UserRepository;
-use DateInterval;
 use DateTime;
 use DateTimeInterface;
-use DateTimeZone;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
@@ -32,6 +30,7 @@ final class User implements UserInterface
 
     /**
      * @var array<string>
+     *
      * @ORM\Column(type="json")
      */
     private array $roles = [];
@@ -41,9 +40,7 @@ final class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=180, unique=true)
      *
-     * @Assert\NotNull
-     *
-     * @TODO Ajouter un validator pour tester la validité de username
+     * @Assert\NotBlank
      */
     private string $username;
 
@@ -51,8 +48,7 @@ final class User implements UserInterface
      * @ORM\Column(type="string")
      *
      * @Assert\NotCompromisedPassword
-     *
-     * @TODO Ajouter un validator pour supprimé les test dans ::setPassword() et ::isPasswordStrongEnough()
+     * @Assert\NotBlank
      */
     private string $password;
 
@@ -60,24 +56,21 @@ final class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      *
      * @Assert\Email(mode="strict")
+     * @Assert\NotBlank
      */
     private string $email;
 
     /**
      * @ORM\Column(type="string", length=180)
      *
-     * @Assert\NotNull
-     *
-     * @TODO Ajouter un validator custom pour tester le nom
+     * @Assert\NotBlank
      */
     private string $lastName;
 
     /**
      * @ORM\Column(type="string", length=180)
      *
-     * @Assert\NotNull
-     *
-     * @TODO Ajouter un validator custom pour tester le nom
+     * @Assert\NotBlank
      */
     private string $firstName;
 
@@ -85,8 +78,6 @@ final class User implements UserInterface
      * @ORM\Column(type="date")
      *
      * @Assert\NotNull
-     *
-     * @TODO Ajouter un validator pour vérifier si l'utilisateur à l'age avant de l'ajouter
      */
     private DateTimeInterface $birthDate;
 
@@ -95,7 +86,8 @@ final class User implements UserInterface
      *
      * @Assert\NotNull
      * @Assert\Timezone
-     * @TODO Rendre dynamique
+     *
+     * @TODO Rendre dynamique selon l'entrée de l'utilisateur
      */
     private string $timeZone = "Europe/Paris";
 
@@ -106,8 +98,9 @@ final class User implements UserInterface
     private Wallet $wallet;
 
     /**
-     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="user")
      * @var Collection<int, Transaction>
+     *
+     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="user")
      */
     private Collection $transactionHistory;
 
@@ -117,8 +110,6 @@ final class User implements UserInterface
      * @ORM\Column(type="datetime")
      *
      * @Assert\NotNull
-     *
-     * @TODO Ajouter un validator custom pour tester si antérieur à maintenant
      */
     private DateTimeInterface $createdAt;
 
@@ -219,12 +210,8 @@ final class User implements UserInterface
         return $this->lastName;
     }
 
-    /** @TODO Utiliser plutôt un validateur */
     public function setLastName(string $lastName): self
     {
-        if (!preg_match("/^[A-Za-zÄ-ÿ_.-]+$/u", $lastName)) {
-            throw new InvalidLastNameException("Your lastname is invalid.");
-        }
         $this->lastName = $lastName;
         return $this;
     }
@@ -234,25 +221,9 @@ final class User implements UserInterface
         return $this->firstName;
     }
 
-    /** TODO Utiliser plutôt un validateur */
     public function setFirstName(string $firstName): self
     {
-        if (!preg_match("/^[A-Za-zÄ-ÿ_.-]+$/u", $firstName)) {
-            throw new InvalidFirstNameException("Your firstname is invalid.");
-        }
         $this->firstName = $firstName;
-        return $this;
-    }
-
-    public function getBirthDate(): DateTimeInterface
-    {
-        return $this->birthDate;
-    }
-
-    public function setBirthDate(DateTimeInterface $birthDate): self
-    {
-        $this->birthDate = $birthDate;
-
         return $this;
     }
 
@@ -264,6 +235,18 @@ final class User implements UserInterface
     public function setTimeZone(string $timeZone): self
     {
         $this->timeZone = $timeZone;
+
+        return $this;
+    }
+
+    public function getBirthDate(): DateTimeInterface
+    {
+        return $this->birthDate;
+    }
+
+    public function setBirthDate(DateTimeInterface $birthDate): self
+    {
+        $this->birthDate = $birthDate;
 
         return $this;
     }
@@ -286,7 +269,7 @@ final class User implements UserInterface
         return $this->transactionHistory;
     }
 
-    public function addTransactionToHistory(Transaction $transaction): self
+    public function addTransaction(Transaction $transaction): self
     {
         if (!$this->transactionHistory->contains($transaction)) {
             $this->transactionHistory[] = $transaction;
@@ -371,8 +354,6 @@ final class User implements UserInterface
         $this->deletedAt = new DateTime();
     }
 
-    /** Custom logic */
-
     /**
      * @TODO Implémenter
      * @phpstan-ignore-next-line
@@ -382,27 +363,61 @@ final class User implements UserInterface
         // not needed when using the "bcrypt" algorithm in security.yaml
     }
 
-    //TODO Implémenter
     public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
 
-    /**
-     * TODO Retravailler pour permettre le changement de TimeZone ainsi que l'âge
-     */
-    public function isUserOldEnough(): bool
+    /** Custom validation */
+
+    /** @Assert\Callback */
+    public function validateUsername(ExecutionContextInterface $context): void
     {
-        $now = (new DateTime())
-            ->setTimezone(new DateTimeZone('Europe/Paris'))
-            ->setTime(0, 0);
+        //TODO checker les regex
+        if (!preg_match("/^[A-Za-z0-9]+$/u", $this->username)) {
+            $context->buildViolation("The username is not a valid username")
+                ->atPath("choice")
+                ->addViolation();
+        }
+    }
 
-        $ageDiff = $now->diff($this->getBirthDate());
+    /** @Assert\Callback */
+    public function validateNames(ExecutionContextInterface $context): void
+    {
+        //TODO checker les regex
 
-        assert($ageDiff instanceof DateInterval);
+        if (!preg_match("/^[A-Za-zÄ-ÿ_.-]+$/u", $this->firstName)) {
+            $context->buildViolation("The firstName is not a valid firstName")
+                ->atPath("firstName")
+                ->addViolation();
+        }
+        if (!preg_match("/^[A-Za-zÄ-ÿ_.-]+$/u", $this->lastName)) {
+            $context->buildViolation("The lastName is not a valid lastName")
+                ->atPath("lastName")
+                ->addViolation();
+        }
+    }
+
+    /**
+     * @Assert\Callback
+     * @throws Exception
+     */
+    public function validateUserOldEnough(ExecutionContextInterface $context): void
+    {
+        //TODO rentre l'age limite dynamique
+
+        $now = new DateTime();
+        $now->setTime(0, 0);
+
+        $ageDiff = $now->diff($this->birthDate);
+
         $userAge = (int)$ageDiff->format('%Y');
 
-        return $userAge >= 18;
+        if ($userAge < 18) {
+            $context->buildViolation("This user is too young")
+                ->atPath("birthDate")
+                ->addViolation();
+        }
     }
 }
