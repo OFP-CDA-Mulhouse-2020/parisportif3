@@ -373,7 +373,10 @@ final class User implements UserInterface
 
     /** Custom logic */
 
-    //TODO Implémenter @phpstan-ignore-next-line
+    /**
+     * @TODO Implémenter
+     * @phpstan-ignore-next-line
+     */
     public function getSalt(): void
     {
         // not needed when using the "bcrypt" algorithm in security.yaml
