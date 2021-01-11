@@ -25,6 +25,7 @@ final class SportTeam
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @Assert\NotBlank
      * @Assert\Regex(
      *     pattern = "/^\w['\w -]{2,}$/u"
@@ -33,24 +34,24 @@ final class SportTeam
     private string $teamName;
 
     /**
-     * @ORM\ManyToMany(targetEntity=SportEvent::class, mappedBy="sportTeamList")
-     *
      * @var Collection<int, SportEvent>
+     *
+     * @ORM\ManyToMany(targetEntity=SportEvent::class, mappedBy="sportTeamList")
      */
     private Collection $sportEventsList;
 
     /**
-     * @ORM\ManyToMany(targetEntity=Athlete::class, inversedBy="sportTeamsList")
-     *
      * @var Collection<int, Athlete>
+     *
+     * @ORM\ManyToMany(targetEntity=Athlete::class, inversedBy="sportTeamsList")
      */
-    private Collection $athleteList;
+    private Collection $athletesList;
 
 
     public function __construct()
     {
         $this->sportEventsList = new ArrayCollection();
-        $this->athleteList = new ArrayCollection();
+        $this->athletesList = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -71,48 +72,39 @@ final class SportTeam
     }
 
     /** @return Collection<int, SportEvent> */
-    public function getSportEventsList(): Collection
+    public function listSportEvents(): Collection
     {
         return $this->sportEventsList;
     }
 
-    public function addSportEventsList(SportEvent $sportEventsList): self
+    public function addSportEventToList(SportEvent $newSportEvent): self
     {
-        if (!$this->sportEventsList->contains($sportEventsList)) {
-            $this->sportEventsList[] = $sportEventsList;
-            $sportEventsList->addSportTeamToList($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSportEventsList(SportEvent $sportEventsList): self
-    {
-        if ($this->sportEventsList->removeElement($sportEventsList)) {
-            $sportEventsList->removeSportFromTeamList($this);
+        if (!$this->sportEventsList->contains($newSportEvent)) {
+            $this->sportEventsList[] = $newSportEvent;
+            $newSportEvent->addSportTeamToList($this);
         }
 
         return $this;
     }
 
     /** @return Collection<int, Athlete> */
-    public function getAthleteList(): Collection
+    public function listAthletes(): Collection
     {
-        return $this->athleteList;
+        return $this->athletesList;
     }
 
-    public function addAthleteList(Athlete $athleteList): self
+    public function addAthleteToList(Athlete $newAthlete): self
     {
-        if (!$this->athleteList->contains($athleteList)) {
-            $this->athleteList[] = $athleteList;
+        if (!$this->athletesList->contains($newAthlete)) {
+            $this->athletesList[] = $newAthlete;
         }
 
         return $this;
     }
 
-    public function removeAthleteList(Athlete $athleteList): self
+    public function removeAthleteFromList(Athlete $removedAthlete): self
     {
-        $this->athleteList->removeElement($athleteList);
+        $this->athletesList->removeElement($removedAthlete);
 
         return $this;
     }
