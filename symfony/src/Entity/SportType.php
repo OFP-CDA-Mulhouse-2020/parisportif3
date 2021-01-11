@@ -25,6 +25,7 @@ final class SportType
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
      * @Assert\NotBlank
      * @Assert\Regex(
      *     pattern= "/^(?:\p{L}{2,}|E)(?:[ '-]\p{L}+)*$/u"
@@ -34,22 +35,23 @@ final class SportType
 
     /**
      * @ORM\Column(type="integer")
+     *
      * @Assert\GreaterThan(0)
      */
     private int $nbrOfActiveAthlete;
 
     /**
-     * @ORM\OneToMany(targetEntity=SportEvent::class, mappedBy="sportType")
-     *
      * @var Collection<int, SportEvent>
+     *
+     * @ORM\OneToMany(targetEntity=SportEvent::class, mappedBy="sportType")
      */
     private Collection $sportEventsList;
+
 
     public function __construct()
     {
         $this->sportEventsList = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {
@@ -81,16 +83,16 @@ final class SportType
     }
 
     /** @return Collection<int, SportEvent> */
-    public function getSportEventsList(): Collection
+    public function listSportEvents(): Collection
     {
         return $this->sportEventsList;
     }
 
-    public function addSportEventsList(SportEvent $sportEventsList): self
+    public function addSportEvent(SportEvent $newSportEvent): self
     {
-        if (!$this->sportEventsList->contains($sportEventsList)) {
-            $this->sportEventsList[] = $sportEventsList;
-            $sportEventsList->setSportType($this);
+        if (!$this->sportEventsList->contains($newSportEvent)) {
+            $this->sportEventsList[] = $newSportEvent;
+            $newSportEvent->setSportType($this);
         }
 
         return $this;
