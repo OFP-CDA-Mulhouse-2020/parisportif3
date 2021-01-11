@@ -7,6 +7,8 @@ use DateInterval;
 use DateTime;
 use DateTimeInterface;
 use DateTimeZone;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -55,7 +57,18 @@ final class SportEvent
      */
     private SportType $sportType;
 
-    //TODO Ajouter la relation avec SportTeam
+    /**
+     * @ORM\ManyToMany(targetEntity=SportTeam::class, inversedBy="sportEventsList")
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @var Collection<int, SportTeam>
+     */
+    private Collection $sportTeamList;
+
+    public function __construct()
+    {
+        $this->sportTeamList = new ArrayCollection();
+    }
 
 
     public function getId(): ?int
@@ -129,6 +142,28 @@ final class SportEvent
     public function setSportType(SportType $sportType): self
     {
         $this->sportType = $sportType;
+
+        return $this;
+    }
+
+    /** @return Collection<int, SportTeam> */
+    public function getSportTeamList(): Collection
+    {
+        return $this->sportTeamList;
+    }
+
+    public function addSportTeamList(SportTeam $sportTeamList): self
+    {
+        if (!$this->sportTeamList->contains($sportTeamList)) {
+            $this->sportTeamList[] = $sportTeamList;
+        }
+
+        return $this;
+    }
+
+    public function removeSportTeamList(SportTeam $sportTeamList): self
+    {
+        $this->sportTeamList->removeElement($sportTeamList);
 
         return $this;
     }
