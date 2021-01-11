@@ -28,7 +28,13 @@ final class BetChoice
      */
     private array $choice = [];
 
-    //TODO Ajouter la relation avec BetTemplateChoice
+    /**
+     * @ORM\OneToOne(targetEntity=BetTemplateChoice::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\NotNull()
+     */
+    private BetTemplateChoice $betTemplateChoice;
 
 
     public function getId(): ?int
@@ -68,5 +74,17 @@ final class BetChoice
                     ->addViolation();
             }
         }
+    }
+
+    public function getBetTemplateChoice(): BetTemplateChoice
+    {
+        return $this->betTemplateChoice;
+    }
+
+    public function setBetTemplateChoice(BetTemplateChoice $betTemplateChoice): self
+    {
+        $this->betTemplateChoice = $betTemplateChoice;
+
+        return $this;
     }
 }
