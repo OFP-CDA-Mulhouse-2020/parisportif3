@@ -22,9 +22,9 @@ final class BetChoice
     private ?int $id;
 
     /**
-     * @ORM\Column(type="array")
-     *
      * @var array<string, int>
+     *
+     * @ORM\Column(type="array")
      */
     private array $choice = [];
 
@@ -32,7 +32,7 @@ final class BetChoice
      * @ORM\OneToOne(targetEntity=BetTemplateChoice::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      *
-     * @Assert\NotNull()
+     * @Assert\NotNull
      */
     private BetTemplateChoice $betTemplateChoice;
 
@@ -57,8 +57,7 @@ final class BetChoice
     }
 
     /**
-     * @Assert\Callback()
-     * @TODO Ajouter le test avec BetTemplateChoice
+     * @Assert\Callback
      */
     public function validateChoice(ExecutionContextInterface $context): void
     {
@@ -73,6 +72,7 @@ final class BetChoice
                     ->atPath("choice")
                     ->addViolation();
             }
+            //TODO vérifier que le type de contenu est bon
         }
     }
 
