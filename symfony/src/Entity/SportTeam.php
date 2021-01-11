@@ -81,7 +81,7 @@ final class SportTeam
     {
         if (!$this->sportEventsList->contains($newSportEvent)) {
             $this->sportEventsList[] = $newSportEvent;
-            $newSportEvent->addSportTeamToList($this);
+            $newSportEvent->addSportTeam($this);
         }
 
         return $this;
