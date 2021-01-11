@@ -63,7 +63,7 @@ final class SportEvent
         return $this->id;
     }
 
-    public function getLocation(): ?string
+    public function getLocation(): string
     {
         return $this->location;
     }
@@ -75,7 +75,7 @@ final class SportEvent
         return $this;
     }
 
-    public function getCompetition(): ?string
+    public function getCompetition(): string
     {
         return $this->competition;
     }
@@ -87,7 +87,7 @@ final class SportEvent
         return $this;
     }
 
-    public function getDate(): ?DateTimeInterface
+    public function getDate(): DateTimeInterface
     {
         return $this->date;
     }
