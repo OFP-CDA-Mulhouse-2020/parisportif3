@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=ReceiptRepository::class)
  * @UniqueEntity("id")
- * @TODO Ajouter unicité
+ * @TODO Ajouter unicité avec User ? (voir TODO en bas)
  */
 final class Receipt
 {
@@ -24,6 +24,7 @@ final class Receipt
     /**
      * @ORM\Column(type="integer")
      *
+     * @Assert\NotNull
      * @Assert\GreaterThan(0)
      */
     private int $amount;
@@ -32,11 +33,11 @@ final class Receipt
      * @ORM\ManyToOne(targetEntity=Wallet::class)
      * @ORM\JoinColumn(nullable=false)
      *
-     * @TODO besoin d'un wallet OU de la valeur d'un wallet à un instant T?
+     * @TODO besoin d'un wallet ? de la valeur d'un wallet à un instant T ?
      */
     private Wallet $wallet;
 
-    //TODO Ajouter une relation avec User, car seulement cette utilisateurs est sensé y avoir accès
+    //TODO Ajouter une relation avec User? Car seulement cet utilisateur est sensé y avoir accès
 
 
     public function getId(): ?int
@@ -44,7 +45,7 @@ final class Receipt
         return $this->id;
     }
 
-    public function getAmount(): ?int
+    public function getAmount(): int
     {
         return $this->amount;
     }
