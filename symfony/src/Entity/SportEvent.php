@@ -49,7 +49,11 @@ final class SportEvent
      */
     private string $timeZone;
 
-    //TODO Ajouter la relation avec SportType
+    /**
+     * @ORM\ManyToOne(targetEntity=SportType::class, inversedBy="sportEventsList")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private SportType $sportType;
 
     //TODO Ajouter la relation avec SportTeam
 
@@ -113,6 +117,18 @@ final class SportEvent
     public function setTimeZone(string $timeZone): self
     {
         $this->timeZone = $timeZone;
+
+        return $this;
+    }
+
+    public function getSportType(): SportType
+    {
+        return $this->sportType;
+    }
+
+    public function setSportType(SportType $sportType): self
+    {
+        $this->sportType = $sportType;
 
         return $this;
     }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SportTypeRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -36,6 +38,18 @@ final class SportType
      */
     private int $nbrOfActiveAthlete;
 
+    /**
+     * @ORM\OneToMany(targetEntity=SportEvent::class, mappedBy="sportType")
+     *
+     * @var Collection<int, SportEvent>
+     */
+    private Collection $sportEventsList;
+
+    public function __construct()
+    {
+        $this->sportEventsList = new ArrayCollection();
+    }
+
 
     public function getId(): ?int
     {
@@ -62,6 +76,34 @@ final class SportType
     public function setNbrOfActiveAthlete(int $nbrOfActiveAthlete): self
     {
         $this->nbrOfActiveAthlete = $nbrOfActiveAthlete;
+
+        return $this;
+    }
+
+    /** @return Collection<int, SportEvent> */
+    public function getSportEventsList(): Collection
+    {
+        return $this->sportEventsList;
+    }
+
+    public function addSportEventsList(SportEvent $sportEventsList): self
+    {
+        if (!$this->sportEventsList->contains($sportEventsList)) {
+            $this->sportEventsList[] = $sportEventsList;
+            $sportEventsList->setSportType($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSportEventsList(SportEvent $sportEventsList): self
+    {
+        if ($this->sportEventsList->removeElement($sportEventsList)) {
+            // set the owning side to null (unless already changed)
+            if ($sportEventsList->getSportType() === $this) {
+                $sportEventsList->setSportType(null);
+            }
+        }
 
         return $this;
     }
