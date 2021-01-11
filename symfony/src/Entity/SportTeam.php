@@ -77,7 +77,7 @@ final class SportTeam
         return $this->sportEventsList;
     }
 
-    public function addSportEventToList(SportEvent $newSportEvent): self
+    public function addSportEvent(SportEvent $newSportEvent): self
     {
         if (!$this->sportEventsList->contains($newSportEvent)) {
             $this->sportEventsList[] = $newSportEvent;
@@ -93,7 +93,7 @@ final class SportTeam
         return $this->athletesList;
     }
 
-    public function addAthleteToList(Athlete $newAthlete): self
+    public function addAthlete(Athlete $newAthlete): self
     {
         if (!$this->athletesList->contains($newAthlete)) {
             $this->athletesList[] = $newAthlete;
@@ -102,7 +102,7 @@ final class SportTeam
         return $this;
     }
 
-    public function removeAthleteFromList(Athlete $removedAthlete): self
+    public function removeAthlete(Athlete $removedAthlete): self
     {
         $this->athletesList->removeElement($removedAthlete);
 

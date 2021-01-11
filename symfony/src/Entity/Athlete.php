@@ -95,7 +95,7 @@ final class Athlete
     {
         if (!$this->sportTeamsList->contains($newTeam)) {
             $this->sportTeamsList[] = $newTeam;
-            $newTeam->addAthleteToList($this);
+            $newTeam->addAthlete($this);
         }
 
         return $this;
@@ -104,7 +104,7 @@ final class Athlete
     public function leaveTeam(SportTeam $oldTeam): self
     {
         if ($this->sportTeamsList->removeElement($oldTeam)) {
-            $oldTeam->removeAthleteFromList($this);
+            $oldTeam->removeAthlete($this);
         }
 
         return $this;
