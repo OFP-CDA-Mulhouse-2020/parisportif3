@@ -26,6 +26,7 @@ final class Wallet
      */
     private int $balance = 0;
 
+
     public function getId(): ?int
     {
         return $this->id;

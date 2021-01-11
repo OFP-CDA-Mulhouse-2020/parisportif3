@@ -39,6 +39,7 @@ final class Athlete
      */
     private string $firstName;
 
+
     public function getId(): ?int
     {
         return $this->id;

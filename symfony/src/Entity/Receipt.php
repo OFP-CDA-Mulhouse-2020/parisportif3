@@ -38,6 +38,7 @@ final class Receipt
 
     //TODO Ajouter une relation avec User, car seulement cette utilisateurs est sensé y avoir accès
 
+
     public function getId(): ?int
     {
         return $this->id;

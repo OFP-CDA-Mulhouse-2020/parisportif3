@@ -38,11 +38,11 @@ final class Bet
      */
     private BetChoice $betChoice;
 
+
     public function getId(): ?int
     {
         return $this->id;
     }
-
 
     public function getTransaction(): Transaction
     {
