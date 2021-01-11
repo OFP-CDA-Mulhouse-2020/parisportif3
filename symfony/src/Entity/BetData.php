@@ -30,7 +30,7 @@ final class BetData
     private int $amount;
 
     /**
-     * @ORM\Column(type="boot")
+     * @ORM\Column(type="boolean")
      *
      * @Assert\NotNull
      */
