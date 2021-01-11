@@ -10,8 +10,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=BetTemplateRepository::class)
  * @UniqueEntity(
- *     fields={"id", "description"},
- *     errorPath="description"
+ *     fields={"id", "availableBetsList"},
+ *     errorPath="availableBetsList"
  * )
  */
 final class BetTemplate
@@ -25,37 +25,28 @@ final class BetTemplate
 
     /**
      * @ORM\Column(type="array")
-     * @var array<string, array<string, array<string>>>
+     * @var array<string, array<string>>
      * @Assert\NotBlank
-     * @Assert\NotNull
      *
-     * @Assert\Collection(
-     *     fields = {
-     *         "BET_LIST" = @Assert\Required({
-     *              @Assert\NotNull,
-     *              @Assert\NotBlank,
-     *              @Assert\Type("array")
-     *         })
-     *     }
-     * )
+     * @TODO Tester avec le validateur
      */
-    private array $description = [];
+    private array $availableBetsList = [];
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /** @return array<string, array<string, array<string>>>|null */
-    public function getDescription(): ?array
+    /** @return array<string, array<string>> */
+    public function getAvailableBetsList(): array
     {
-        return $this->description;
+        return $this->availableBetsList;
     }
 
-    /** @param array<string, array<string, array<string>>> $description */
-    public function setDescription(array $description): self
+    /** @param array<string, array<string>> $availableBetsList */
+    public function setAvailableBetsList(array $availableBetsList): self
     {
-        $this->description = $description;
+        $this->availableBetsList = $availableBetsList;
 
         return $this;
     }

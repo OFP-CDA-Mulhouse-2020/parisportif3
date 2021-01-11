@@ -30,7 +30,7 @@ final class BetTemplateTest extends WebTestCase
      */
     public function testValidBetTemplateDescription(array $template): void
     {
-        $this->template->setDescription($template);
+        $this->template->setAvailableBetsList($template);
         $violations = $this->validator->validate($template);
 
         $this->assertCount(0, $violations);
@@ -101,7 +101,7 @@ final class BetTemplateTest extends WebTestCase
      */
     public function testInvalidBetTemplateDescription(array $template): void
     {
-        $this->template->setDescription($template);
+        $this->template->setAvailableBetsList($template);
         $violations = $this->validator->validate($this->template);
 
         $this->assertGreaterThanOrEqual(1, count($violations));
