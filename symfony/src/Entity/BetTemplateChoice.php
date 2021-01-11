@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\BetTemplateChoiceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=BetTemplateChoiceRepository::class)
@@ -27,7 +28,13 @@ final class BetTemplateChoice
      */
     private array $updatedDescription = [];
 
-    //TODO Ajouter la relation avec BetTemplate
+    /**
+     * @ORM\OneToOne(targetEntity=BetTemplate::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\NotNull()
+     */
+    private BetTemplate $betTemplate;
 
 
     public function getId(): ?int
@@ -45,6 +52,18 @@ final class BetTemplateChoice
     public function updateDescription(array $updatedDescription): self
     {
         $this->updatedDescription = $updatedDescription;
+
+        return $this;
+    }
+
+    public function getBetTemplate(): BetTemplate
+    {
+        return $this->betTemplate;
+    }
+
+    public function setBetTemplate(BetTemplate $betTemplate): self
+    {
+        $this->betTemplate = $betTemplate;
 
         return $this;
     }
