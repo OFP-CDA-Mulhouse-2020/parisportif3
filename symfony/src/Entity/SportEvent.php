@@ -88,7 +88,8 @@ final class SportEvent
         return $this->date;
     }
 
-    /** @TODO Rendre la timezone dynamique, et gérer l'exception
+    /**
+     * @TODO Rendre la timezone dynamique, et gérer l'exception
      * @throws Exception
      */
     public function setDate(DateTimeInterface $date): self
