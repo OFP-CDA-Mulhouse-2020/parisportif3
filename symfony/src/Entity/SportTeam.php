@@ -39,13 +39,19 @@ final class SportTeam
      */
     private Collection $sportEventsList;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Athlete::class, inversedBy="sportTeamsList")
+     *
+     * @var Collection<int, Athlete>
+     */
+    private Collection $athleteList;
+
+
     public function __construct()
     {
         $this->sportEventsList = new ArrayCollection();
+        $this->athleteList = new ArrayCollection();
     }
-
-    //TODO Ajouter la relation avec Athlete
-
 
     public function getId(): ?int
     {
@@ -85,6 +91,28 @@ final class SportTeam
         if ($this->sportEventsList->removeElement($sportEventsList)) {
             $sportEventsList->removeSportTeamList($this);
         }
+
+        return $this;
+    }
+
+    /** @return Collection<int, Athlete> */
+    public function getAthleteList(): Collection
+    {
+        return $this->athleteList;
+    }
+
+    public function addAthleteList(Athlete $athleteList): self
+    {
+        if (!$this->athleteList->contains($athleteList)) {
+            $this->athleteList[] = $athleteList;
+        }
+
+        return $this;
+    }
+
+    public function removeAthleteList(Athlete $athleteList): self
+    {
+        $this->athleteList->removeElement($athleteList);
 
         return $this;
     }
