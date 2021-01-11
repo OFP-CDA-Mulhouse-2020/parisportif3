@@ -6,6 +6,7 @@ use App\Repository\BetTemplateRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass=BetTemplateRepository::class)
@@ -22,13 +23,13 @@ final class BetTemplate
     private ?int $id;
 
     /**
-     * @ORM\Column(type="array")
      * @var array<string, array<string>>
-     * @Assert\NotBlank
      *
-     * @TODO Tester avec le validateur
+     * @ORM\Column(type="array")
+     *
+     * @Assert\NotBlank
      */
-    private array $availableBetsList = [];
+    private array $abstractBets = [];
 
     /**
      * @ORM\OneToOne(targetEntity=SportType::class, cascade={"persist", "remove"})
@@ -43,15 +44,15 @@ final class BetTemplate
     }
 
     /** @return array<string, array<string>> */
-    public function getAvailableBetsList(): array
+    public function listAbstractBets(): array
     {
-        return $this->availableBetsList;
+        return $this->abstractBets;
     }
 
-    /** @param array<string, array<string>> $availableBetsList */
-    public function setAvailableBetsList(array $availableBetsList): self
+    /** @param array<string, array<string>> $newAbstractBetsList */
+    public function setAbstractBets(array $newAbstractBetsList): self
     {
-        $this->availableBetsList = $availableBetsList;
+        $this->abstractBets = $newAbstractBetsList;
 
         return $this;
     }
@@ -66,5 +67,11 @@ final class BetTemplate
         $this->sportType = $sportType;
 
         return $this;
+    }
+
+    /** @Assert\Callback */
+    public function validateAbstractBets(ExecutionContextInterface $context): void
+    {
+        //TODO Implémenter
     }
 }
