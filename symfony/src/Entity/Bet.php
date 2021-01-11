@@ -56,7 +56,7 @@ final class Bet
         return $this;
     }
 
-    public function getBetData(): ?BetData
+    public function getBetData(): BetData
     {
         return $this->betData;
     }
@@ -68,7 +68,7 @@ final class Bet
         return $this;
     }
 
-    public function getBetChoice(): ?BetChoice
+    public function getBetChoice(): BetChoice
     {
         return $this->betChoice;
     }
