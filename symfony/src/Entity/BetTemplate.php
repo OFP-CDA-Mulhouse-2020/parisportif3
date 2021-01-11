@@ -30,9 +30,11 @@ final class BetTemplate
      */
     private array $availableBetsList = [];
 
-    //TODO Ajouter la relation avec SportType
-
-    //TODO Ajouter la relation avec BetTemplateChoice
+    /**
+     * @ORM\OneToOne(targetEntity=SportType::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private SportType $sportType;
 
 
     public function getId(): ?int
@@ -50,6 +52,18 @@ final class BetTemplate
     public function setAvailableBetsList(array $availableBetsList): self
     {
         $this->availableBetsList = $availableBetsList;
+
+        return $this;
+    }
+
+    public function getSportType(): SportType
+    {
+        return $this->sportType;
+    }
+
+    public function setSportType(SportType $sportType): self
+    {
+        $this->sportType = $sportType;
 
         return $this;
     }
