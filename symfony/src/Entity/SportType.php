@@ -36,6 +36,7 @@ final class SportType
      */
     private int $nbrOfActiveAthlete;
 
+
     public function getId(): ?int
     {
         return $this->id;
