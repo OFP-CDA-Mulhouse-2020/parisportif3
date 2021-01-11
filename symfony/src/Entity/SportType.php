@@ -95,16 +95,4 @@ final class SportType
 
         return $this;
     }
-
-    public function removeSportEventsList(SportEvent $sportEventsList): self
-    {
-        if ($this->sportEventsList->removeElement($sportEventsList)) {
-            // set the owning side to null (unless already changed)
-            if ($sportEventsList->getSportType() === $this) {
-                $sportEventsList->setSportType(null);
-            }
-        }
-
-        return $this;
-    }
 }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SportTeamRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -30,6 +32,18 @@ final class SportTeam
      */
     private string $teamName;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=SportEvent::class, mappedBy="sportTeamList")
+     *
+     * @var Collection<int, SportEvent>
+     */
+    private Collection $sportEventsList;
+
+    public function __construct()
+    {
+        $this->sportEventsList = new ArrayCollection();
+    }
+
     //TODO Ajouter la relation avec Athlete
 
 
@@ -46,6 +60,31 @@ final class SportTeam
     public function setTeamName(string $teamName): self
     {
         $this->teamName = $teamName;
+
+        return $this;
+    }
+
+    /** @return Collection<int, SportEvent> */
+    public function getSportEventsList(): Collection
+    {
+        return $this->sportEventsList;
+    }
+
+    public function addSportEventsList(SportEvent $sportEventsList): self
+    {
+        if (!$this->sportEventsList->contains($sportEventsList)) {
+            $this->sportEventsList[] = $sportEventsList;
+            $sportEventsList->addSportTeamList($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSportEventsList(SportEvent $sportEventsList): self
+    {
+        if ($this->sportEventsList->removeElement($sportEventsList)) {
+            $sportEventsList->removeSportTeamList($this);
+        }
 
         return $this;
     }
