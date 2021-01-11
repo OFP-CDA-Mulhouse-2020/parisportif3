@@ -43,8 +43,10 @@ final class Athlete
 
     /**
      * @ORM\ManyToMany(targetEntity=SportTeam::class, mappedBy="athleteList")
+     *
+     * @var Collection<int, SportTeam>
      */
-    private $sportTeamsList;
+    private Collection $sportTeamsList;
 
     public function __construct()
     {
@@ -81,9 +83,7 @@ final class Athlete
         return $this;
     }
 
-    /**
-     * @return Collection|SportTeam[]
-     */
+    /** @return Collection<int, SportTeam> */
     public function getSportTeamsList(): Collection
     {
         return $this->sportTeamsList;
