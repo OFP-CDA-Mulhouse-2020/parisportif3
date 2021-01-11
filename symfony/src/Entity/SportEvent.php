@@ -17,7 +17,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=SportEventRepository::class)
  * @UniqueEntity("id")
- * @TODO Un évènement sportif est unique, il ne peu en avoir 2 avec le même nom et la même année
+ * @TODO Un évènement sportif est t'il unique? et si oui sous quel critère ?
  */
 final class SportEvent
 {
@@ -58,18 +58,18 @@ final class SportEvent
     private SportType $sportType;
 
     /**
+     * @var Collection<int, SportTeam>
+     *
      * @ORM\ManyToMany(targetEntity=SportTeam::class, inversedBy="sportEventsList")
      * @ORM\JoinColumn(nullable=false)
-     *
-     * @var Collection<int, SportTeam>
      */
     private Collection $sportTeamList;
+
 
     public function __construct()
     {
         $this->sportTeamList = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {
@@ -147,23 +147,23 @@ final class SportEvent
     }
 
     /** @return Collection<int, SportTeam> */
-    public function getSportTeamList(): Collection
+    public function listSportTeams(): Collection
     {
         return $this->sportTeamList;
     }
 
-    public function addSportTeamList(SportTeam $sportTeamList): self
+    public function addSportTeamToList(SportTeam $newTeam): self
     {
-        if (!$this->sportTeamList->contains($sportTeamList)) {
-            $this->sportTeamList[] = $sportTeamList;
+        if (!$this->sportTeamList->contains($newTeam)) {
+            $this->sportTeamList[] = $newTeam;
         }
 
         return $this;
     }
 
-    public function removeSportTeamList(SportTeam $sportTeamList): self
+    public function removeSportTeamFromList(SportTeam $removedTeam): self
     {
-        $this->sportTeamList->removeElement($sportTeamList);
+        $this->sportTeamList->removeElement($removedTeam);
 
         return $this;
     }
