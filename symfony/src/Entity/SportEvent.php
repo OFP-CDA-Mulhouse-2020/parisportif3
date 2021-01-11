@@ -152,7 +152,7 @@ final class SportEvent
         return $this->sportTeamList;
     }
 
-    public function addSportTeamToList(SportTeam $newTeam): self
+    public function addSportTeam(SportTeam $newTeam): self
     {
         if (!$this->sportTeamList->contains($newTeam)) {
             $this->sportTeamList[] = $newTeam;
@@ -161,7 +161,7 @@ final class SportEvent
         return $this;
     }
 
-    public function removeSportTeamFromList(SportTeam $removedTeam): self
+    public function removeSportTeam(SportTeam $removedTeam): self
     {
         $this->sportTeamList->removeElement($removedTeam);
 
