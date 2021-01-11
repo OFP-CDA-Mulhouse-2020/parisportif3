@@ -9,7 +9,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 /**
  * @ORM\Entity(repositoryClass=BetRepository::class)
  * @UniqueEntity("id")
- * @UniqueEntity("transaction", "betChoice", "betData")
+ * @UniqueEntity({"transaction", "betChoice", "betData"})
  */
 final class Bet
 {
