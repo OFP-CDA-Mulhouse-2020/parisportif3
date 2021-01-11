@@ -41,6 +41,12 @@ final class HomeControllerTest extends WebTestCase
         $this->assertSelectorExists('#button_register');
     }
 
+    public function testShowContent(): void
+    {
+        $this->client->request('GET', '/');
+        $this->assertSelectorExists('#content');
+    }
+
     public function testShowFooter(): void
     {
         $this->client->request('GET', '/');
