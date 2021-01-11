@@ -22,10 +22,10 @@ final class Wallet
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\GreaterThan(0)
+     *
+     * @Assert\GreaterThanOrEqual(0)
      */
     private int $balance = 0;
-
 
     public function getId(): ?int
     {
@@ -35,13 +35,6 @@ final class Wallet
     public function getBalance(): int
     {
         return $this->balance;
-    }
-
-    public function setBalance(int $balance): self
-    {
-        $this->balance = $balance;
-
-        return $this;
     }
 
     public function addToBalance(int $balance): self
