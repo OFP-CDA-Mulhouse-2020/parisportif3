@@ -6,11 +6,13 @@ use App\Repository\BetTemplateChoiceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass=BetTemplateChoiceRepository::class)
  * @UniqueEntity("id")
- * @TODO Ajouter l'unicité avec BetTemplate et updatedDescription
+ * @UniqueEntity({"betTemplate"})
+ * @UniqueEntity({"updatedDescription"})
  */
 final class BetTemplateChoice
 {
@@ -23,10 +25,10 @@ final class BetTemplateChoice
 
     /**
      * @var array<string, array<string>>
+     *
      * @ORM\Column(type="array")
-     * @TODO Valider avec le validator
      */
-    private array $updatedDescription = [];
+    private array $betList = [];
 
     /**
      * @ORM\OneToOne(targetEntity=BetTemplate::class, cascade={"persist", "remove"})
@@ -43,15 +45,15 @@ final class BetTemplateChoice
     }
 
     /** @return array<string, array<string>> */
-    public function getUpdatedDescription(): ?array
+    public function listAvailableBets(): array
     {
-        return $this->updatedDescription;
+        return $this->betList;
     }
 
-    /** @param array<string, array<string>> $updatedDescription */
-    public function updateDescription(array $updatedDescription): self
+    /** @param array<string, array<string>> $newAvailableBetList */
+    public function setAvailableBets(array $newAvailableBetList): self
     {
-        $this->updatedDescription = $updatedDescription;
+        $this->betList = $newAvailableBetList;
 
         return $this;
     }
@@ -66,5 +68,11 @@ final class BetTemplateChoice
         $this->betTemplate = $betTemplate;
 
         return $this;
+    }
+
+    /** @Assert\Callback */
+    public function validateBetList(ExecutionContextInterface $context): void
+    {
+        //TODO Implémenter le validator pour $this->betList
     }
 }
