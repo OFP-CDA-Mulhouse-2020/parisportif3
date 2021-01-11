@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=TransactionRepository::class)
  * @UniqueEntity("id")
- * @TODO Ajouter d'autre champ pour être unique
+ * @UniqueEntity({"transactionDate", "betList", "user"})
  */
 final class Transaction
 {
@@ -27,12 +27,14 @@ final class Transaction
 
     /**
      * @ORM\Column(type="datetime")
+     *
      * @Assert\NotNull
      */
     private DateTimeInterface $transactionDate;
 
     /**
      * @ORM\Column(type="integer")
+     *
      * @Assert\GreaterThan(0)
      */
     private int $totalPrice;
@@ -40,12 +42,15 @@ final class Transaction
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="transactionHistory")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\NotNull
      */
     private User $user;
 
     /**
-     * @ORM\OneToMany(targetEntity=Bet::class, mappedBy="transaction")
      * @var Collection<int, Bet>
+     *
+     * @ORM\OneToMany(targetEntity=Bet::class, mappedBy="transaction")
      */
     private Collection $betList;
 
@@ -61,7 +66,7 @@ final class Transaction
         return $this->id;
     }
 
-    public function getTransactionDate(): ?DateTimeInterface
+    public function getTransactionDate(): DateTimeInterface
     {
         return $this->transactionDate;
     }
@@ -78,7 +83,7 @@ final class Transaction
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUser(): User
     {
         return $this->user;
     }
@@ -96,7 +101,7 @@ final class Transaction
         return $this->betList;
     }
 
-    public function addBetToList(Bet $bet): self
+    public function addBet(Bet $bet): self
     {
         if (!$this->betList->contains($bet)) {
             $this->betList[] = $bet;
