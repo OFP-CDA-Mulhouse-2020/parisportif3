@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ReceiptRepository;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -30,12 +31,9 @@ final class Receipt
     private int $amount;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Wallet::class)
-     * @ORM\JoinColumn(nullable=false)
-     *
-     * @TODO besoin d'un wallet ? de la valeur d'un wallet à un instant T ?
+     * @ORM\Column(type="datetime")
      */
-    private Wallet $wallet;
+    private DateTimeInterface $date;
 
     //TODO Ajouter une relation avec User? Car seulement cet utilisateur est sensé y avoir accès
 
@@ -57,14 +55,14 @@ final class Receipt
         return $this;
     }
 
-    public function getWallet(): Wallet
+    public function getDate(): DateTimeInterface
     {
-        return $this->wallet;
+        return $this->date;
     }
 
-    public function setWallet(Wallet $wallet): self
+    public function setDate(DateTimeInterface $date): self
     {
-        $this->wallet = $wallet;
+        $this->date = $date;
 
         return $this;
     }
