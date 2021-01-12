@@ -52,24 +52,25 @@ final class AthleteTest extends WebTestCase
     }
 
     /** @dataProvider invalidLastNameProvider */
-    public function testInvalidLastName(string $lastName): void
+    public function testInvalidLastName(string $invalidLastName): void
     {
-        $this->athlete->setFirstName('François');
-        $this->athlete->setLastName($lastName);
+        $this->athlete->setLastName($invalidLastName);
+
         $violations = $this->validator->validate($this->athlete);
+        $violationOnLastName = GeneralTestMethod::isViolationOn("lastName", $violations);
+
         $this->assertGreaterThanOrEqual(1, count($violations));
+        $this->assertTrue($violationOnLastName, "$invalidLastName is a not valid lastname, it shouldn't pass");
     }
 
-    /** @return array<array<string>> */
-    public function invalidLastNameProvider(): array
+    /** @return Generator<array<string>> */
+    public function invalidLastNameProvider(): Generator
     {
-        return [
-            [''],
-            ['45Servat'],
-            ['s'],
-            ['Slt-'],
-            ['arthur&zoe']
-        ];
+        yield [""];
+        yield ["45Servat"];
+        yield ["s"];
+        yield ["Slt-"];
+        yield ["arthur&zoe"];
     }
 
     /** @dataProvider validFirstNameProvider */
@@ -97,12 +98,14 @@ final class AthleteTest extends WebTestCase
     }
 
     /** @dataProvider invalidFirstNameProvider */
-    public function testInvalidFirstName(string $firstName): void
+    public function testInvalidFirstName(string $invalidFirstName): void
     {
-        $this->athlete->setLastName('Dupont');
-        $this->athlete->setFirstName($firstName);
+        $this->athlete->setFirstName($invalidFirstName);
+
         $violations = $this->validator->validate($this->athlete);
-        $this->assertGreaterThanOrEqual(1, count($violations));
+
+        $this->assertCount(1, $violations);
+        $this->assertSame("firstName", $violations->get(0)->getPropertyPath());
     }
 
     /** @return array<array<string>> */
