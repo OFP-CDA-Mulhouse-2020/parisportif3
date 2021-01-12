@@ -109,21 +109,21 @@ final class AthleteTest extends WebTestCase
         $this->athlete->setFirstName($invalidFirstName);
 
         $violations = $this->validator->validate($this->athlete);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("firstName", $violations);
 
-        $this->assertCount(1, $violations);
-        $this->assertSame("firstName", $violations->get(0)->getPropertyPath());
+
+        $this->assertGreaterThanOrEqual(1, count($violations));
+        $this->assertTrue($violationOnAttribute, "$invalidFirstName is a not valid, it shouldn't pass");
     }
 
-    /** @return array<array<string>> */
-    public function invalidFirstNameProvider(): array
+    /** @return Generator<array<string>> */
+    public function invalidFirstNameProvider(): Generator
     {
-        return [
-            [''],
-            ['45Servat'],
-            ['s'],
-            ['Slt-'],
-            ['arthur&zoe'],
-            ["Giscard d'Estaing"]
-        ];
+        yield [''];
+        yield ['45Servat'];
+        yield ['s'];
+        yield ['Slt-'];
+        yield ['arthur&zoe'];
+        yield ["Giscard d'Estaing"];
     }
 }
