@@ -4,6 +4,7 @@ namespace App\Tests\Entity;
 
 use App\Entity\Wallet;
 use App\Tests\GeneralTestMethod;
+use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Validator\Validator\TraceableValidator;
 
@@ -23,12 +24,43 @@ final class WalletTest extends WebTestCase
         $this->assertInstanceOf(Wallet::class, $this->wallet);
     }
 
-
-    /** @dataProvider  validAmountProvider */
-    public function testCanModifyBalance(int $validAmountProvider): void
+    /** @dataProvider validAmountProvider */
+    public function testCanAddToWallet(int $amountToAdd): void
     {
-        $this->wallet->setBalance($validAmountProvider);
-        $this->assertEquals($validAmountProvider, $this->wallet->getBalance());
+        $this->wallet->addToBalance($amountToAdd);
+
+        $violations = $this->validator->validate($this->wallet);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("balance", $violations);
+
+        $this->assertEquals($amountToAdd, $this->wallet->getBalance());
+        $this->assertFalse($violationOnAttribute);
+    }
+
+    /** @dataProvider validAmountProvider */
+    public function testCanRemoveFromWallet(int $amountToRemove): void
+    {
+        $finalAmount = 50;
+
+        $this->wallet->addToBalance(($amountToRemove + $finalAmount));
+
+        $this->wallet->removeFromBalance($amountToRemove);
+
+        $violations = $this->validator->validate($this->wallet);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("balance", $violations);
+
+        $this->assertSame($finalAmount, $this->wallet->getBalance());
+        $this->assertFalse($violationOnAttribute);
+    }
+
+    /** @return Generator<array<int>> */
+    public function validAmountProvider(): Generator
+    {
+        yield [20];
+        yield [50];
+        yield [25];
+        yield [66];
+        yield [10];
+        yield [5];
     }
 
     public function testCantHaveBalanceBelowZero(): void
@@ -61,14 +93,5 @@ final class WalletTest extends WebTestCase
 
         $violations = $this->validator->validate($this->wallet);
         $this->assertGreaterThan(0, count($violations));
-    }
-
-    /** @return array<array<int>> */
-    public function validAmountProvider(): array
-    {
-        return [
-            [20],
-            [50]
-        ];
     }
 }
