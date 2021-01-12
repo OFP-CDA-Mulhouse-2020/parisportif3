@@ -74,27 +74,33 @@ final class AthleteTest extends WebTestCase
     }
 
     /** @dataProvider validFirstNameProvider */
-    public function testValidFirstName(string $firstName): void
+    public function testValidFirstName(string $validFirstName): void
     {
-        $this->athlete->setLastName('Dupont');
-        $this->athlete->setFirstName($firstName);
-        $this->assertSame($firstName, $this->athlete->getFirstName());
-        $this->assertCount(0, $this->validator->validate($this->athlete));
+        $this->athlete->setFirstName($validFirstName);
+
+        $violations = $this->validator->validate($this->athlete);
+        $violationOnFirstName = GeneralTestMethod::isViolationOn("firstName", $violations);
+        $obtainedFirstName = $this->athlete->getFirstName();
+
+        $this->assertSame(
+            $validFirstName,
+            $obtainedFirstName,
+            "$obtainedFirstName is not the same than $validFirstName"
+        );
+        $this->assertFalse($violationOnFirstName, "$validFirstName is a valid firstname, it should pass");
     }
 
-    /** @return array<array<string>> */
-    public function validFirstNameProvider(): array
+    /** @return Generator<array<string>> */
+    public function validFirstNameProvider(): Generator
     {
-        return [
-            ['Christine'],
-            ['Valérie'],
-            ['Romane'],
-            ['Jean-Louis'],
-            ['Meheñ'],
-            ['Quéré'],
-            ['Brivaël'],
-            ["Derc'hen"],
-        ];
+        yield ['Christine'];
+        yield ['Valérie'];
+        yield ['Romane'];
+        yield ['Jean-Louis'];
+        yield ['Meheñ'];
+        yield ['Quéré'];
+        yield ['Brivaël'];
+        yield ["Derc'hen"];
     }
 
     /** @dataProvider invalidFirstNameProvider */
