@@ -4,6 +4,7 @@ namespace App\Tests\Entity;
 
 use App\Entity\Athlete;
 use App\Tests\GeneralTestMethod;
+use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Validator\Validator\TraceableValidator;
 
@@ -23,28 +24,42 @@ final class AthleteTest extends WebTestCase
     }
 
     /** @dataProvider validLastNameProvider */
-    public function testValidLastName(string $lastName): void
+    public function testValidLastName(string $validLastName): void
     {
-        $this->athlete->setFirstName('François');
-        $this->athlete->setLastName($lastName);
-        $this->assertSame($lastName, $this->athlete->getLastName());
-        $this->assertCount(0, $this->validator->validate($this->athlete));
+        $this->athlete->setLastName($validLastName);
+
+        $violations = $this->validator->validate($this->athlete);
+        $violationsNbr = count($violations);
+
+        $violationOnLastName = false;
+        if ($violationsNbr > 0) {
+            for ($i = 0; $i < $violationsNbr; $i++) {
+                if ($violations->get($i)->getPropertyPath() === "lastName") {
+                    $violationOnLastName = true;
+                    break;
+                }
+            }
+        }
+
+        $obtainedLastName = $this->athlete->getLastName();
+
+        $this->assertSame($validLastName, $obtainedLastName, "$obtainedLastName is not the same than $validLastName");
+        $this->assertFalse($violationOnLastName, "$validLastName is a valid lastname, it should pass");
     }
 
-    /** @return array<array<string>> */
-    public function validLastNameProvider(): array
+    /** @return Generator<array<string>> */
+    public function validLastNameProvider(): Generator
     {
-        return [
-            ['Courtier'],
-            ['Diminure'],
-            ['Rouky'],
-            ['Jean-Louis'],
-            ['Meheñ'],
-            ['Quéré'],
-            ['Brivaël'],
-            ["Derc'hen"],
-            ["Giscard d'Estaing"]
-        ];
+        yield ["Courtier"];
+        yield ["Diminure"];
+        yield ["Rouky"];
+        yield ["Jean-Louis"];
+        yield ["Meheñ"];
+        yield ["Quéré"];
+        yield ["Brivaël"];
+        yield ["Derc'hen"];
+        yield ["Quéré"];
+        yield ["Giscard d'Estaing"];
     }
 
     /** @dataProvider invalidLastNameProvider */
