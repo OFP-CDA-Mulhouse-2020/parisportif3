@@ -48,7 +48,6 @@ final class User implements UserInterface
      * @ORM\Column(type="string")
      *
      * @Assert\NotCompromisedPassword
-     * @Assert\NotBlank
      */
     private string $password;
 
