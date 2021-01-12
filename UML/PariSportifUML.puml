@@ -37,7 +37,8 @@ class Athlete {
 ' Money management
 class Receipt{
     -id: ?int
-    -amount: int
+    -amountAddedToAccount: int
+    -date: DateTimeInterface
 }
 
 class Wallet {
@@ -105,17 +106,18 @@ class SportType {
 ' Relation
 User "1" *- "1" Wallet : manage >
 User "1" *-- "0..*" Transaction : pay >
-Receipt "0..*" *-- "1" Wallet : print <
 Bet "1" *- "1" BetChoice : insert <
 Bet "1" *-- "1" BetData : insert <
 SportType "1" --* "1" BetTemplate : list >
-
+Receipt "0..*" --* "1" User : has >
 
 SportTeam "1..*" o-- "1..*" Athlete : employ >
 Transaction "1..*" o-- "1" Bet : add <
-SportTeam "1..*" --o "2..*" SportEvent : participate >
 SportEvent "1" o-- "0..*" SportType : define <
 BetChoice "1" o--- "1" BetTemplateChoice: choose >
 BetTemplate "0..*" --o "1" BetTemplateChoice : specify <
+SportEvent "2..*" o-- "1..*" SportTeam : participate >
+
+Receipt "0..*" -- "1" Wallet : print <
 
 @enduml
