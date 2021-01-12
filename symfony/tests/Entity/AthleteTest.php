@@ -29,18 +29,7 @@ final class AthleteTest extends WebTestCase
         $this->athlete->setLastName($validLastName);
 
         $violations = $this->validator->validate($this->athlete);
-        $violationsNbr = count($violations);
-
-        $violationOnLastName = false;
-        if ($violationsNbr > 0) {
-            for ($i = 0; $i < $violationsNbr; $i++) {
-                if ($violations->get($i)->getPropertyPath() === "lastName") {
-                    $violationOnLastName = true;
-                    break;
-                }
-            }
-        }
-
+        $violationOnLastName = GeneralTestMethod::isViolationOn("lastName", $violations);
         $obtainedLastName = $this->athlete->getLastName();
 
         $this->assertSame($validLastName, $obtainedLastName, "$obtainedLastName is not the same than $validLastName");
