@@ -12,10 +12,14 @@ final class AthleteTest extends WebTestCase
     private Athlete $athlete;
     private TraceableValidator $validator;
 
+
     public function setUp(): void
     {
         $this->athlete = new Athlete();
         $this->validator = GeneralTestMethod::getValidator();
+
+        $this->athlete->setFirstName("François");
+        $this->athlete->setLastName("Dupont");
     }
 
     /** @dataProvider validLastNameProvider */
