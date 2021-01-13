@@ -1,7 +1,29 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello AccountController!{% endblock %}
+{% block title %}Mon compte{% endblock %}
 
 {% block body %}
-    Bienvenue sur la page de ton compte {{ user.username }}
+    <div class="container mt-5">
+        <div class="row">
+            <ul class="list-group list-group-horizontal d-flex justify-content-center">
+                <li class="list-group-item"><a href="/myAccount">Résumé</a></li>
+                <li class="list-group-item"><a href="/myAccount/personalInfo">Info Personnelle</a></li>
+                <li class="list-group-item"><a href="/myAccount/bankingInfo">Info Bancaire</a></li>
+            </ul>
+        </div>
+        <div id="personal-info-form" class="row mt-5">
+            {% if myAccount_list is defined and myAccount_list == 'personalInfo' %}
+                <h1 class="text-center">Mettre à jour ses informations</h1>
+                <div class="col-4 mt-3">
+                    {{ form_start(personalInfo) }}
+                    {{ form_row(personalInfo.email) }}
+                    {{ form_row(personalInfo.lastName) }}
+                    {{ form_row(personalInfo.firstName) }}
+                    {{ form_row(personalInfo.timeZone) }}
+                    <button type="submit" class="btn btn-primary mt-4">Soumettre</button>
+                    {{ form_end(personalInfo) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
