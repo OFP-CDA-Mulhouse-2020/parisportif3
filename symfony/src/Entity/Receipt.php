@@ -11,7 +11,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass=ReceiptRepository::class)
  * @UniqueEntity("id")
- * @TODO Ajouter unicité avec User ? (voir TODO en bas)
  */
 final class Receipt
 {
@@ -35,7 +34,11 @@ final class Receipt
      */
     private DateTimeInterface $date;
 
-    //TODO Ajouter une relation avec User? Car seulement cet utilisateur est sensé y avoir accès
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="receiptsHistory")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private User $user;
 
 
     public function getId(): ?int
@@ -63,6 +66,18 @@ final class Receipt
     public function setDate(DateTimeInterface $date): self
     {
         $this->date = $date;
+
+        return $this;
+    }
+
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

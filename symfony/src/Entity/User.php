@@ -139,11 +139,19 @@ final class User implements UserInterface
     /** @ORM\Column(type="boolean") */
     private bool $deleted = false;
 
+    /**
+     * @var Collection<int, Receipt>
+     *
+     * @ORM\OneToMany(targetEntity=Receipt::class, mappedBy="user")
+     */
+    private Collection $receiptsHistory;
+
 
     public function __construct()
     {
         $this->createdAt = new DateTime();
         $this->transactionHistory = new ArrayCollection();
+        $this->receiptsHistory = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -274,6 +282,34 @@ final class User implements UserInterface
         if (!$this->transactionHistory->contains($transaction)) {
             $this->transactionHistory[] = $transaction;
             $transaction->setUser($this);
+        }
+
+        return $this;
+    }
+
+    /** @return Collection<int, Receipt> */
+    public function listReceiptsHistory(): Collection
+    {
+        return $this->receiptsHistory;
+    }
+
+    public function addReceiptToHistory(Receipt $receiptToAdd): self
+    {
+        if (!$this->receiptsHistory->contains($receiptToAdd)) {
+            $this->receiptsHistory[] = $receiptToAdd;
+            $receiptToAdd->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReceiptFromHistory(Receipt $receiptToRemove): self
+    {
+        if ($this->receiptsHistory->removeElement($receiptToRemove)) {
+            // set the owning side to null (unless already changed)
+            if ($receiptToRemove->getUser() === $this) {
+                $receiptToRemove->setUser(null);
+            }
         }
 
         return $this;
