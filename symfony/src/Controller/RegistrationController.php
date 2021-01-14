@@ -38,6 +38,17 @@ final class RegistrationController extends AbstractController
         $user = new User();
         $user->setWallet(new Wallet());
 
+        return $this->handleRegistrationForm($request, $user, $passwordEncoder);
+    }
+
+    /**
+     * @throws TransportExceptionInterface
+     */
+    private function handleRegistrationForm(
+        Request $request,
+        User $user,
+        UserPasswordEncoderInterface $passwordEncoder
+    ): Response {
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
 
@@ -49,29 +60,36 @@ final class RegistrationController extends AbstractController
                     $form->get('plainPassword')->getData()
                 )
             );
-
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation(
-                'app_verify_email',
-                $user,
-                (new TemplatedEmail())
-                    ->from(new Address('mail.confirmation@test.com', 'confirmationMail'))
-                    ->to($user->getEmail())
-                    ->subject('Please Confirm your Email')
-                    ->htmlTemplate('registration/confirmation_email.html.twig')
-            );
-            // do anything else you need here, like send an email
+            $this->sendEmailToUser($user);
 
             return $this->redirectToRoute('app_login');
         }
+        return $this->render(
+            'registration/register.html.twig',
+            [
+                'registrationForm' => $form->createView(),
+            ]
+        );
+    }
 
-        return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form->createView(),
-        ]);
+    /**
+     * @throws TransportExceptionInterface
+     */
+    private function sendEmailToUser(User $user): void
+    {
+        $this->emailVerifier->sendEmailConfirmation(
+            'app_verify_email',
+            $user,
+            (new TemplatedEmail())
+                ->from(new Address('mail.confirmation@test.com', 'confirmationMail'))
+                ->to($user->getEmail())
+                ->subject('Please Confirm your Email')
+                ->htmlTemplate('registration/confirmation_email.html.twig')
+        );
     }
 
     /**
