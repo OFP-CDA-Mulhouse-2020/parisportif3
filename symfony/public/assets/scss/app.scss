@@ -1,0 +1,24 @@
+@import "flash";
+@import "myAccount/_form.scss";
+
+body {
+  height: 100vh;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1 0 auto;
+
+  #left-menu ul li {
+    list-style: none;
+    border-bottom: 1px solid;
+  }
+}
+
+footer {
+  flex-shrink: 0;
+}

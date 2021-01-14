@@ -5,16 +5,16 @@ namespace App\Entity;
 use App\Repository\TransactionRepository;
 use DateTime;
 use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TransactionRepository::class)
- * @UniqueEntity(
- *     fields={"id"},
- *     errorPath="ID"
- * )
+ * @UniqueEntity("id")
+ * @UniqueEntity({"transactionDate", "betList", "user"})
  */
 final class Transaction
 {
@@ -23,23 +23,42 @@ final class Transaction
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private ?int $id;
 
     /**
      * @ORM\Column(type="datetime")
+     *
      * @Assert\NotNull
      */
     private DateTimeInterface $transactionDate;
 
     /**
      * @ORM\Column(type="integer")
-     * @Assert\GreaterThan (99)
+     *
+     * @Assert\GreaterThan(0)
      */
-    private int $amount;
+    private int $totalPrice;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="transactionHistory")
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\NotNull
+     */
+    private User $user;
+
+    /**
+     * @var Collection<int, Bet>
+     *
+     * @ORM\OneToMany(targetEntity=Bet::class, mappedBy="transaction")
+     */
+    private Collection $betList;
+
 
     public function __construct()
     {
         $this->transactionDate = new DateTime();
+        $this->betList = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -47,24 +66,48 @@ final class Transaction
         return $this->id;
     }
 
-    public function getTransactionDate(): ?DateTimeInterface
+    public function getTransactionDate(): DateTimeInterface
     {
         return $this->transactionDate;
     }
 
-    //TODO:: Ajouter la relation avec Wallet
-
-    public function getAmount(): ?int
+    public function getTotalPrice(): int
     {
-        return $this->amount;
+        return $this->totalPrice;
     }
 
-    public function setAmount(int $amount): self
+    public function setTotalPrice(int $totalPrice): self
     {
-        $this->amount = $amount;
+        $this->totalPrice = $totalPrice;
 
         return $this;
     }
 
-    //TODO:: Ajouter la relation avec BetTemplateChoice
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
+    public function setUser(User $user): self
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /** @return Collection<int, Bet> */
+    public function getBetList(): Collection
+    {
+        return $this->betList;
+    }
+
+    public function addBet(Bet $bet): self
+    {
+        if (!$this->betList->contains($bet)) {
+            $this->betList[] = $bet;
+            $bet->setTransaction($this);
+        }
+
+        return $this;
+    }
 }

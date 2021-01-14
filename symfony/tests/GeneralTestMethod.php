@@ -2,25 +2,28 @@
 
 namespace App\Tests;
 
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Validator\Validator\TraceableValidator;
 
-final class GeneralTestMethod extends KernelTestCase
+final class GeneralTestMethod extends WebTestCase
 {
-    /**
-     * @return array{
-     *      kernel:\Symfony\Component\HttpKernel\KernelInterface,
-     *      validator:\Symfony\Component\Validator\Validator\TraceableValidator
-     * }
-     */
-    public static function getKernelAndValidator(): array
+    public static function getKernel(): KernelInterface
     {
         $kernel = self::bootKernel();
         $kernel->boot();
+        return $kernel;
+    }
 
-        $validator = $kernel->getContainer()->get('validator');
-        return [
-            "kernel" => $kernel,
-            "validator" => $validator
-        ];
+    /** @return TraceableValidator */
+    public static function getValidator(): object
+    {
+        return self::getKernel()->getContainer()->get('validator');
+    }
+
+    public static function getClient(): KernelBrowser
+    {
+        return self::createClient();
     }
 }

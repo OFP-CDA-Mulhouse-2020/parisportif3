@@ -1,0 +1,27 @@
+.flash-warning {
+  background-color: #e4606d;
+  color: white;
+}
+
+.flash-success {
+  background-color: #34ce57;
+  color: white;
+}
+
+
+.flash-message {
+  &.show {
+    opacity: 1;
+  }
+
+  &.hide {
+    opacity: 0;
+    transition: opacity 400ms;
+  }
+
+  button {
+    text-decoration: none;
+    border: none;
+    background-color: inherit;
+  }
+}

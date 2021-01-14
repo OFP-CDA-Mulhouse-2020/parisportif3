@@ -26,13 +26,12 @@ final class BetRepository extends ServiceEntityRepository
     //  * @return Bet[] Returns an array of Bet objects
     //  */
     /*
-     *
     public function findByExampleField($value)
     {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.exampleField = :val')
             ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
+            ->orderBy('c.id', 'ASC')
             ->setMaxResults(10)
             ->getQuery()
             ->getResult()
@@ -43,8 +42,8 @@ final class BetRepository extends ServiceEntityRepository
     /*
     public function findOneBySomeField($value): ?Bet
     {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.exampleField = :val')
             ->setParameter('val', $value)
             ->getQuery()
             ->getOneOrNullResult()

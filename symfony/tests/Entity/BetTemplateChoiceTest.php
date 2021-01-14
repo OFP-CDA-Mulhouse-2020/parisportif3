@@ -7,14 +7,14 @@ use App\Tests\GeneralTestMethod;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Validator\Validator\TraceableValidator;
 
-class BetTemplateChoiceTest extends WebTestCase
+final class BetTemplateChoiceTest extends WebTestCase
 {
     private BetTemplateChoice $betTemplateChoice;
     private TraceableValidator $validator;
 
     public function setUp(): void
     {
-        $this->validator = GeneralTestMethod::getKernelAndValidator()['validator'];
+        $this->validator = GeneralTestMethod::getValidator();
         $this->betTemplateChoice = new BetTemplateChoice();
     }
 

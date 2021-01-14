@@ -6,13 +6,12 @@ use App\Repository\BetTemplateRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass=BetTemplateRepository::class)
- * @UniqueEntity(
- *     fields={"id", "description"},
- *     errorPath="description"
- * )
+ * @UniqueEntity("id")
+ * @TODO Rajouter les l'unicité après avoir rajouter les relations
  */
 final class BetTemplate
 {
@@ -21,46 +20,58 @@ final class BetTemplate
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private ?int $id;
 
     /**
-     * @ORM\Column(type="array")
-     * @var array<string, array<string, array<string>>>
-     * @Assert\NotBlank
-     * @Assert\NotNull
+     * @var array<string, array<string>>
      *
-     * @Assert\Collection(
-     *     fields = {
-     *         "BET_LIST" = @Assert\Required({
-     *              @Assert\NotNull,
-     *              @Assert\NotBlank,
-     *              @Assert\Type("array")
-     *         })
-     *     }
-     * )
+     * @ORM\Column(type="array")
+     *
+     * @Assert\NotBlank
      */
-    private array $description = [];
+    private array $abstractBets = [];
+
+    /**
+     * @ORM\OneToOne(targetEntity=SportType::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private SportType $sportType;
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /** @return array<string, array<string, array<string>>>|null */
-    public function getDescription(): ?array
+    /** @return array<string, array<string>> */
+    public function listAbstractBets(): array
     {
-        return $this->description;
+        return $this->abstractBets;
     }
 
-    /** @param array<string, array<string, array<string>>> $description */
-    public function setDescription(array $description): self
+    /** @param array<string, array<string>> $newAbstractBetsList */
+    public function setAbstractBets(array $newAbstractBetsList): self
     {
-        $this->description = $description;
+        $this->abstractBets = $newAbstractBetsList;
 
         return $this;
     }
 
-    //TODO Ajouter la relation avec SportType
+    public function getSportType(): SportType
+    {
+        return $this->sportType;
+    }
 
-    //TODO Ajouter la relation avec BetTemplateChoice
+    public function setSportType(SportType $sportType): self
+    {
+        $this->sportType = $sportType;
+
+        return $this;
+    }
+
+    /** @Assert\Callback */
+    public function validateAbstractBets(ExecutionContextInterface $context): void
+    {
+        //TODO Implémenter
+    }
 }

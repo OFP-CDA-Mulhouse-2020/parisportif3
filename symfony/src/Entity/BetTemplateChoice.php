@@ -4,9 +4,15 @@ namespace App\Entity;
 
 use App\Repository\BetTemplateChoiceRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass=BetTemplateChoiceRepository::class)
+ * @UniqueEntity("id")
+ * @UniqueEntity({"betTemplate"})
+ * @UniqueEntity({"updatedDescription"})
  */
 final class BetTemplateChoice
 {
@@ -15,30 +21,58 @@ final class BetTemplateChoice
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private ?int $id;
 
     /**
-     * @var array<string>
+     * @var array<string, array<string>>
+     *
      * @ORM\Column(type="array")
      */
-    private array $updatedDescription = [];
+    private array $betList = [];
+
+    /**
+     * @ORM\OneToOne(targetEntity=BetTemplate::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\NotNull()
+     */
+    private BetTemplate $betTemplate;
+
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /** @return array<string> */
-    public function getUpdatedDescription(): ?array
+    /** @return array<string, array<string>> */
+    public function listAvailableBets(): array
     {
-        return $this->updatedDescription;
+        return $this->betList;
     }
 
-    /** @param array<string> $updatedDescription */
-    public function updateDescription(array $updatedDescription): self
+    /** @param array<string, array<string>> $newAvailableBetList */
+    public function setAvailableBets(array $newAvailableBetList): self
     {
-        $this->updatedDescription = $updatedDescription;
+        $this->betList = $newAvailableBetList;
 
         return $this;
+    }
+
+    public function getBetTemplate(): BetTemplate
+    {
+        return $this->betTemplate;
+    }
+
+    public function setBetTemplate(BetTemplate $betTemplate): self
+    {
+        $this->betTemplate = $betTemplate;
+
+        return $this;
+    }
+
+    /** @Assert\Callback */
+    public function validateBetList(ExecutionContextInterface $context): void
+    {
+        //TODO Implémenter le validator pour $this->betList
     }
 }

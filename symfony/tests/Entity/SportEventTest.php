@@ -7,6 +7,7 @@ use App\Tests\GeneralTestMethod;
 use DateInterval;
 use DateTime;
 use DateTimeZone;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Validator\Validator\TraceableValidator;
 
@@ -23,7 +24,7 @@ final class SportEventTest extends WebTestCase
     public function setUp(): void
     {
         $this->sportEvent = new SportEvent();
-        $this->validator = GeneralTestMethod::getKernelAndValidator()["validator"];
+        $this->validator = GeneralTestMethod::getValidator();
     }
 
     //Est-ce que je peux créer un SportEvent
@@ -54,9 +55,10 @@ final class SportEventTest extends WebTestCase
         $this->assertSame($competition, $this->sportEvent->getCompetition());
     }
 
-    /*
-    Est-ce que la date est supérieure de 2 jours à la date actuelle
-    */
+    /**
+     * @note Est-ce que la date est supérieure de 2 jours à la date actuelle
+     * @throws Exception
+     */
     public function testValidDate(): void
     {
         $date = new DateTime('now', new DateTimeZone('Europe/Paris'));
@@ -70,7 +72,10 @@ final class SportEventTest extends WebTestCase
         $this->assertCount(0, $violations);
     }
 
-    //Si la Date n'est pas supérieure à la date actuelle de 2 jours
+    /**
+     * @note Si la Date n'est pas supérieure à la date actuelle de 2 jours
+     * @throws Exception
+     */
     public function testInvalidDate(): void
     {
         $date = new DateTime('now', new DateTimeZone('Europe/Paris'));

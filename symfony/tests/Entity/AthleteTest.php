@@ -15,7 +15,7 @@ final class AthleteTest extends WebTestCase
     public function setUp(): void
     {
         $this->athlete = new Athlete();
-        $this->validator = GeneralTestMethod::getKernelAndValidator()["validator"];
+        $this->validator = GeneralTestMethod::getValidator();
     }
 
     /** @dataProvider validLastNameProvider */

@@ -1,169 +1,121 @@
 @startuml
 
-' Human management
-
 skinparam linetype ortho
 
-    abstract class Person {
-        -id: int
-        -lastName: string
-        -firstName: string
-    }
+' Human management
+class User {
+    -id: ?int
+    -roles: array
+    ..Personal data..
+    -username: string
+    -password: string
+    -email: string
+    -lastName: string
+    -firstName: string
+    -birtDate: DateTimeInterface
+    -timeZone: string
+    ..Dates..
+    -emailVerifiedAt: DateTimeInterface
+    -createdAt: DateTimeInterface
+    -deletedAt: DateTimeInterface
+    -activatedAt: DateTimeInterface
+    -suspendedAt: DateTimeInterface
+    ..Status..
+    -active: bool
+    -emailVerified: bool
+    -suspended: bool
+    -deleted: bool
+}
 
-    class User {
-        -birtDate: Date
-        -loginName: string
-        -password: string
-        -verified: bool
-        -activated: bool
-        -timezone: DateTimeZone
+class Athlete {
+    -id: ?int
+    -lastName: string
+    -firstName: string
+    -sportTeams: Collection<int, SportTeam>
+}
 
-        +validateCart(Cart cart): bool
+' Money management
+class Receipt{
+    -id: ?int
+    -amount: int
+}
 
-    }
+class Wallet {
+    -id: ?int
+    -balance: int
+}
 
-    class Athlete {
+'History
+class Transaction{
+    -id: ?int
+    -date: DateTimeInterface
+    -totalPrice: int
+}
 
-    }
+class Bet{
+    -id: ?int
+}
 
-    class Receipt{
-        id: int
-        amount: float
-    }
+'Bets
+class BetData {
+    -id: ?int
+    -amount: int
+    -paid: bool
+    -date: DateTime
+    -cote: int
+}
 
+class BetChoice{
+    -id: int
+    -choice: array<string, int>
+}
 
-    ' Money management
-    class Wallet {
-        -id: int
-        -balance: float
-        --
-        +removeFromBalance(float amount): bool
-        +addToBalance(float amount): void
-    }
+class BetTemplate{
+    -id: ?int
+    -availableBetsList: array<string, array<string>>
+}
 
-    'History'
-    class Transaction {
-        -id: int
-        -date: Date
-        -wallet: Wallet
-        -betAmount: float
-        -betTemplateChoice : BetTemplateChoice
+class BetTemplateChoice{
+    -id: ?int
+    -updatedDescription : array<string, array<string>>
+}
 
-        +getList()
-    }
+' Sport management
+class SportEvent {
+    -id: ?int
+    -location: string
+    -competition: string
+    -date: Date
+    -timezone: DateTimeZone
+}
 
-    class Bet {
-        -id: int
-        -amount: float
-        -status: int
-        -date: DateTime
-        -cote: float
+class SportTeam {
+    -id: ?int
+    -teamName: string
+}
 
-        +modifyAmount()
-    }
-
-    class BetTemplate{
-        -id: int
-        -sportType: SportType
-        -description: array []
-
-        '?
-        +addToBetList(string newBetPossibility): void
-        +deleteToBetList(int ID) : void
-        +editToBetList(int ID, string modifiedBetPossibility): void
-    }
-
-    class BetTemplateChoice{
-        -id: int
-        -updatedDescription : string []
-
-        +addNewChoice(BetTemplate betTemplate, SportEvent sportEvent): void
-    }
-
-    class EncounterEvent{
-        id: int
-        SportType:  SportType
-        SportEvent: SportEvent
-
-        +verifyBet(): void
-        +addEncounterEvent(BetTemplateChoice betTemplateChoice[int choice])
-    }
-
-    ' Sport management
-    class SportEvent {
-        -id: int
-        -lieu: string
-        -competition: string
-        -date: Date
-        -timezone: DateTimeZone
-    }
-
-    class SportTeam {
-        -id: int
-        -teamName: string
-
-        +defineActive(Athlete athlete):void
-        +defineSubstitute(Athlete athlete):void
-        +editName(int ID, string newTeamName): void
-    }
-
-    class SportType {
-        -id: int
-        -nameType: string
-        -nbrAthleteActive: int
-    }
-
-    class Cart{
-        cartItem : CartItem []
-    }
-
-    class BetChoices{
-        id: int
-        choice: int []
-
-        +selectBet(BetTemplateChoice betTemplateChoice[int choice]):void
-        +deleteBet(BetTemplateChoice betTemplateChoice[int choice]):void
-    }
-
-    class CartItem{
-        - betChoices : BetChoices
-        - bet : Bet
-    }
-
-
-
+class SportType {
+    -id: ?int
+    -nameType: string
+    -nbrAthleteActive: int
+}
 
 ' ========================================================================='
 
-' Inherit of
-User <|-u- Person :is
-Athlete <|-- Person :is
-
 ' Relation
-User "1" *-u- "1" Wallet :manage
-User "1" *-- "1" Cart :operate
-'User "0,n" *-- "1" BetTemplateChoice :bid
+User "1" *- "1" Wallet : manage >
+User "1" *-- "0..*" Transaction : pay >
+Receipt "0..*" *-- "1" Wallet : print <
+Bet "1" *- "1" BetChoice : insert <
+Bet "1" *-- "1" BetData : insert <
+SportType "1" --* "1" BetTemplate : list >
 
-Wallet "0,n" -d-* "1" Receipt :print
 
-'Cart "0,n" --o "1" Bet :insert
-Cart "0,n" *-r- "1" Transaction :generate
-
-Athlete "1,n" --* "1,n" SportTeam :employ
-
-EncounterEvent "1,n" --* "0,n" SportEvent :occur
-SportType "1" -- "1" BetTemplate :list
-
-SportEvent "2,n" --o "1,n" SportTeam : participate
-SportEvent "1" *-- "0,n" SportType : define
-
-BetTemplate "0,n"  -- "1" BetTemplateChoice : choose
-'Bet "1" -r-* "0,n" BetTemplateChoice : create
-
-Bet "1" --* "1" CartItem : insert
-
-CartItem "1" --o "0,n" Cart : add
-CartItem "1" *-- "1" BetChoices : insert
-
+SportTeam "1..*" o-- "1..*" Athlete : employ >
+Transaction "1..*" o-- "1" Bet : add <
+SportTeam "1..*" --o "2..*" SportEvent : participate >
+SportEvent "1" o-- "0..*" SportType : define <
+BetChoice "1" o--- "1" BetTemplateChoice: choose >
+BetTemplate "0..*" --o "1" BetTemplateChoice : specify <
 
 @enduml

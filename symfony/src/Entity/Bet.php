@@ -3,12 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\BetRepository;
-use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity(repositoryClass=BetRepository::class)
+ * @UniqueEntity("id")
+ * @UniqueEntity({"transaction", "betChoice", "betData"})
  */
 final class Bet
 {
@@ -17,101 +18,64 @@ final class Bet
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private int $id;
+    private ?int $id;
 
     /**
-     * @ORM\Column(type="integer")
-     *
-     * @Assert\GreaterThanOrEqual(1)
-     * @Assert\NotNull
-     * @Assert\NotBlank
+     * @ORM\ManyToOne(targetEntity=Transaction::class, inversedBy="betList")
+     * @ORM\JoinColumn(nullable=false)
      */
-    private int $amount;
+    private Transaction $transaction;
 
     /**
-     * @ORM\Column(type="integer")
-     *
-     * @Assert\NotNull
-     * @Assert\NotBlank
-     * @Assert\GreaterThanOrEqual(0)
-     * @Assert\LessThanOrEqual(2)
+     * @ORM\OneToOne(targetEntity=BetData::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
-    private int $status;
-
-    public const STATUS_UNPAID = 0;
-    public const STATUS_PENDING = 1;
-    public const STATUS_PAID = 2;
-
-    /** @var array|string[] */
-    public static array $statusList = [
-        self::STATUS_UNPAID => "STATUS_UNPAID",
-        self::STATUS_PENDING => "STATUS_PENDING",
-        self::STATUS_PAID => "STATUS_PAID"
-    ];
+    private BetData $betData;
 
     /**
-     * @ORM\Column(type="datetime")
-     *
-     * @Assert\NotNull
+     * @ORM\OneToOne(targetEntity=BetChoice::class, cascade={"persist", "remove"})
+     * @ORM\JoinColumn(nullable=false)
      */
-    private DateTimeInterface $date;
+    private BetChoice $betChoice;
 
-    /**
-     * @ORM\Column(type="integer")
-     *
-     * @Assert\GreaterThan(100)
-     */
-    private int $cote;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getAmount(): ?int
+    public function getTransaction(): Transaction
     {
-        return $this->amount;
+        return $this->transaction;
     }
 
-    public function setAmount(int $amount): self
+    public function setTransaction(Transaction $transaction): self
     {
-        $this->amount = $amount;
+        $this->transaction = $transaction;
 
         return $this;
     }
 
-    public function getStatus(): ?int
+    public function getBetData(): BetData
     {
-        return $this->status;
+        return $this->betData;
     }
 
-    public function setStatus(int $status): self
+    public function setBetData(BetData $betData): self
     {
-        $this->status = $status;
+        $this->betData = $betData;
 
         return $this;
     }
 
-    public function getDate(): ?DateTimeInterface
+    public function getBetChoice(): BetChoice
     {
-        return $this->date;
+        return $this->betChoice;
     }
 
-    public function setDate(DateTimeInterface $date): self
+    public function setBetChoice(BetChoice $betChoice): self
     {
-        $this->date = $date;
-
-        return $this;
-    }
-
-    public function getCote(): ?int
-    {
-        return $this->cote;
-    }
-
-    public function setCote(int $cote): self
-    {
-        $this->cote = $cote;
+        $this->betChoice = $betChoice;
 
         return $this;
     }
