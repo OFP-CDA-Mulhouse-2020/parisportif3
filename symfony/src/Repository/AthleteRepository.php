@@ -22,6 +22,9 @@ final class AthleteRepository extends ServiceEntityRepository
         parent::__construct($registry, Athlete::class);
     }
 
+    //TODO Ajouter une requête findSportTeamOf($athlete)
+    // pour récupérés les équipes d'un joueur
+
     // /**
     //  * @return Athlete[] Returns an array of Athlete objects
     //  */

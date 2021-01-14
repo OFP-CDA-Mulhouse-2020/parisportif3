@@ -3,7 +3,6 @@
 namespace App\Tests\Entity;
 
 use App\Entity\Athlete;
-use App\Entity\SportTeam;
 use App\Tests\GeneralTestMethod;
 use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -125,47 +124,5 @@ final class AthleteTest extends WebTestCase
         yield ['Slt-'];
         yield ['arthur&zoe'];
         yield ["Giscard d'Estaing"];
-    }
-
-    /** @dataProvider validSportTeamProvider */
-    public function testAthleteJoinTeam(SportTeam $validTeam): void
-    {
-        $this->athlete->joinTeam($validTeam);
-
-        $violations = $this->validator->validate($this->athlete);
-        $violationOnAttribute = GeneralTestMethod::isViolationOn("sportTeamsList", $violations);
-        $obtainedResult = $this->athlete->listSportTeams();
-
-        $this->assertContains(
-            $validTeam,
-            $obtainedResult,
-            $validTeam->getTeamName() . " is not found in list, but should be"
-        );
-        $this->assertFalse($violationOnAttribute, $validTeam->getTeamName() . " is a Valid team, it should pass");
-    }
-
-    /** @dataProvider validSportTeamProvider */
-    public function testAthleteLeaveTeam(SportTeam $validTeam): void
-    {
-        $this->athlete->joinTeam($validTeam);
-        $this->athlete->leaveTeam($validTeam);
-
-        $violations = $this->validator->validate($this->athlete);
-        $violationOnAttribute = GeneralTestMethod::isViolationOn("sportTeamsList", $violations);
-        $obtainedResult = $this->athlete->listSportTeams();
-
-        $this->assertNotContains(
-            $validTeam,
-            $obtainedResult,
-            $validTeam->getTeamName() . " is found in list, bout should not be"
-        );
-        $this->assertFalse($violationOnAttribute, "A athlete may not have team");
-    }
-
-    /** @return Generator<array<int, SportTeam>> */
-    public function validSportTeamProvider(): Generator
-    {
-        yield [(new SportTeam())->setTeamName("Jaguar")];
-        yield [(new SportTeam())->setTeamName("Bigorneau")];
     }
 }
