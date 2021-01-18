@@ -34,15 +34,6 @@ final class SportTeam
     private string $teamName;
 
     /**
-     * @var Collection<int, SportEvent>
-     *
-     * @ORM\ManyToMany(targetEntity=SportEvent::class, mappedBy="sportTeamList")
-     *
-     * @TODO Valider avec un callback
-     */
-    private Collection $sportEventsList;
-
-    /**
      * @var Collection<int, Athlete>
      *
      * @ORM\ManyToMany(targetEntity=Athlete::class, inversedBy="sportTeamsList")
@@ -54,7 +45,6 @@ final class SportTeam
 
     public function __construct()
     {
-        $this->sportEventsList = new ArrayCollection();
         $this->athletesList = new ArrayCollection();
     }
 
@@ -71,22 +61,6 @@ final class SportTeam
     public function setTeamName(string $teamName): self
     {
         $this->teamName = $teamName;
-
-        return $this;
-    }
-
-    /** @return Collection<int, SportEvent> */
-    public function listSportEvents(): Collection
-    {
-        return $this->sportEventsList;
-    }
-
-    public function addSportEvent(SportEvent $newSportEvent): self
-    {
-        if (!$this->sportEventsList->contains($newSportEvent)) {
-            $this->sportEventsList[] = $newSportEvent;
-            $newSportEvent->addSportTeam($this);
-        }
 
         return $this;
     }

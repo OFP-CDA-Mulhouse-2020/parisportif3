@@ -21,4 +21,7 @@ final class SportTeamRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, SportTeam::class);
     }
+
+    //TODO Ajouter une requête findSportEventOf($team)
+    // pour récupérés les compétitions où une équipe à participé
 }
