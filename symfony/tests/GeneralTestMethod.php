@@ -2,6 +2,7 @@
 
 namespace App\Tests;
 
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -43,5 +44,13 @@ final class GeneralTestMethod extends WebTestCase
         }
 
         return false;
+    }
+
+    public static function getEntityManager(): ObjectManager
+    {
+        return self::getKernel()
+            ->getContainer()
+            ->get('doctrine')
+            ->getManager();
     }
 }
