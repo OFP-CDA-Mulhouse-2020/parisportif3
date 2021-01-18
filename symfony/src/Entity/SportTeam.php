@@ -25,7 +25,7 @@ final class SportTeam
     private ?int $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=false)
      *
      * @Assert\NotBlank
      * @Assert\Regex(
