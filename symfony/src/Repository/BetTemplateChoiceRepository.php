@@ -21,33 +21,4 @@ final class BetTemplateChoiceRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, BetTemplateChoice::class);
     }
-
-    // /**
-    //  * @return BetTemplateChoice[] Returns an array of BetTemplateChoice objects
-    //  */
-    /*
-    public function findByExampleField($value)
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->orderBy('b.id', 'ASC')
-            ->setMaxResults(10)
-            ->getQuery()
-            ->getResult()
-        ;
-    }
-    */
-
-    /*
-    public function findOneBySomeField($value): ?BetTemplateChoice
-    {
-        return $this->createQueryBuilder('b')
-            ->andWhere('b.exampleField = :val')
-            ->setParameter('val', $value)
-            ->getQuery()
-            ->getOneOrNullResult()
-        ;
-    }
-    */
 }
