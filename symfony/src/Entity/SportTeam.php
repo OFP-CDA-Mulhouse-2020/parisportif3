@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass=SportTeamRepository::class)
@@ -36,9 +37,7 @@ final class SportTeam
     /**
      * @var Collection<int, Athlete>
      *
-     * @ORM\ManyToMany(targetEntity=Athlete::class, inversedBy="sportTeamsList")
-     *
-     * @TODO Valider avec un callback
+     * @ORM\ManyToMany(targetEntity=Athlete::class)
      */
     private Collection $athletesList;
 
@@ -85,5 +84,23 @@ final class SportTeam
         $this->athletesList->removeElement($removedAthlete);
 
         return $this;
+    }
+
+    /** @Assert\Callback */
+    public function validate(ExecutionContextInterface $context): void
+    {
+        $validator = $context->getValidator();
+
+        foreach ($this->athletesList as $athlete) {
+            if (!is_a($athlete, Athlete::class)) {
+                $context->buildViolation("athletesList contain a non Athlete")
+                    ->atPath("athletesList")
+                    ->addViolation();
+            } elseif ($validator->validate($athlete)->count()) {
+                $context->buildViolation("athletesList contain a non valid Athlete")
+                    ->atPath("athletesList")
+                    ->addViolation();
+            }
+        }
     }
 }
