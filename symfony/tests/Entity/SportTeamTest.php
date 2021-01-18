@@ -75,7 +75,60 @@ final class SportTeamTest extends WebTestCase
         ];
     }
 
-    //TODO Ajouter la relation avec Athlete
+    /** @dataProvider validAthleteProvider */
+    public function testAddValidAthleteToTeam(Athlete $newValidAthlete): void
+    {
+        $this->team->addAthlete($newValidAthlete);
 
-    //TODO Ajouter la relation avec SportEvent
+        $violations = $this->validator->validate($this->team);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("athletesList", $violations);
+
+        $this->assertContains($newValidAthlete, $this->team->listAthletes());
+        $this->assertFalse($violationOnAttribute);
+    }
+
+    /** @dataProvider validAthleteProvider */
+    public function testRemoveValidAthleteToTeam(Athlete $oldValidAthlete): void
+    {
+        $this->team->addAthlete($oldValidAthlete);
+        $this->assertContains($oldValidAthlete, $this->team->listAthletes());
+        $this->team->removeAthlete($oldValidAthlete);
+
+        $violations = $this->validator->validate($this->team);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("athletesList", $violations);
+
+        $this->assertNotContains($oldValidAthlete, $this->team->listAthletes());
+        $this->assertFalse($violationOnAttribute);
+    }
+
+    /** @return Generator<array<int, Athlete>> */
+    public function validAthleteProvider(): Generator
+    {
+        yield [(new Athlete())->setFirstName("John")->setLastName("Michel")];
+        yield [(new Athlete())->setFirstName("Lucas")->setLastName("Testiana")];
+        yield [(new Athlete())->setFirstName("Bernard")->setLastName("Huger")];
+    }
+
+    /** @dataProvider invalidAthleteProvider */
+    public function testAddInvalidAthleteToTeam(Athlete $newInvalidAthlete): void
+    {
+        $this->team->addAthlete($newInvalidAthlete);
+
+        $violations = $this->validator->validate($this->team);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("athletesList", $violations);
+
+        $this->assertTrue($violationOnAttribute);
+    }
+
+    /** @return Generator<array<int, Athlete>> */
+    public function invalidAthleteProvider(): Generator
+    {
+        yield [new Athlete()];
+        yield [(new Athlete())->setFirstName("John")];
+        yield [(new Athlete())->setLastName("Varosa")];
+        yield [(new Athlete())->setFirstName("")->setLastName("Varosa")];
+        yield [(new Athlete())->setLastName("")->setFirstName("John")];
+        yield [(new Athlete())->setLastName("")->setFirstName("")];
+        yield [(new Athlete())->setLastName("6545364")->setFirstName("4565456")];
+    }
 }
