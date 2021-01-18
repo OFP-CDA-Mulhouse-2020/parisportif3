@@ -31,7 +31,6 @@ class Athlete {
     -id: ?int
     -lastName: string
     -firstName: string
-    -sportTeams: Collection<int, SportTeam>
 }
 
 ' Money management
@@ -116,7 +115,7 @@ Transaction "1..*" o-- "1" Bet : add <
 SportEvent "1" o-- "0..*" SportType : define <
 BetChoice "1" o--- "1" BetTemplateChoice: choose >
 BetTemplate "0..*" --o "1" BetTemplateChoice : specify <
-SportEvent "2..*" o-- "1..*" SportTeam : participate >
+SportEvent "2..*" o-- "1..*" SportTeam : participate <
 
 Receipt "0..*" -- "1" Wallet : print <
 
