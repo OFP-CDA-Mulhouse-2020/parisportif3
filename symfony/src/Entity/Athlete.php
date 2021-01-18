@@ -22,7 +22,7 @@ final class Athlete
     private ?int $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=false)
      *
      * @Assert\NotBlank
      * @Assert\Regex(
@@ -32,7 +32,7 @@ final class Athlete
     private string $lastName;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=false)
      *
      * @Assert\NotBlank
      * @Assert\Regex(
