@@ -2,8 +2,10 @@
 
 namespace App\Tests\Entity;
 
+use App\Entity\Athlete;
 use App\Entity\SportTeam;
 use App\Tests\GeneralTestMethod;
+use Generator;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Validator\Validator\TraceableValidator;
 
@@ -11,6 +13,7 @@ final class SportTeamTest extends WebTestCase
 {
     private TraceableValidator $validator;
     private SportTeam $team;
+
 
     public function setUp(): void
     {
@@ -29,8 +32,10 @@ final class SportTeamTest extends WebTestCase
         $this->team->setTeamName($teamName);
 
         $violations = $this->validator->validate($this->team);
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("teamName", $violations);
+
         $this->assertSame($teamName, $this->team->getTeamName());
-        $this->assertCount(0, $violations);
+        $this->assertFalse($violationOnAttribute);
     }
 
     /** @return array<array<string>> */
@@ -52,8 +57,10 @@ final class SportTeamTest extends WebTestCase
         $this->team->setTeamName($teamName);
 
         $violations = $this->validator->validate($this->team);
-        $this->assertSame($teamName, $this->team->getTeamName());
+        $violationOnAttribute = GeneralTestMethod::isViolationOn("teamName", $violations);
+
         $this->assertGreaterThanOrEqual(1, count($violations));
+        $this->assertTrue($violationOnAttribute);
     }
 
     /** @return array<array<string>> */
