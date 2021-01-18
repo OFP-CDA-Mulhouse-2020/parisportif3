@@ -119,7 +119,7 @@
         "static-test": "phpstan analyse -c phpstan-test.neon --no-progress",
         "unit-test": [
             "@php bin/console doctrine:fixtures:load --no-interaction --env test",
-            "@php bin/phpunit --colors=never"
+            "@php bin/phpunit"
         ],
         "standard-test": "./vendor/bin/phpcs",
         "standard-test-fix": "./vendor/bin/phpcbf",
