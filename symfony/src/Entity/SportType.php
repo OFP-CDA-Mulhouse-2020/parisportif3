@@ -3,8 +3,6 @@
 namespace App\Entity;
 
 use App\Repository\SportTypeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -40,20 +38,6 @@ final class SportType
      */
     private int $nbrOfActiveAthlete;
 
-    /**
-     * @var Collection<int, SportEvent>
-     *
-     * @ORM\OneToMany(targetEntity=SportEvent::class, mappedBy="sportType")
-     *
-     * @TODO Valider avec un callback
-     */
-    private Collection $sportEventsList;
-
-
-    public function __construct()
-    {
-        $this->sportEventsList = new ArrayCollection();
-    }
 
     public function getId(): ?int
     {
@@ -80,22 +64,6 @@ final class SportType
     public function setNbrOfActiveAthlete(int $nbrOfActiveAthlete): self
     {
         $this->nbrOfActiveAthlete = $nbrOfActiveAthlete;
-
-        return $this;
-    }
-
-    /** @return Collection<int, SportEvent> */
-    public function listSportEvents(): Collection
-    {
-        return $this->sportEventsList;
-    }
-
-    public function addSportEvent(SportEvent $newSportEvent): self
-    {
-        if (!$this->sportEventsList->contains($newSportEvent)) {
-            $this->sportEventsList[] = $newSportEvent;
-            $newSportEvent->setSportType($this);
-        }
 
         return $this;
     }

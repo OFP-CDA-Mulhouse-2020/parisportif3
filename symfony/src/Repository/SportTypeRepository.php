@@ -21,4 +21,7 @@ final class SportTypeRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, SportType::class);
     }
+
+    //TODO Ajouter une requête findSportEventOf($sportType)
+    // pour récupérés les compétitions d'un type de sport spécifique
 }

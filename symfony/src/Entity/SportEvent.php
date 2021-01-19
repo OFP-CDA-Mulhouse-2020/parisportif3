@@ -55,7 +55,7 @@ final class SportEvent
     private string $timeZone;
 
     /**
-     * @ORM\ManyToOne(targetEntity=SportType::class, inversedBy="sportEventsList")
+     * @ORM\ManyToOne(targetEntity=SportType::class)
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\Valid
