@@ -29,26 +29,26 @@ final class SportEvent
     private ?int $id;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=false)
      *
      * @Assert\NotBlank
      */
     private string $location;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string", length=255, nullable=false)
      *
      * @Assert\NotBlank
      */
     private string $competitionName;
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=false)
      */
     private DateTimeInterface $date;
 
     /**
-     * @ORM\Column(type="string", length=120)
+     * @ORM\Column(type="string", length=120, nullable=false)
      *
      * @Assert\Timezone
      */
@@ -65,8 +65,7 @@ final class SportEvent
     /**
      * @var Collection<int, SportTeam>
      *
-     * @ORM\ManyToMany(targetEntity=SportTeam::class, inversedBy="sportEventsList")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\ManyToMany(targetEntity=SportTeam::class)
      *
      * @TODO Valider avec un callback
      */
