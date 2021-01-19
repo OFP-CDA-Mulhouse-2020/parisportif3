@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 /**
  * @ORM\Entity(repositoryClass=BetTemplateRepository::class)
  * @UniqueEntity("id")
- * @TODO Rajouter les l'unicité après avoir rajouter les relations
+ * @UniqueEntity("sportType")
  */
 final class BetTemplate
 {
