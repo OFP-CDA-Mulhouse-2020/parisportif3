@@ -113,7 +113,7 @@ Receipt "0..*" --* "1" User : has >
 SportTeam "1..*" o-- "1..*" Athlete : employ >
 Transaction "1..*" o-- "1" Bet : add <
 SportEvent "1" o-- "0..*" SportType : define <
-BetChoice "1" o--- "1" BetTemplateChoice: choose >
+BetChoice "1..*" o--- "1" BetTemplateChoice: choose >
 BetTemplate "0..*" --o "1" BetTemplateChoice : specify <
 SportEvent "2..*" o-- "1..*" SportTeam : participate <
 
