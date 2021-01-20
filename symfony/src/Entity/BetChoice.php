@@ -58,9 +58,7 @@ final class BetChoice
         return $this;
     }
 
-    /**
-     * @Assert\Callback
-     */
+    /** @Assert\Callback */
     public function validateChoice(ExecutionContextInterface $context): void
     {
         foreach ($this->choice as $bet => $choice) {
