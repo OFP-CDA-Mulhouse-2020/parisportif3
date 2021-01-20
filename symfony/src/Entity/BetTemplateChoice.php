@@ -33,7 +33,7 @@ final class BetTemplateChoice
     private array $betList = [];
 
     /**
-     * @ORM\OneToOne(targetEntity=BetTemplate::class, cascade={"persist", "remove"})
+     * @ORM\ManyToOne(targetEntity=BetTemplate::class)
      * @ORM\JoinColumn(nullable=false)
      *
      * @Assert\Valid
