@@ -38,15 +38,14 @@ final class Transaction
     private int $totalPrice;
 
     /**
-     * @ORM\ManyToOne(targetEntity=User::class, inversedBy="transactionHistory")
-     * @ORM\JoinColumn(nullable=false)
-     */
-    private User $user;
-
-    /**
      * @var Collection<int, Bet>
      *
-     * @ORM\OneToMany(targetEntity=Bet::class, mappedBy="transaction")
+     * @ORM\ManyToMany(targetEntity=Bet::class)
+     * @ORM\JoinTable(
+     *     inverseJoinColumns={
+     *          @ORM\JoinColumn(unique=true)
+     *     }
+     * )
      *
      * @TODO Valider avec un callback
      */
@@ -81,18 +80,6 @@ final class Transaction
         return $this;
     }
 
-    public function getUser(): User
-    {
-        return $this->user;
-    }
-
-    public function setUser(User $user): self
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
     /** @return Collection<int, Bet> */
     public function getBetList(): Collection
     {
@@ -103,7 +90,6 @@ final class Transaction
     {
         if (!$this->betList->contains($bet)) {
             $this->betList[] = $bet;
-            $bet->setTransaction($this);
         }
 
         return $this;

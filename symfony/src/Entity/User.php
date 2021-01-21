@@ -98,11 +98,30 @@ final class User implements UserInterface
     /**
      * @var Collection<int, Transaction>
      *
-     * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="user")
+     * @ORM\ManyToMany(targetEntity=Transaction::class)
+     * @ORM\JoinTable(
+     *     inverseJoinColumns={
+     *          @ORM\JoinColumn(unique=true)
+     *     }
+     * )
      *
      * @TODO Valider avec un callback
      */
     private Collection $transactionHistory;
+
+    /**
+     * @var Collection<int, Receipt>
+     *
+     * @ORM\ManyToMany(targetEntity=Receipt::class)
+     * @ORM\JoinTable(
+     *     inverseJoinColumns={
+     *          @ORM\JoinColumn(unique=true)
+     *     }
+     * )
+     *
+     * @TODO Valider avec un callback
+     */
+    private Collection $receiptsHistory;
 
     /** Dates */
 
@@ -136,15 +155,6 @@ final class User implements UserInterface
 
     /** @ORM\Column(type="boolean") */
     private bool $deleted = false;
-
-    /**
-     * @var Collection<int, Receipt>
-     *
-     * @ORM\OneToMany(targetEntity=Receipt::class, mappedBy="user")
-     *
-     * @TODO Valider avec un callback
-     */
-    private Collection $receiptsHistory;
 
 
     public function __construct()
@@ -281,7 +291,6 @@ final class User implements UserInterface
     {
         if (!$this->transactionHistory->contains($transaction)) {
             $this->transactionHistory[] = $transaction;
-            $transaction->setUser($this);
         }
 
         return $this;
@@ -297,7 +306,6 @@ final class User implements UserInterface
     {
         if (!$this->receiptsHistory->contains($receiptToAdd)) {
             $this->receiptsHistory[] = $receiptToAdd;
-            $receiptToAdd->setUser($this);
         }
 
         return $this;
@@ -305,12 +313,7 @@ final class User implements UserInterface
 
     public function removeReceiptFromHistory(Receipt $receiptToRemove): self
     {
-        if ($this->receiptsHistory->removeElement($receiptToRemove)) {
-            // set the owning side to null (unless already changed)
-            if ($receiptToRemove->getUser() === $this) {
-                $receiptToRemove->setUser(null);
-            }
-        }
+        $this->receiptsHistory->removeElement($receiptToRemove);
 
         return $this;
     }

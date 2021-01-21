@@ -22,14 +22,6 @@ final class Bet
     private ?int $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity=Transaction::class, inversedBy="betList")
-     * @ORM\JoinColumn(nullable=false)
-     *
-     * @Assert\Valid
-     */
-    private Transaction $transaction;
-
-    /**
      * @ORM\OneToOne(targetEntity=BetData::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      *
@@ -49,18 +41,6 @@ final class Bet
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getTransaction(): Transaction
-    {
-        return $this->transaction;
-    }
-
-    public function setTransaction(Transaction $transaction): self
-    {
-        $this->transaction = $transaction;
-
-        return $this;
     }
 
     public function getBetData(): BetData

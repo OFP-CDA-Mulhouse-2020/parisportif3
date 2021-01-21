@@ -21,4 +21,7 @@ final class BetRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Bet::class);
     }
+
+    //TODO Ajouter une requête findTransactionOf($bet)
+    // pour récupérés la transaction d'un bet
 }

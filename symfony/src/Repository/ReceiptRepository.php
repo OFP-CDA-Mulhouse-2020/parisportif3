@@ -21,4 +21,7 @@ final class ReceiptRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Receipt::class);
     }
+
+    //TODO Ajouter une requête getUserOf($receipt)
+    // pour récupéré l'user d'un reçu
 }
