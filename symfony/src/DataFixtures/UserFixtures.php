@@ -2,9 +2,9 @@
 
 namespace App\DataFixtures;
 
-use _HumbugBoxbde535255540\Nette\Utils\DateTime;
 use App\Entity\User;
 use App\Entity\Wallet;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
