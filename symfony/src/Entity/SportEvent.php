@@ -40,7 +40,7 @@ final class SportEvent
      *
      * @Assert\NotBlank
      */
-    private string $competition;
+    private string $competitionName;
 
     /**
      * @ORM\Column(type="datetime")
@@ -95,14 +95,14 @@ final class SportEvent
         return $this;
     }
 
-    public function getCompetition(): string
+    public function getCompetitionName(): string
     {
-        return $this->competition;
+        return $this->competitionName;
     }
 
-    public function setCompetition(string $competition): self
+    public function setCompetitionName(string $competitionName): self
     {
-        $this->competition = $competition;
+        $this->competitionName = $competitionName;
 
         return $this;
     }

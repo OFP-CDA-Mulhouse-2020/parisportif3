@@ -48,11 +48,11 @@ final class SportEventTest extends WebTestCase
     //Est-ce que SportEvent contient une competition
     public function testCompetitionInputIsReturned(): void
     {
-        $competition = 'Super sport 2022';
+        $competitionName = 'Super sport 2022';
 
-        $this->sportEvent->setCompetition($competition);
+        $this->sportEvent->setCompetitionName($competitionName);
 
-        $this->assertSame($competition, $this->sportEvent->getCompetition());
+        $this->assertSame($competitionName, $this->sportEvent->getCompetitionName());
     }
 
     /**
