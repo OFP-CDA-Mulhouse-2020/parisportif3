@@ -34,6 +34,8 @@ final class BetTemplate
     /**
      * @ORM\OneToOne(targetEntity=SportType::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Valid
      */
     private SportType $sportType;
 

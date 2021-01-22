@@ -24,7 +24,6 @@ final class Receipt
     /**
      * @ORM\Column(type="integer")
      *
-     * @Assert\NotNull
      * @Assert\GreaterThan(0)
      */
     private int $amount;
@@ -37,6 +36,8 @@ final class Receipt
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="receiptsHistory")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Valid
      */
     private User $user;
 

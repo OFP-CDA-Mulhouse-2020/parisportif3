@@ -47,6 +47,8 @@ final class Athlete
      * @var Collection<int, SportTeam>
      *
      * @ORM\ManyToMany(targetEntity=SportTeam::class, mappedBy="athleteList")
+     *
+     * @TODO Valider avec un callback
      */
     private Collection $sportTeamsList;
 

@@ -44,6 +44,8 @@ final class SportType
      * @var Collection<int, SportEvent>
      *
      * @ORM\OneToMany(targetEntity=SportEvent::class, mappedBy="sportType")
+     *
+     * @TODO Valider avec un callback
      */
     private Collection $sportEventsList;
 

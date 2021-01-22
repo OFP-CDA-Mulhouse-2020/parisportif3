@@ -47,7 +47,6 @@ final class User implements UserInterface
     /**
      * @ORM\Column(type="string")
      *
-     * @Assert\NotCompromisedPassword
      * @Assert\NotBlank
      */
     private string $password;
@@ -76,15 +75,12 @@ final class User implements UserInterface
 
     /**
      * @ORM\Column(type="date")
-     *
-     * @Assert\NotNull
      */
     private DateTimeInterface $birthDate;
 
     /**
      * @ORM\Column(type="string", length=120)
      *
-     * @Assert\NotNull
      * @Assert\Timezone
      *
      * @TODO Rendre dynamique selon l'entrée de l'utilisateur
@@ -94,6 +90,8 @@ final class User implements UserInterface
     /**
      * @ORM\OneToOne(targetEntity=Wallet::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Valid
      */
     private Wallet $wallet;
 
@@ -101,6 +99,8 @@ final class User implements UserInterface
      * @var Collection<int, Transaction>
      *
      * @ORM\OneToMany(targetEntity=Transaction::class, mappedBy="user")
+     *
+     * @TODO Valider avec un callback
      */
     private Collection $transactionHistory;
 
@@ -108,8 +108,6 @@ final class User implements UserInterface
 
     /**
      * @ORM\Column(type="datetime")
-     *
-     * @Assert\NotNull
      */
     private DateTimeInterface $createdAt;
 
@@ -143,6 +141,8 @@ final class User implements UserInterface
      * @var Collection<int, Receipt>
      *
      * @ORM\OneToMany(targetEntity=Receipt::class, mappedBy="user")
+     *
+     * @TODO Valider avec un callback
      */
     private Collection $receiptsHistory;
 

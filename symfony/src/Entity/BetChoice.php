@@ -24,7 +24,9 @@ final class BetChoice
     /**
      * @var array<string, int>
      *
-     * @ORM\Column(type="array")
+     * @ORM\Column(type="array", nullable=false)
+     *
+     * @Assert\NotBlank
      */
     private array $choice = [];
 
@@ -32,7 +34,7 @@ final class BetChoice
      * @ORM\OneToOne(targetEntity=BetTemplateChoice::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      *
-     * @Assert\NotNull
+     * @Assert\Valid
      */
     private BetTemplateChoice $betTemplateChoice;
 

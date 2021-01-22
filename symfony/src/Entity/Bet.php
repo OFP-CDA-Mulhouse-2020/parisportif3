@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\BetRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=BetRepository::class)
@@ -23,18 +24,24 @@ final class Bet
     /**
      * @ORM\ManyToOne(targetEntity=Transaction::class, inversedBy="betList")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Valid
      */
     private Transaction $transaction;
 
     /**
      * @ORM\OneToOne(targetEntity=BetData::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Valid
      */
     private BetData $betData;
 
     /**
      * @ORM\OneToOne(targetEntity=BetChoice::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Valid
      */
     private BetChoice $betChoice;
 

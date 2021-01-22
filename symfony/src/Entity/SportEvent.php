@@ -30,11 +30,15 @@ final class SportEvent
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank
      */
     private string $location;
 
     /**
      * @ORM\Column(type="string", length=255)
+     *
+     * @Assert\NotBlank
      */
     private string $competition;
 
@@ -46,7 +50,6 @@ final class SportEvent
     /**
      * @ORM\Column(type="string", length=120)
      *
-     * @Assert\NotBlank
      * @Assert\Timezone
      */
     private string $timeZone;
@@ -54,6 +57,8 @@ final class SportEvent
     /**
      * @ORM\ManyToOne(targetEntity=SportType::class, inversedBy="sportEventsList")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @Assert\Valid
      */
     private SportType $sportType;
 
@@ -62,6 +67,8 @@ final class SportEvent
      *
      * @ORM\ManyToMany(targetEntity=SportTeam::class, inversedBy="sportEventsList")
      * @ORM\JoinColumn(nullable=false)
+     *
+     * @TODO Valider avec un callback
      */
     private Collection $sportTeamList;
 

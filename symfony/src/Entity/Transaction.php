@@ -27,8 +27,6 @@ final class Transaction
 
     /**
      * @ORM\Column(type="datetime")
-     *
-     * @Assert\NotNull
      */
     private DateTimeInterface $transactionDate;
 
@@ -42,8 +40,6 @@ final class Transaction
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="transactionHistory")
      * @ORM\JoinColumn(nullable=false)
-     *
-     * @Assert\NotNull
      */
     private User $user;
 
@@ -51,6 +47,8 @@ final class Transaction
      * @var Collection<int, Bet>
      *
      * @ORM\OneToMany(targetEntity=Bet::class, mappedBy="transaction")
+     *
+     * @TODO Valider avec un callback
      */
     private Collection $betList;
 

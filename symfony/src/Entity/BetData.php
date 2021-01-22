@@ -25,28 +25,22 @@ final class BetData
      * @ORM\Column(type="integer")
      *
      * @Assert\GreaterThan(0)
-     * @Assert\NotNull
      */
     private int $amount;
 
     /**
      * @ORM\Column(type="boolean")
-     *
-     * @Assert\NotNull
      */
     private bool $paidStatus;
 
     /**
      * @ORM\Column(type="datetime")
-     *
-     * @Assert\NotNull
      */
     private DateTimeInterface $date;
 
     /**
      * @ORM\Column(type="integer")
      *
-     * @Assert\NotNull
      * @Assert\GreaterThan(100)
      */
     private int $cote;

@@ -37,6 +37,8 @@ final class SportTeam
      * @var Collection<int, SportEvent>
      *
      * @ORM\ManyToMany(targetEntity=SportEvent::class, mappedBy="sportTeamList")
+     *
+     * @TODO Valider avec un callback
      */
     private Collection $sportEventsList;
 
@@ -44,6 +46,8 @@ final class SportTeam
      * @var Collection<int, Athlete>
      *
      * @ORM\ManyToMany(targetEntity=Athlete::class, inversedBy="sportTeamsList")
+     *
+     * @TODO Valider avec un callback
      */
     private Collection $athletesList;
 
