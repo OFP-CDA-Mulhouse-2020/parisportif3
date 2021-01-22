@@ -105,6 +105,13 @@ final class User implements UserInterface
      *     }
      * )
      *
+     * @note Not a ManyToMany!
+     *       JoinColumn is set to unique, for more details look at
+     *       <b>One-To-Many, Unidirectional with Join Table<b> on
+     *       Doctrine documentation (link below as of 2021-01-20)
+     *
+     * @link https://www.doctrine-project.org/projects/doctrine-orm/en/2.8/reference/association-mapping.html#one-to-many-unidirectional-with-join-table
+     *
      * @TODO Valider avec un callback
      */
     private Collection $transactionHistory;
@@ -118,6 +125,13 @@ final class User implements UserInterface
      *          @ORM\JoinColumn(unique=true)
      *     }
      * )
+     *
+     * @note Not a ManyToMany!
+     *       JoinColumn is set to unique, for more details look at
+     *       <b>One-To-Many, Unidirectional with Join Table<b> on
+     *       Doctrine documentation (link below as of 2021-01-20)
+     *
+     * @link https://www.doctrine-project.org/projects/doctrine-orm/en/2.8/reference/association-mapping.html#one-to-many-unidirectional-with-join-table
      *
      * @TODO Valider avec un callback
      */
