@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\SportEvent;
+use App\Entity\SportType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -20,6 +21,29 @@ final class SportEventRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, SportEvent::class);
+    }
+
+
+    public function findCompetitionList(SportType $type): array
+    {
+        return $this->createQueryBuilder('se')
+            ->addSelect('se')
+            ->andWhere('se.sportType = :val')
+            ->setParameter('val', $type->getId())
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findEventListFromCompetition(string $competitionName, SportType $type)
+    {
+        return $this->createQueryBuilder('se')
+            ->addSelect('se')
+            ->andWhere('se.sportType = :type')
+            ->andWhere('se.competition = :competition')
+            ->setParameter('type', $type->getId())
+            ->setParameter('competition', $competitionName)
+            ->getQuery()
+            ->getResult();
     }
 
     // /**
