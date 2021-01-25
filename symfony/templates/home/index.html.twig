@@ -3,7 +3,7 @@
 {% block stylesheets %}
 {% endblock %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}BetWare{% endblock %}
 
 
 {% block body %}
@@ -11,15 +11,22 @@
         <div id="content" class="row">
             <div id="left-menu" class="col-2 d">
                 <ul>
-                    <li>Menu Item</li>
-                    <li>Menu Item</li>
-                    <li>Menu Item</li>
-                    <li>Menu Item</li>
-                    <li>Menu Item</li>
+                    {% for sportType in SportTypeList %}
+                        <li><a href="/singleSport/{{ sportType.name }}">{{ sportType.name }}</a></li>
+                    {% endfor %}
                 </ul>
             </div>
             <div id="middle-content" class="col-5 offset-1">
-                <p>Je suis le contenue</p>
+                {% if EventList is defined and EventList is not empty %}
+                    {% for event in EventList %}
+                        <div>
+                            {% set teams = event.listSportTeams %}
+                            {{ event.sportType.name }} :
+                            <a href="/singleEvent/{{ event.id }}"><p>{{ teams[0].teamName }}
+                                    <strong>VS</strong> {{ teams[1].teamName }}</p></a>
+                        </div>
+                    {% endfor %}
+                {% endif %}
             </div>
             <div id="right-cart" class="col-2 offset-1">
                 <p>Par ici les sous-sous</p>
