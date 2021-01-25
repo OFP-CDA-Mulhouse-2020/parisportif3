@@ -1,0 +1,49 @@
+{% extends 'home/index.html.twig' %}
+
+{% block title %}Sport{% endblock %}
+
+{% block body %}
+    <div class="container mt-5">
+        <div id="content" class="row">
+            <div id="left-menu" class="col-2 d">
+                <ul>
+                    {% for sportType in SportTypeList %}
+                        <li><a href="/singleSport/{{ sportType.name }}">{{ sportType.name }}</a></li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div id="middle-content" class="col-5 offset-1">
+                <ul>
+                    {% if EventList is defined and EventList is not empty %}
+                        {% for event in EventList %}
+                            <li>
+                                {% set teams = event.listSportTeams %}
+                                <a
+                                        href="/singleEvent/{{ event.id }}">
+                                    <p>
+                                        {{ teams[0].teamName }} <strong>VS</strong> {{ teams[1].teamName }}
+                                    </p>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    {% elseif CompetitionList is defined and CompetitionList is not empty %}
+                        {% for competition in CompetitionList %}
+                            <li>
+                                <a href="/singleCompetition/{{ sportType }}/{{ competition.competition }}">
+                                    {{ competition.competition }}
+                                </a>
+                            </li>
+                        {% endfor %}
+                    {% elseif Event is defined and Event is not empty %}
+                        {% set teams = Event.listSportTeams %}
+                        {{ form_start(BetList) }}
+                        {{ form_end(BetList) }}
+                    {% endif %}
+                </ul>
+            </div>
+            <div id="right-cart" class="col-2 offset-1">
+                <p>Par ici les sous-sous</p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
