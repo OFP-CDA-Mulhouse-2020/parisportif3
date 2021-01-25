@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity("id")
  * @UniqueEntity("name")
  */
-final class SportType
+class SportType
 {
     /**
      * @ORM\Id
