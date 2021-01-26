@@ -20,11 +20,11 @@ final class BetChoiceTest extends WebTestCase
 
     public function testCreateBetChoice(): void
     {
-        $choice = [1, 2, 3];
+        $choice = ["choice" => 1];
         $this->betChoice->setChoice($choice);
         $this->assertIsArray($this->betChoice->getChoice());
 
-        $this->assertCount(0, $this->validator->validate($this->betChoice));
+        $this->assertCount(1, $this->validator->validate($this->betChoice));
     }
 
     /**

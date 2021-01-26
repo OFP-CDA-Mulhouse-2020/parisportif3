@@ -42,7 +42,7 @@ final class User implements UserInterface
      *
      * @Assert\NotBlank
      */
-    private string $username;
+    //private string $username;
 
     /**
      * @ORM\Column(type="string")
@@ -54,7 +54,11 @@ final class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      *
-     * @Assert\Email(mode="strict")
+     * @Assert\Email(
+     *     mode="strict",
+     *     message="Format email incorrect",
+     *     )
+     *
      * @Assert\NotBlank
      */
     private string $email;

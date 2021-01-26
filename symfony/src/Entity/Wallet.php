@@ -50,4 +50,12 @@ class Wallet
 
         return $this;
     }
+
+    /**
+     * @param int $balance
+     */
+    public function setBalance(int $balance): void
+    {
+        $this->balance = $balance;
+    }
 }

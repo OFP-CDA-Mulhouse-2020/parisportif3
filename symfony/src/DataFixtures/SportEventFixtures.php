@@ -24,9 +24,9 @@ class SportEventFixtures extends Fixture implements DependentFixtureInterface
         /** @var SportType $footRef */
         $footRef = $this->getReference("Football");
         /** @var SportTeam $teamOne */
-        $teamOne = $this->getReference("Team_01");
+        $teamOne = $this->getReference("Team_1");
         /** @var SportTeam $teamTwo */
-        $teamTwo = $this->getReference("Team_02");
+        $teamTwo = $this->getReference("Team_2");
 
         $sportEvent = new SportEvent();
         $sportEvent->setDate((new DateTime("now"))->add(new DateInterval("P10D")));

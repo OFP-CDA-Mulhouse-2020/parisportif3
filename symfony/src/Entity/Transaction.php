@@ -43,7 +43,6 @@ final class Transaction
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="transactionHistory")
      * @ORM\JoinColumn(nullable=false)
      *
-     * @Assert\NotNull
      */
     private User $user;
 

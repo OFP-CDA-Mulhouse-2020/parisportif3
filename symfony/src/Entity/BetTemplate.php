@@ -32,6 +32,15 @@ final class BetTemplate
     private array $abstractBets = [];
 
     /**
+     * @var array<string, array<string>>
+     *
+     * @ORM\Column(type="array")
+     *
+     * @Assert\NotBlank
+     */
+    private array $availableBetsList = [];
+
+    /**
      * @ORM\OneToOne(targetEntity=SportType::class, cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      */
@@ -73,5 +82,21 @@ final class BetTemplate
     public function validateAbstractBets(ExecutionContextInterface $context): void
     {
         //TODO Implémenter
+    }
+
+    /**
+     * @return \string[][]
+     */
+    public function getAvailableBetsList(): array
+    {
+        return $this->availableBetsList;
+    }
+
+    /**
+     * @param \string[][] $availableBetsList
+     */
+    public function setAvailableBetsList(array $availableBetsList): void
+    {
+        $this->availableBetsList = $availableBetsList;
     }
 }

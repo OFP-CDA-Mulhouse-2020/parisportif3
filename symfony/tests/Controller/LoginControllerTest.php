@@ -52,8 +52,8 @@ final class LoginControllerTest extends WebTestCase
 
         assert($form['username'] instanceof FormField);
         assert($form['password'] instanceof FormField);
-        $form['username']->setValue($user->getUsername());
-        $form['password']->setValue($user->getPassword());
+        $form['username']->setValue($user->getUsername(""));
+        $form['password']->setValue($user->getPassword(""));
 
         $this->client->submit($form);
 
