@@ -19,7 +19,8 @@ class BetTemplateFixtures extends Fixture implements DependentFixtureInterface
         $betTemplate->setSportType($sportType);
         $betTemplate->setAbstractBets(
             [
-                "RÉSULTAT DU MATCH" => ['%TEAM_ONE%', "Match nul", '%TEAM_TWO%']
+                "RÉSULTAT DU MATCH" => ['%TEAM_ONE%', "Match nul", '%TEAM_TWO%'],
+                "NOMBRE TOTAL DE BUT" => ["+0,5", "+1.5", "+2.5", "-0,5", "-1.5", "-2.5"]
             ]
         );
 
