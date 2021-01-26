@@ -121,8 +121,8 @@
             "@php bin/console doctrine:fixtures:load --no-interaction --env test",
             "@php bin/phpunit --colors=never"
         ],
-        "standard-test": "./vendor/bin/phpcs",
-        "standard-test-fix": "./vendor/bin/phpcbf",
+        "standard-test": "phpcs.bat",
+        "standard-test-fix": "phpcbf.bat",
         "security": "composer update --dry-run roave/security-advisories",
         "watch": [
             "chmod 744 bin/phpunit",
