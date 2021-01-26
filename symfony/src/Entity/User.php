@@ -42,7 +42,7 @@ final class User implements UserInterface
      *
      * @Assert\NotBlank
      */
-    //private string $username;
+    private string $username;
 
     /**
      * @ORM\Column(type="string")
