@@ -3,7 +3,6 @@
 
 namespace App\Service;
 
-
 use App\Entity\BetChoice;
 use App\Entity\SportEvent;
 use App\Entity\User;

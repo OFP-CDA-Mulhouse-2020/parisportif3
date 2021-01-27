@@ -29,7 +29,6 @@ final class AccountController extends AbstractController
     }
 
 
-
     /**
      * @Route("/myAccount/personalInfo", name="personalInfo")
      */
