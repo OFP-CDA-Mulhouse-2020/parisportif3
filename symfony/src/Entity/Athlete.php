@@ -46,7 +46,7 @@ final class Athlete
     /**
      * @var Collection<int, SportTeam>
      *
-     * @ORM\ManyToMany(targetEntity=SportTeam::class, mappedBy="athleteList")
+     * @ORM\ManyToMany(targetEntity=SportTeam::class, mappedBy="athletesList")
      */
     private Collection $sportTeamsList;
 
