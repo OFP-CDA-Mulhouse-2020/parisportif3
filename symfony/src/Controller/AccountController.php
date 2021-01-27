@@ -2,9 +2,8 @@
 
 namespace App\Controller;
 
-use App\Form\PersonalInfoFormType;
+use App\Service\FormHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -40,35 +39,16 @@ final class AccountController extends AbstractController
         return false;
     }
 
-    private function handleForm(Request $request, array $flashMessage): FormInterface
-    {
-        $form = $this->createForm(PersonalInfoFormType::class, $this->getUser());
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted()) {
-            if ($form->isValid()) {
-                $entityManager = $this->getDoctrine()->getManager();
-                $entityManager->persist($form->getData());
-                $entityManager->flush();
-
-                $this->addFlash($flashMessage['success']['type'], $flashMessage['success']['message']);
-            } else {
-                $this->addFlash($flashMessage['fail']['type'], $flashMessage['fail']['message']);
-            }
-        }
-        return $form;
-    }
-
     /**
      * @Route("/myAccount/personalInfo", name="personalInfo")
      */
-    public function UpdatePersonalInfo(Request $request): Response
+    public function updatePersonalInfo(Request $request, FormHandler $formHandler): Response
     {
         if ($this->verifyIfUserIsConnected()) {
             return $this->redirectToRoute('app_login');
         }
 
-        $form = $this->handleForm(
+        $form = $formHandler->handlePersonalInfoUpdateForm(
             $request,
             [
                 'success' => [
@@ -91,5 +71,4 @@ final class AccountController extends AbstractController
             ]
         );
     }
-
 }
