@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Athlete;
+use App\Entity\BetTemplate;
+use App\Entity\SportType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
 class AthleteCrudController extends AbstractCrudController
