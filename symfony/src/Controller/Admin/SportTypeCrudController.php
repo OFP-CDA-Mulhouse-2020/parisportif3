@@ -2,11 +2,11 @@
 
 namespace App\Controller\Admin;
 
-use App\Entity\BetTemplate;
+
 use App\Entity\SportType;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 
-class BetCrudController extends AbstractCrudController
+class SportTypeCrudController extends AbstractCrudController
 {
     public static function getEntityFqcn(): string
     {
