@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\SportType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -19,7 +20,7 @@ class DashboardController extends AbstractDashboardController
         //return parent::index();
         $routeBuilder = $this->get(AdminUrlGenerator::class);
 
-        return $this->redirect($routeBuilder->setController(BetCrudController::class)->generateUrl());
+        return $this->redirect($routeBuilder->setController(SportTypeCrudController::class)->generateUrl());
     }
 
     public function configureDashboard(): Dashboard
@@ -31,6 +32,6 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linktoDashboard('Dashboard', 'fa fa-home');
-        // yield MenuItem::linkToCrud('The Label', 'fas fa-list', EntityClass::class);
+        yield MenuItem::linkToCrud('SportType', 'fas fa-list', SportType::class);
     }
 }
