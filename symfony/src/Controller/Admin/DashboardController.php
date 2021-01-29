@@ -3,8 +3,11 @@
 namespace App\Controller\Admin;
 
 use App\Entity\SportType;
+<<<<<<< HEAD
 use App\Entity\SportTeam;
 use App\Entity\Athlete;
+=======
+>>>>>>> 60afebc3a0e11a7ab6f24999080238686eb6ab71
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
