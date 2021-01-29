@@ -3,6 +3,8 @@
 namespace App\Controller\Admin;
 
 use App\Entity\SportType;
+use App\Entity\SportTeam;
+use App\Entity\Athlete;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -32,6 +34,9 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linktoDashboard('Dashboard', 'fa fa-home');
+        //yield MenuItem::linkToCrud('Bet', 'fas fa-list', SportType::class);
+        yield MenuItem::linkToCrud('Sport Team', 'fas fa-list', SportTeam::class);
+        yield MenuItem::linkToCrud('Athelete', 'fas fa-list', Athlete::class);
         yield MenuItem::linkToCrud('SportType', 'fas fa-list', SportType::class);
     }
 }
