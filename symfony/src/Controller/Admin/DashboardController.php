@@ -3,11 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Entity\SportType;
-<<<<<<< HEAD
+use App\Entity\User;
 use App\Entity\SportTeam;
 use App\Entity\Athlete;
-=======
->>>>>>> 60afebc3a0e11a7ab6f24999080238686eb6ab71
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -25,7 +23,7 @@ class DashboardController extends AbstractDashboardController
         //return parent::index();
         $routeBuilder = $this->get(AdminUrlGenerator::class);
 
-        return $this->redirect($routeBuilder->setController(SportTypeCrudController::class)->generateUrl());
+        return $this->redirect($routeBuilder->setController(UserCrudController::class)->generateUrl());
     }
 
     public function configureDashboard(): Dashboard
@@ -40,6 +38,6 @@ class DashboardController extends AbstractDashboardController
         //yield MenuItem::linkToCrud('Bet', 'fas fa-list', SportType::class);
         yield MenuItem::linkToCrud('Sport Team', 'fas fa-list', SportTeam::class);
         yield MenuItem::linkToCrud('Athelete', 'fas fa-list', Athlete::class);
-        yield MenuItem::linkToCrud('SportType', 'fas fa-list', SportType::class);
+        yield MenuItem::linkToCrud('SportType', 'fas fa-list', User::class);
     }
 }

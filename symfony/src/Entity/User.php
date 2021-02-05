@@ -26,7 +26,7 @@ final class User implements UserInterface
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private ?int $id;
+    private ?int $id = null;
 
     /**
      * @var array<string>
@@ -324,6 +324,21 @@ final class User implements UserInterface
         return $this->verified;
     }
 
+    public function setVerified(bool $verif): self
+    {
+        if($verif == true)
+        {
+            $this->verified = $verif;
+            $this->verifiedAt = new DateTime();
+        }else
+        {
+            $this->verified = $verif;
+            $this->verifiedAt = Null;
+        }
+
+        return $this;
+    }
+
     public function verify(): self
     {
         $this->verified = true;
@@ -336,6 +351,13 @@ final class User implements UserInterface
         return $this->suspended;
     }
 
+    public function setSuspended(bool $suspendVal): bool
+    {
+        $this->suspended = $suspendVal;
+        $this->suspendedAt = new DateTime();
+        return $this;
+    }
+
     public function suspend(): void
     {
         $this->suspended = true;
@@ -345,6 +367,13 @@ final class User implements UserInterface
     public function isDeleted(): bool
     {
         return $this->deleted;
+    }
+
+    public function setDeleted(bool $deleteVal): bool
+    {
+        $this->deleted = $deleteVal;
+        $this->deleted = new DateTime();
+        return $this;
     }
 
     public function delete(): void
