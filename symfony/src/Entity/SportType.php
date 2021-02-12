@@ -14,7 +14,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @UniqueEntity("id")
  * @UniqueEntity("name")
  */
-final class SportType
+class SportType
 {
     /**
      * @ORM\Id
@@ -52,6 +52,13 @@ final class SportType
     {
         $this->sportEventsList = new ArrayCollection();
     }
+
+
+    public function __toString()
+    {
+        return $this->getId() . ' - ' . $this->getName();
+    }
+
 
     public function getId(): ?int
     {

@@ -26,7 +26,7 @@ final class SportEvent
      * @ORM\GeneratedValue
      * @ORM\Column(type="integer")
      */
-    private ?int $id;
+    private ?int $id = null;
 
     /**
      * @ORM\Column(type="string", length=255)
@@ -41,7 +41,7 @@ final class SportEvent
     /**
      * @ORM\Column(type="datetime")
      */
-    private DateTimeInterface $date;
+    private DateTimeInterface $datet;
 
     /**
      * @ORM\Column(type="string", length=120)
@@ -52,6 +52,7 @@ final class SportEvent
     private string $timeZone;
 
     /**
+     * @var Collection<int, SportType>
      * @ORM\ManyToOne(targetEntity=SportType::class, inversedBy="sportEventsList")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -100,23 +101,23 @@ final class SportEvent
         return $this;
     }
 
-    public function getDate(): DateTimeInterface
+    public function getDatet(): DateTimeInterface
     {
-        return $this->date;
+        return $this->datet;
     }
 
     /**
      * @TODO Rendre la timezone dynamique, et gérer l'exception
      * @throws Exception
      */
-    public function setDate(DateTimeInterface $date): self
+    public function setDatet(DateTimeInterface $date): self
     {
         $minDate = new DateTime('now', new DateTimeZone('Europe/Paris'));
         $minDate->add(new DateInterval('P2D'));
 
 
         if ($date >= $minDate) {
-            $this->date = $date;
+            $this->datet = $date;
         }
 
         return $this;

@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\SportType;
+use App\Entity\SportEvent;
 use App\Entity\User;
 use App\Entity\SportTeam;
 use App\Entity\Athlete;
@@ -37,7 +38,9 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linktoDashboard('Dashboard', 'fa fa-home');
         //yield MenuItem::linkToCrud('Bet', 'fas fa-list', SportType::class);
         yield MenuItem::linkToCrud('Sport Team', 'fas fa-list', SportTeam::class);
+        yield MenuItem::linkToCrud('Sport Type', 'fas fa-list', SportType::class);
+        yield MenuItem::linkToCrud('Sport Event', 'fas fa-list', SportEvent::class);
         yield MenuItem::linkToCrud('Athelete', 'fas fa-list', Athlete::class);
-        yield MenuItem::linkToCrud('SportType', 'fas fa-list', User::class);
+        yield MenuItem::linkToCrud('User', 'fas fa-list', User::class);
     }
 }

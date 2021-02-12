@@ -12,6 +12,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 
 class UserCrudController extends AbstractCrudController
 {
@@ -41,6 +42,7 @@ class UserCrudController extends AbstractCrudController
             TextField::new('FirstName'),
             //TextEditorField::new('description'),
             BooleanField::new('verified'),
+            DateTimeField::new('verifiedAt'),
             BooleanField::new('suspended'),
             BooleanField::new('deleted')
         ];
