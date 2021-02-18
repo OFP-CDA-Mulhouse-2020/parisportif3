@@ -4,7 +4,11 @@
 namespace App\Service;
 
 
+use App\Entity\BetChoice;
+use App\Entity\SportEvent;
 use App\Entity\User;
+use App\Form\BetListType;
+use App\Form\BetTemplateFormType;
 use App\Form\PersonalInfoFormType;
 use App\Form\RegistrationFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -61,11 +65,43 @@ class FormHandler extends AbstractController
 
         if ($form->isSubmitted()) {
             if ($form->isValid()) {
-                $this->entityManager->persistData($form->getData());
+                $this->persistData($form->getData());
                 $this->addFlash($flashMessage['success']['type'], $flashMessage['success']['message']);
             } else {
                 $this->addFlash($flashMessage['fail']['type'], $flashMessage['fail']['message']);
             }
+        }
+        return $form;
+    }
+
+    public function handleBetListForm(
+        Request $request,
+        SportDataRetriever $sportDataRetriever,
+        SportEvent $sportEvent,
+        UserService $service
+    ): FormInterface {
+        $clientBet = [];
+
+        $form = $this->createForm(
+            BetListType::class,
+            null,
+            [
+                "data" => [
+                    "sportData" => $sportDataRetriever,
+                    "sportEvent" => $sportEvent
+                ]
+            ]
+        );
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid() && !$service->verifyIfUserIsConnected()) {
+            foreach ($form->getData() as $key => $values) {
+                if ($values === true) {
+                    $clientBet += [$key => $values];
+                }
+            }
+            $userBet = new BetChoice();
+            $userBet->setChoice($clientBet);
         }
         return $form;
     }
