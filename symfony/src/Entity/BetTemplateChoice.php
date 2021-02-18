@@ -6,7 +6,6 @@ use App\Repository\BetTemplateChoiceRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * @ORM\Entity(repositoryClass=BetTemplateChoiceRepository::class)
@@ -50,14 +49,6 @@ final class BetTemplateChoice
         return $this->betList;
     }
 
-    /** @param array<string, array<string>> $newAvailableBetList */
-    public function setAvailableBets(array $newAvailableBetList): self
-    {
-        $this->betList = $newAvailableBetList;
-
-        return $this;
-    }
-
     public function getBetTemplate(): BetTemplate
     {
         return $this->betTemplate;
@@ -70,9 +61,23 @@ final class BetTemplateChoice
         return $this;
     }
 
-    /** @Assert\Callback */
-    public function validateBetList(ExecutionContextInterface $context): void
+    public function updateDescription(SportEvent $sportEvent): self
     {
-        //TODO Implémenter le validator pour $this->betList
+        $description = $this->getBetTemplate()->listAbstractBets();
+
+        foreach ($description as $type => $bet) {
+            $i = 0;
+            $j = 0;
+            foreach ($bet as $possibility) {
+                if (preg_match("/%(?:.)*%/", $possibility)) {
+                    $description[$type][$i] = $sportEvent->listSportTeams()[$j]->getTeamName();
+                    $j++;
+                }
+                $i++;
+            }
+        }
+
+        $this->betList = $description;
+        return $this;
     }
 }
