@@ -10,7 +10,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class BetTemplateFixtures extends Fixture implements DependentFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         /** @var SportType $sportType */
         $sportType = $this->getReference("Football");
@@ -19,8 +19,8 @@ class BetTemplateFixtures extends Fixture implements DependentFixtureInterface
         $betTemplate->setSportType($sportType);
         $betTemplate->setAbstractBets(
             [
-                "RÉSULTAT DU MATCH" => ['%TEAM_ONE%', "Match nul", '%TEAM_TWO%'],
-                "NOMBRE TOTAL DE BUT" => ["+0,5", "+1.5", "+2.5", "-0,5", "-1.5", "-2.5"]
+                "RESULTAT_DU_MATCH" => ['%TEAM_ONE%', "Match nul", '%TEAM_TWO%'],
+                "NOMBRE_TOTAL_DE_BUT" => ["+0,5", "+1.5", "+2.5", "-0,5", "-1.5", "-2.5"]
             ]
         );
 
