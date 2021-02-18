@@ -2,8 +2,11 @@
 
 namespace App\Controller;
 
+use App\Service\FormHandler;
 use App\Service\SportDataRetriever;
+use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -61,15 +64,24 @@ class SportController extends AbstractController
     /**
      * @Route("/singleEvent/{id}", name="SingleEvent")
      */
-    public function showSingleEvent($id, SportDataRetriever $sportDataRetriever): Response
-    {
+    public function showSingleEvent(
+        $id,
+        SportDataRetriever $sportDataRetriever,
+        FormHandler $formHandler,
+        Request $request,
+        UserService $service
+    ): Response {
+        $event = $sportDataRetriever->getEventFromID($id);
+        $form = $formHandler->handleBetListForm($request, $sportDataRetriever, $event, $service);
+
+
         return $this->render(
             'sport/index.html.twig',
             [
                 'user' => $this->getUser(),
                 'Event' => $sportDataRetriever->getEventFromID($id),
                 'SportTypeList' => $sportDataRetriever->getSportTypeList(),
-                //                'BetList' => $form->createView()
+                'BetList' => $form->createView()
             ]
         );
     }
