@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\FormHandler;
+use App\Service\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,9 +14,9 @@ final class AccountController extends AbstractController
     /**
      * @Route("/myAccount", name="account")
      */
-    public function index(): Response
+    public function index(UserService $service): Response
     {
-        if ($this->verifyIfUserIsConnected()) {
+        if ($service->verifyIfUserIsConnected()) {
             return $this->redirectToRoute('app_login');
         }
 
@@ -27,24 +28,14 @@ final class AccountController extends AbstractController
         );
     }
 
-    private function verifyIfUserIsConnected(): bool
-    {
-        if (!$this->getUser()) {
-            $this->addFlash(
-                'warning',
-                "Pour accéder à cette page, vous devez d'abord vous connecter."
-            );
-            return true;
-        }
-        return false;
-    }
+
 
     /**
      * @Route("/myAccount/personalInfo", name="personalInfo")
      */
-    public function updatePersonalInfo(Request $request, FormHandler $formHandler): Response
+    public function updatePersonalInfo(Request $request, FormHandler $formHandler, UserService $service): Response
     {
-        if ($this->verifyIfUserIsConnected()) {
+        if ($service->verifyIfUserIsConnected()) {
             return $this->redirectToRoute('app_login');
         }
 
