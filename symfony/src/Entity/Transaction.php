@@ -53,6 +53,11 @@ final class Transaction
      */
     private Collection $betList;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Bet::class, mappedBy="transaction")
+     */
+    private Bet $Bet;
+
 
     public function __construct()
     {
@@ -100,13 +105,39 @@ final class Transaction
         return $this->betList;
     }
 
-    public function addBet(Bet $bet): self
+    public function setBetList(Bet $bet): Collection
     {
-        if (!$this->betList->contains($bet)) {
-            $this->betList[] = $bet;
-            $bet->setTransaction($this);
-        }
-
-        return $this;
+        $this->betList[] = $bet;
+        return $this->betList;
     }
+
+//    public function addBet(Bet $bet): self
+//    {
+//        if (!$this->betList->contains($bet)) {
+//            $this->betList[] = $bet;
+//            $bet->setTransaction($this);
+//        }
+//
+//        return $this;
+//    }
+
+    /**
+     * @return Collection|Bet[]
+     */
+    public function getBet(): Bet
+    {
+        return $this->Bet;
+    }
+
+//    public function removeBet(Bet $bet): self
+//    {
+//        if ($this->Bet->removeElement($bet)) {
+//            // set the owning side to null (unless already changed)
+//            if ($bet->getTransaction() === $this) {
+//                $bet->setTransaction(null);
+//            }
+//        }
+//
+//        return $this;
+//    }
 }
