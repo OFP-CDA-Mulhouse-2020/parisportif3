@@ -48,7 +48,7 @@ final class LoginControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/login');
 
-        $form = $crawler->selectButton('Sign in')->form();
+        $form = $crawler->selectButton('Connexion')->form();
 
         assert($form['username'] instanceof FormField);
         assert($form['password'] instanceof FormField);

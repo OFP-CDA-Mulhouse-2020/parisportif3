@@ -5,7 +5,6 @@ namespace App\Tests\Entity;
 use App\Entity\Transaction;
 use App\Tests\GeneralTestMethod;
 use DateTime;
-use DateTimeInterface;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Validator\Validator\TraceableValidator;
 
