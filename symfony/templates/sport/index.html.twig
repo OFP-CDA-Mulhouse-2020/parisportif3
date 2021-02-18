@@ -37,6 +37,7 @@
                     {% elseif Event is defined and Event is not empty %}
                         {% set teams = Event.listSportTeams %}
                         {{ form_start(BetList) }}
+                        <button type="submit" class="btn btn-primary mt-4">Parier</button>
                         {{ form_end(BetList) }}
                     {% endif %}
                 </ul>
