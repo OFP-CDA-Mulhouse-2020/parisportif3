@@ -4,6 +4,8 @@
 namespace App\Service;
 
 
+use App\Entity\BetTemplate;
+use App\Entity\BetTemplateChoice;
 use App\Entity\SportEvent;
 use App\Entity\SportType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -52,5 +54,18 @@ class SportDataRetriever extends AbstractController
             ->getRepository(SportEvent::class)
             ->find($id);
         return $sportEvent;
+    }
+
+    public function getBetListFromEvent(SportEvent $sportEvent): BetTemplateChoice
+    {
+        /** @var BetTemplate $betTemplateList */
+        $betTemplateList = $this->getDoctrine()
+            ->getRepository(BetTemplate::class)
+            ->findBy(["sportType" => $sportEvent->getSportType()]);
+
+        $betList = new BetTemplateChoice();
+        $betList->setBetTemplate($betTemplateList[0]);
+
+        return $betList->updateDescription($sportEvent);
     }
 }
