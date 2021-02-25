@@ -29,7 +29,7 @@ class SportEventFixtures extends Fixture implements DependentFixtureInterface
         $teamTwo = $this->getReference("Team_2");
 
         $sportEvent = new SportEvent();
-        $sportEvent->setDate((new DateTime("now"))->add(new DateInterval("P10D")));
+        $sportEvent->setDatet((new DateTime("now"))->add(new DateInterval("P10D")));
         $sportEvent->setSportType($footRef);
         $sportEvent->setLocation("Mulhouse, France");
         $sportEvent->setTimeZone("Europe/Paris");
